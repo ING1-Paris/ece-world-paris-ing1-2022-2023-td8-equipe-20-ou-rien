@@ -19,6 +19,18 @@ void initiation()
     show_mouse(screen);
 }
 
+BITMAP * importeImage(char *nomDeFichier)
+{
+    BITMAP *imageARendre= load_bitmap(nomDeFichier,NULL);
+    if(!imageARendre)
+    {
+        allegro_message("ne peut pas ouvrir");
+        allegro_exit();
+        exit(EXIT_FAILURE);
+    }
+    return imageARendre;
+}
+
 int main(void) {
     printf("Hello World!\n");
     return 0;
