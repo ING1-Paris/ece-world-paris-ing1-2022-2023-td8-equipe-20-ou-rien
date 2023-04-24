@@ -3,6 +3,8 @@
 #include "../.h/fonction_allegro.h"
 #include "../.h/fonction_project.h"
 
+///bonjour
+
 int main(void) {
     initiation();
     int BoolMenu=TRUE,BoolSettings=FALSE,BoolPlay=FALSE;
