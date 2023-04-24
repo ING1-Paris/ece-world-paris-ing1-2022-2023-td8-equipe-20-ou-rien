@@ -3,6 +3,6 @@ project(PROJET C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(PROJET main.c fonction_allegro.c fonction_allegro.h fonction_allegro.c fonction_allegro.h)
+add_executable(PROJET src/main.c src/fonction_allegro.c src/fonction_allegro.h src/fonction_allegro.c src/fonction_allegro.h)
 
 target_link_libraries(PROJET -lmingw32 -lalleg44)
