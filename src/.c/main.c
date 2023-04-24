@@ -5,7 +5,7 @@
 int main(void) {
     initiation();
     BITMAP *fond[52];
-    char *nomDeFichier=NULL;
+    char nomDeFichier[5000];
     for(int i=1;i<50;i++)
     {
         sprintf(nomDeFichier,"../image/frame-%d.bmp",i);
