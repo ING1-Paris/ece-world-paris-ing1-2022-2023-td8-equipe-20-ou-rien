@@ -69,6 +69,8 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
     BITMAP *PLAY= importeImage("../image/image ecriture/PLAY.bmp");
     BITMAP *SETTINGS= importeImage("../image/image ecriture/SETTINGS.bmp");
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
+    SAMPLE *bruitVille= importeSon("../son/son bruit ville.wav");
+    play_sample(bruitVille, 255, 128, 1000, TRUE);
     while(!key[KEY_ESC])
     {
         clear_bitmap(buffer);
@@ -77,7 +79,19 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
         {
             frame=1;
         }
-        /*if(key[KEY_R])
+        stretch_blit(fond[frame],buffer,0,0,fond[frame]->w,fond[frame]->h,0,0,SCREEN_W,SCREEN_H);
+        draw_sprite(buffer,PLAY,275,310);
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        rest(28);
+    }
+}
+
+
+void Snake( int *BoolSortie,int *BoolEntree)
+{
+
+}
+/*if(key[KEY_R])
         {
             y-=DEP;
         }
@@ -111,15 +125,3 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
         }
         printf("%d | %d\n",x,y);
          */
-        stretch_blit(fond[frame],buffer,0,0,fond[frame]->w,fond[frame]->h,0,0,SCREEN_W,SCREEN_H);
-        draw_sprite(buffer,PLAY,275,310);
-        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
-        rest(28);
-    }
-}
-
-
-void Snake( int *BoolSortie,int *BoolEntree)
-{
-
-}

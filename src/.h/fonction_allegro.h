@@ -8,5 +8,6 @@
 
 void initiation();
 BITMAP * importeImage(char *nomDeFichier);
+SAMPLE * importeSon(char *nomDeFichier);
 
 #endif //PROJET_FONCTION_ALLEGRO_H

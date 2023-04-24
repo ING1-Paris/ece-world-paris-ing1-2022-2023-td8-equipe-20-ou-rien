@@ -24,6 +24,7 @@ void initiation()
     install_keyboard();
     install_mouse();
     show_mouse(screen);
+    install_sound(DIGI_AUTODETECT,MIDI_AUTODETECT,NULL);
 }
 
 BITMAP * importeImage(char *nomDeFichier)
@@ -36,4 +37,16 @@ BITMAP * importeImage(char *nomDeFichier)
         exit(EXIT_FAILURE);
     }
     return imageARendre;
+}
+
+SAMPLE * importeSon(char *nomDeFichier)
+{
+    SAMPLE *sonARendre= load_wav(nomDeFichier);
+    if(!sonARendre)
+    {
+        allegro_message("ne peut pas ouvrir %s",nomDeFichier);
+        allegro_exit();
+        exit(EXIT_FAILURE);
+    }
+    return sonARendre;
 }
