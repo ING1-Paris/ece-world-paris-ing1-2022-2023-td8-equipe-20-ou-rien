@@ -2,7 +2,7 @@
 // Created by mathe on 24/04/2023.
 //
 
-#include "fonction_utile.h"
+#include "../.h/fonction_utile.h"
 #include "allegro.h"
 #include "stdio.h"
 
