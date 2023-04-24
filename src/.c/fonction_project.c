@@ -22,6 +22,7 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
         sprintf(nomDeFichier,"../image/image fond menu/frame-%d.bmp",i);
         fond[i]= importeImage(nomDeFichier);
     }
+    BITMAP *PLAY= importeImage("../image/image ecriture/PLAY.bmp");
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
     while(!key[KEY_ESC])
     {
@@ -32,6 +33,7 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
             frame=1;
         }
         stretch_blit(fond[frame],buffer,0,0,fond[frame]->w,fond[frame]->h,0,0,SCREEN_W,SCREEN_H);
+        draw_sprite(buffer,PLAY,300,200);
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(50);
     }
