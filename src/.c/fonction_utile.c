@@ -8,39 +8,29 @@
 
 void ajouter_maillonEnModePile(t_liste *liste)
 {
-    int dataRajout;
-    if(liste->nb==15)
+    t_maille *maillon=liste->premier;
+    if(liste->nb==1)
     {
-        printf("impossible liste deja remplie\n");
-        return ;
-    }
-    else
-    {
-        t_maille *maillon=liste->premier;
-        if(liste->nb==1)
-        {
-            t_maille *nouvelleMaille= malloc(sizeof (t_maille));
-            nouvelleMaille->direction=maillon->direction;
-            nouvelleMaille->posX=0;
-            nouvelleMaille->posY=0;
-            nouvelleMaille->next=NULL;
-            maillon->next=nouvelleMaille;
-            liste->nb++;
-            return;
-        }
-        while(maillon->next->next!=NULL)
-        {
-            maillon=maillon->next;
-        }
         t_maille *nouvelleMaille= malloc(sizeof (t_maille));
         nouvelleMaille->direction=maillon->direction;
         nouvelleMaille->posX=0;
         nouvelleMaille->posY=0;
         nouvelleMaille->next=NULL;
-        maillon->next->next=nouvelleMaille;
+        maillon->next=nouvelleMaille;
         liste->nb++;
         return;
     }
+    while(maillon->next->next!=NULL)
+    {
+        maillon=maillon->next;
+    }
+    t_maille *nouvelleMaille= malloc(sizeof (t_maille));
+    nouvelleMaille->direction=maillon->direction;
+    nouvelleMaille->posX=0;
+    nouvelleMaille->posY=0;
+    nouvelleMaille->next=NULL;
+    maillon->next->next=nouvelleMaille;
+    liste->nb++;
 }
 
 t_liste * creation()
