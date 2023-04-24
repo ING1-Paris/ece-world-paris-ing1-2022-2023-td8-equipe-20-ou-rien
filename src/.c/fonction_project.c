@@ -110,6 +110,8 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
     SAMPLE *bruitVille= importeSon("../son/son bruit ville.wav");
     SAMPLE *bruitPluie= importeSon("../son/STORM_Pluie et orage.wav");
+    SAMPLE *musiqueEasterEgg= importeSon("../son/son musique fond menu.wav");
+    play_sample(musiqueEasterEgg,100,128,1000,TRUE);
     play_sample(bruitVille, 235, 128, 1000, TRUE);
     play_sample(bruitPluie,255,128,1000,TRUE);
     show_mouse(screen);
@@ -136,6 +138,7 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
     }
     stop_sample(bruitVille);
     stop_sample(bruitPluie);
+    stop_sample(musiqueEasterEgg);
 }
 
 
