@@ -8,4 +8,5 @@
 #define PROJET_FONCTION_SETTINGS_H
 
 void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay);
+void animationDebut();
 #endif //PROJET_FONCTION_SETTINGS_H

@@ -31,7 +31,7 @@ BITMAP * importeImage(char *nomDeFichier)
     BITMAP *imageARendre= load_bitmap(nomDeFichier,NULL);
     if(!imageARendre)
     {
-        allegro_message("ne peut pas ouvrir");
+        allegro_message("ne peut pas ouvrir %s",nomDeFichier);
         allegro_exit();
         exit(EXIT_FAILURE);
     }

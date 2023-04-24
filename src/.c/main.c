@@ -6,9 +6,13 @@
 int main(void) {
     initiation();
     int BoolMenu=TRUE,BoolSettings=FALSE,BoolPlay=FALSE;
-    if(BoolMenu)
+    animationDebut();
+    while (!key[KEY_ESC])
     {
-        menu(&BoolMenu,&BoolSettings,&BoolPlay);
+        if(BoolMenu)
+        {
+            menu(&BoolMenu,&BoolSettings,&BoolPlay);
+        }
     }
     allegro_exit();
     return 0;
