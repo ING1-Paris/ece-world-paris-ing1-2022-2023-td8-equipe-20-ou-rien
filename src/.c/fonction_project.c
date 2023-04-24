@@ -9,8 +9,8 @@
 
 void fill_bitmap(BITMAP *bmp, int color,int posX,int posY) {
 
-    for (posY; posY < bmp->h; posY++) {
-        for (posX = 0; posX < bmp->w; posX++) {
+    for (posY=0; posY < bmp->h; posY++) {
+        for (posX=0; posX < bmp->w; posX++) {
             if(getpixel(bmp,posX,posY)!= makecol(255,0,255))
             {
                 putpixel(bmp, posX, posY, color);
@@ -29,6 +29,10 @@ void animationDebut()
     }
     BITMAP *slogan= importeImage("../image/image utile/slogan 2.bmp");
     BITMAP *company= importeImage("../image/image utile/company project.bmp");
+    BITMAP *Nom1= importeImage("../image/image ecriture/nom projet-1.bmp");
+    BITMAP *Nom2= importeImage("../image/image ecriture/nom projet-2.bmp");
+    BITMAP *Nom3= importeImage("../image/image ecriture/nom projet-3.bmp");
+    BITMAP *Nom4= importeImage("../image/image ecriture/nom projet-4.bmp");
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
     SAMPLE *sonfond= importeSon("../son/son animation.wav");
     clear_bitmap(buffer);
@@ -41,7 +45,7 @@ void animationDebut()
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(50);
     }
-    for(int i=0;i<255;i++)
+    for(int i=0;i<255;i+=5)
     {
         clear_bitmap(buffer);
         fill_bitmap(slogan, makecol(i,i,i),0,0);
@@ -49,6 +53,39 @@ void animationDebut()
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(50);
     }
+    for(int i=0;i<255;i+=5)
+    {
+        clear_bitmap(buffer);
+        fill_bitmap(Nom1, makecol(i,i,i),0,0);
+        draw_sprite(buffer,Nom1,0,SCREEN_H/2-100);
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        rest(50);
+    }
+    for(int i=0;i<255;i+=5)
+    {
+        clear_bitmap(buffer);
+        fill_bitmap(Nom2, makecol(i,i,i),0,0);
+        draw_sprite(buffer,Nom2,0,SCREEN_H/2-100);
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        rest(50);
+    }
+    for(int i=0;i<255;i+=5)
+    {
+        clear_bitmap(buffer);
+        fill_bitmap(Nom3, makecol(i,i,i),0,0);
+        draw_sprite(buffer,Nom3,0,SCREEN_H/2-100);
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        rest(50);
+    }
+    for(int i=0;i<255;i+=5)
+    {
+        clear_bitmap(buffer);
+        fill_bitmap(Nom4, makecol(i,i,i),0,0);
+        draw_sprite(buffer,Nom4,0,SCREEN_H/2-100);
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        rest(50);
+    }
+
     stop_sample(sonfond);
 }
 void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
