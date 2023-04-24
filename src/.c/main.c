@@ -11,7 +11,7 @@ int main(void) {
     BITMAP *fond[52];
     for(int i=1;i<50;i++)
     {
-        sprintf(nomDeFichier,"../image/frame-%d.bmp",i);
+        sprintf(nomDeFichier,"../image/image fond menu/frame-%d.bmp",i);
         fond[i]= importeImage(nomDeFichier);
     }
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
