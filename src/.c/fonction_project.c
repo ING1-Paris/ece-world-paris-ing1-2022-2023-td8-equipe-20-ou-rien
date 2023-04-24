@@ -43,7 +43,7 @@ void animationDebut()
     {
         clear_bitmap(buffer);
         fill_bitmap(slogan, makecol(i,i,i));
-        draw_sprite(buffer,slogan,0,SCREEN_H/2-100);
+        draw_sprite(buffer,slogan,5,SCREEN_H/2-100);
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(20);
     }
@@ -77,7 +77,7 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
         {
             frame=1;
         }
-        if(key[KEY_R])
+        /*if(key[KEY_R])
         {
             y-=DEP;
         }
@@ -110,10 +110,16 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
             y=0;
         }
         printf("%d | %d\n",x,y);
+         */
         stretch_blit(fond[frame],buffer,0,0,fond[frame]->w,fond[frame]->h,0,0,SCREEN_W,SCREEN_H);
-        draw_sprite(buffer,PLAY,275,175);
-        draw_sprite(buffer,SETTINGS,170,270);
+        draw_sprite(buffer,PLAY,275,310);
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
-        rest(25);
+        rest(28);
     }
+}
+
+
+void Snake( int *BoolSortie,int *BoolEntree)
+{
+
 }
