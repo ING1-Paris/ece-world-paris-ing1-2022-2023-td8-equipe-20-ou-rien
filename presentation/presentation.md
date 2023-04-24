@@ -18,7 +18,7 @@ Algorithmique et langage C
 
 <br><br><br>
 
-# Labyrinthe<br>🧭🗺
+# ECE World<br>🧭🗺
 
 <br><br><br>
 
@@ -28,7 +28,7 @@ Algorithmique et langage C
 
 # Titre
 
-Lorem ipsum dolor sit amet [ece](https://www.ece.fr), consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+Projet réalisé pour l'[ece](https://www.ece.fr), consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
 
 ## Titre 2
 

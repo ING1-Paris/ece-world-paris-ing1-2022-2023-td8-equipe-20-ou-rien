@@ -2,8 +2,11 @@
 // Created by mathe on 24/04/2023.
 //
 
-#include "fonction_allegro.h"
+#include "../.h/fonction_allegro.h"
 #include "allegro.h"
+#include "stdio.h"
+#define SCREENW 800
+#define SCREENH 600
 
 
 ///fonction allegro
