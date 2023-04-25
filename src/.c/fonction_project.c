@@ -6,7 +6,6 @@
 #include "allegro.h"
 #include "stdio.h"
 #define DEP 5
-
 int verifierPosGauche(t_maille *snake)
 {
     if(snake->posX-snake->tx==snake->next->posX)
@@ -33,6 +32,31 @@ int verifierPosDroite(t_maille *snake)
     }
 }
 
+int verifierPosHaut(t_maille *snake)
+{
+    if(snake->posY-snake->ty==snake->next->posY)
+    {
+        printf("en haut\n");
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int verifierPosBas(t_maille *snake)
+{
+    if(snake->posY+snake->ty==snake->next->posY)
+    {
+        printf("en bas\n");
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
 
 void fill_bitmap(BITMAP *bmp, int color,int posX,int posY) {
 
@@ -152,7 +176,6 @@ int GetDirectionSnake(t_liste *snake)
     }
 }
 
-
 void mouvmentSnakePartie(t_maille * snake)
 {
     if(snake->direction==1)
@@ -180,10 +203,16 @@ void mouvementAllSnake(t_liste *snake)
         return;
     }
     t_maille *mailleTmp=snake->premier;
-    while(mailleTmp!=NULL)
+    mouvmentSnakePartie(mailleTmp);
+    while(mailleTmp->next!=NULL)
     {
-        mouvmentSnakePartie(mailleTmp);
         mailleTmp= mailleTmp->next;
+    }
+    while(mailleTmp->before!=NULL)
+    {
+        mailleTmp->posX=mailleTmp->before->posX+mailleTmp->tx;
+        mailleTmp->posY=mailleTmp->before->posY;
+        mailleTmp= mailleTmp->before;
     }
 }
 
@@ -194,6 +223,8 @@ void actualiserDirectionSnake(t_liste *snake)
     t_maille *mailletmp=snake->premier;
     verifierPosGauche(mailletmp);
     verifierPosDroite(mailletmp);
+    verifierPosHaut(mailletmp);
+    verifierPosBas(mailletmp);
     while(mailletmp->next!=NULL)
     {
         mailletmp= mailletmp->next;
@@ -216,15 +247,12 @@ void actualiserDirectionSnake(t_liste *snake)
     }
 }
 
-void actualiserCorpsSnake(t_liste *snake)
+void actualiserDirectionSnakeCorps(t_liste *snake)
 {
-    t_maille *mailletmp= snake->premier;
+    t_maille *mailletmp=snake->premier;
     while(mailletmp->next!=NULL)
     {
-        if(verifierPosGauche(mailletmp)&&mailletmp->direction!=1)
-        {
-
-        }
+        mailletmp= mailletmp->next;
     }
 }
 
@@ -364,6 +392,7 @@ void Snake()
     char nomDeFichier[5000];
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP *tete[3];
+    int bool=0;
     for(int i=1;i<3;i++)
     {
         sprintf(nomDeFichier,"../image/image snake/tete/frame-%d.bmp",i);

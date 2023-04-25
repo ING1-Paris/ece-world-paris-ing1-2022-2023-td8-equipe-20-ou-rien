@@ -8,7 +8,7 @@
 int main(void) {
     initiation();
     int BoolMenu=TRUE,BoolSettings=FALSE,BoolPlay=FALSE;
-    animationDebut();
+    //animationDebut();
     rest(30);
     while (!key[KEY_ESC])
     {
