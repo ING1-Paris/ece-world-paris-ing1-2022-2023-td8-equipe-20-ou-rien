@@ -7,6 +7,33 @@
 #include "stdio.h"
 #define DEP 5
 
+int verifierPosGauche(t_maille *snake)
+{
+    if(snake->posX-snake->tx==snake->next->posX)
+    {
+        printf("a gauche\n");
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int verifierPosDroite(t_maille *snake)
+{
+    if(snake->posX+snake->tx==snake->next->posX)
+    {
+        printf("a droite\n");
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+
 void fill_bitmap(BITMAP *bmp, int color,int posX,int posY) {
 
     for (posY=0; posY < bmp->h; posY++) {
@@ -126,91 +153,81 @@ int GetDirectionSnake(t_liste *snake)
 }
 
 
-void mouvementSnake(t_liste *snake)
+void mouvmentSnakePartie(t_maille * snake)
 {
-    if(snake->premier->direction==1)
+    if(snake->direction==1)
     {
-        snake->premier->posX-=DEP;
+        snake->posX-=DEP;
     }
-    if(snake->premier->direction==2)
+    if(snake->direction==2)
     {
-        snake->premier->posX+=DEP;
+        snake->posX+=DEP;
     }
-    if(snake->premier->direction==3)
+    if(snake->direction==3)
     {
-        snake->premier->posY-=DEP;
+        snake->posY-=DEP;
     }
-    if(snake->premier->direction==4)
+    if(snake->direction==4)
     {
-        snake->premier->posY+=DEP;
+        snake->posY+=DEP;
     }
 }
 
-void actualiserSnake(t_liste *snake)
+void mouvementAllSnake(t_liste *snake)
+{
+    if(snake->premier->posX>SCREEN_W||snake->premier->posX<0||snake->premier->posY>SCREEN_W||snake->premier->posY<0)
+    {
+        return;
+    }
+    t_maille *mailleTmp=snake->premier;
+    while(mailleTmp!=NULL)
+    {
+        mouvmentSnakePartie(mailleTmp);
+        mailleTmp= mailleTmp->next;
+    }
+}
+
+
+
+void actualiserDirectionSnake(t_liste *snake)
 {
     t_maille *mailletmp=snake->premier;
+    verifierPosGauche(mailletmp);
+    verifierPosDroite(mailletmp);
+    while(mailletmp->next!=NULL)
+    {
+        mailletmp= mailletmp->next;
+    }
     if(GetDirectionSnake(snake)==1&&snake->premier->direction!=2)
     {
         snake->premier->direction=1;
-        while(mailletmp->next!=NULL)
-        {
-            mailletmp=mailletmp->next;
-
-        }
-        while(mailletmp->before!=NULL)
-        {
-            mailletmp->direction=mailletmp->before->direction;
-            mailletmp->posX=mailletmp->before->posX+mailletmp->tx;
-            mailletmp->posY=mailletmp->before->posY;
-            mailletmp=mailletmp->before;
-        }
     }
     if(GetDirectionSnake(snake)==2&&snake->premier->direction!=1)
     {
         snake->premier->direction=2;
-        while(mailletmp->next!=NULL)
-        {
-            mailletmp=mailletmp->next;
-        }
-        while(mailletmp->before!=NULL)
-        {
-            mailletmp->direction=mailletmp->before->direction;
-            mailletmp->posX=mailletmp->before->posX-mailletmp->tx;
-            mailletmp->posY=mailletmp->before->posY;
-            mailletmp=mailletmp->before;
-        }
     }
-    if(GetDirectionSnake(snake)==3)
+    if(GetDirectionSnake(snake)==3&&snake->premier->direction!=4)
     {
         snake->premier->direction=3;
-        while(mailletmp->next!=NULL)
-        {
-            mailletmp=mailletmp->next;
-        }
-        while(mailletmp->before!=NULL)
-        {
-            mailletmp->direction=mailletmp->before->direction;
-            mailletmp->posX=mailletmp->before->posX;
-            mailletmp->posY=mailletmp->before->posY-mailletmp->ty;
-            mailletmp=mailletmp->before;
-        }
     }
-    if(GetDirectionSnake(snake)==4)
+    if(GetDirectionSnake(snake)==4&&snake->premier->direction!=3)
     {
         snake->premier->direction=4;
-        while(mailletmp->next!=NULL)
+    }
+}
+
+void actualiserCorpsSnake(t_liste *snake)
+{
+    t_maille *mailletmp= snake->premier;
+    while(mailletmp->next!=NULL)
+    {
+        if(verifierPosGauche(mailletmp)&&mailletmp->direction!=1)
         {
-            mailletmp=mailletmp->next;
-        }
-        while(mailletmp->before!=NULL)
-        {
-            mailletmp->direction=mailletmp->before->direction;
-            mailletmp->posX=mailletmp->before->posX;
-            mailletmp->posY=mailletmp->before->posY+mailletmp->ty;
-            mailletmp=mailletmp->before;
+
         }
     }
 }
+
 
 void animationDebut()
 {
@@ -227,7 +244,7 @@ void animationDebut()
     BITMAP *Nom3= importeImage("../image/image ecriture/nom projet-3.bmp");
     BITMAP *Nom4= importeImage("../image/image ecriture/nom projet-4.bmp");
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
-    SAMPLE *sonfond= importeSon("../son/son animation.wav");
+    SAMPLE *sonfond= importeSon("../son/INTRO MATHEO.wav");
     clear_bitmap(buffer);
     play_sample(sonfond,255,128,1000,TRUE);
     for(int i=0;i<255;i+=5)
@@ -377,8 +394,8 @@ void Snake()
     while(!key[KEY_ESC])
     {
         clear_bitmap(buffer);
-        mouvementSnake(snake);
-        actualiserSnake(snake);
+        mouvementAllSnake(snake);
+        actualiserDirectionSnake(snake);
         drawAllSnake(snake,buffer,tete,corps,queue);
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(28);
