@@ -9,6 +9,7 @@ typedef struct maille
 {
     int posX,posY,tx,ty,direction;
     struct maille *next;
+    struct maille *before;
 }t_maille;
 
 typedef struct liste

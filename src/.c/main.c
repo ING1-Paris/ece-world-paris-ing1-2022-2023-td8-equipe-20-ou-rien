@@ -8,15 +8,17 @@
 int main(void) {
     initiation();
     int BoolMenu=TRUE,BoolSettings=FALSE,BoolPlay=FALSE;
-    animationDebut();
-    rest(30);
-    while (!key[KEY_ESC])
+    //animationDebut();
+    //rest(30);
+    /*while (!key[KEY_ESC])
     {
         if(BoolMenu)
         {
             menu(&BoolMenu,&BoolSettings,&BoolPlay);
         }
     }
+     */
+    Snake();
     allegro_exit();
     return 0;
 }

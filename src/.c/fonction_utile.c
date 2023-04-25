@@ -13,35 +13,45 @@ void ajouter_maillonEnModePile(t_liste *liste)
     {
         t_maille *nouvelleMaille= malloc(sizeof (t_maille));
         nouvelleMaille->direction=maillon->direction;
-        nouvelleMaille->posX=0;
-        nouvelleMaille->posY=0;
+        nouvelleMaille->posX=maillon->posX+maillon->tx;
+        nouvelleMaille->posY=maillon->posY;
+        nouvelleMaille->tx=60;
+        nouvelleMaille->ty=60;
         nouvelleMaille->next=NULL;
+        nouvelleMaille->before=maillon;
         maillon->next=nouvelleMaille;
         liste->nb++;
         return;
     }
-    while(maillon->next->next!=NULL)
+    else
     {
-        maillon=maillon->next;
+        while(maillon->next!=NULL)
+        {
+            maillon=maillon->next;
+        }
+        t_maille *nouvelleMaille= malloc(sizeof (t_maille));
+        nouvelleMaille->direction=maillon->direction;
+        nouvelleMaille->posX=maillon->posX+maillon->tx;
+        nouvelleMaille->posY=maillon->posY;
+        nouvelleMaille->tx=60;
+        nouvelleMaille->ty=60;
+        nouvelleMaille->next=NULL;
+        nouvelleMaille->before=maillon;
+        maillon->next=nouvelleMaille;
+        liste->nb++;
     }
-    t_maille *nouvelleMaille= malloc(sizeof (t_maille));
-    nouvelleMaille->direction=maillon->direction;
-    nouvelleMaille->posX=0;
-    nouvelleMaille->posY=0;
-    nouvelleMaille->next=NULL;
-    maillon->next->next=nouvelleMaille;
-    liste->nb++;
 }
 
 t_liste * creation()
 {
     t_liste *liste= malloc(sizeof (t_liste));
     liste->premier= malloc(sizeof (t_maille));
+    liste->premier->before=NULL;
     liste->premier->posX=SCREEN_W/2;
     liste->premier->posY=SCREEN_H/2;
-    liste->premier->tx;
-    liste->premier->ty;
-    liste->premier->direction=0;
+    liste->premier->tx=60;
+    liste->premier->ty=60;
+    liste->premier->direction=1;
     liste->nb=1;
     liste->premier->next=NULL;
     return liste;

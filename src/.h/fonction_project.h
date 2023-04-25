@@ -10,4 +10,5 @@
 
 void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay);
 void animationDebut();
+void Snake();
 #endif //PROJET_FONCTION_SETTINGS_H

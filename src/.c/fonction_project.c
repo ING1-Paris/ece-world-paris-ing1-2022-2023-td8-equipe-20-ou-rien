@@ -19,6 +19,199 @@ void fill_bitmap(BITMAP *bmp, int color,int posX,int posY) {
     }
 }
 
+void drawPartSnake(t_maille *snakePartie,BITMAP *buffer, BITMAP *tete[3], BITMAP * corps[3],BITMAP *queue[3],int indice)
+{
+    if(indice==0)
+    {
+        if(snakePartie->direction==1)
+        {
+            draw_sprite_h_flip(buffer,tete[2],snakePartie->posX,snakePartie->posY);
+        }
+        else if(snakePartie->direction==2)
+        {
+
+            draw_sprite(buffer,tete[2],snakePartie->posX,snakePartie->posY);
+        }
+        else if(snakePartie->direction==3)
+        {
+
+            draw_sprite(buffer,tete[1],snakePartie->posX,snakePartie->posY);
+        }
+        else if(snakePartie->direction==4)
+        {
+
+            draw_sprite_v_flip(buffer,tete[1],snakePartie->posX,snakePartie->posY);
+        }
+    }
+    else if(snakePartie->next==NULL)
+    {
+        if(snakePartie->direction==1)
+        {
+            draw_sprite_h_flip(buffer,queue[2],snakePartie->posX,snakePartie->posY);
+        }
+        else if(snakePartie->direction==2)
+        {
+
+            draw_sprite(buffer,queue[2],snakePartie->posX,snakePartie->posY);
+        }
+        else if(snakePartie->direction==3)
+        {
+
+            draw_sprite(buffer,queue[1],snakePartie->posX,snakePartie->posY);
+        }
+        else if(snakePartie->direction==4)
+        {
+
+            draw_sprite_v_flip(buffer,queue[1],snakePartie->posX,snakePartie->posY);
+        }
+    }
+    else
+    {
+        if(snakePartie->direction==1)
+        {
+            draw_sprite(buffer,corps[1],snakePartie->posX,snakePartie->posY);
+        }
+        else if(snakePartie->direction==2)
+        {
+
+            draw_sprite_h_flip(buffer,corps[1],snakePartie->posX,snakePartie->posY);
+        }
+        else if(snakePartie->direction==3)
+        {
+
+            draw_sprite_h_flip(buffer,corps[2],snakePartie->posX,snakePartie->posY);
+        }
+        else if(snakePartie->direction==4)
+        {
+
+            draw_sprite_h_flip(buffer,corps[2],snakePartie->posX,snakePartie->posY);
+        }
+    }
+}
+
+void drawAllSnake(t_liste *snake,BITMAP *buffer, BITMAP *tete[3], BITMAP * corps[3],BITMAP *queue[3])
+{
+    int indice=0;
+    t_maille *mailletmp=snake->premier;
+    while (mailletmp!=NULL)
+    {
+        drawPartSnake(mailletmp,buffer,tete,corps,queue,indice);
+        mailletmp=mailletmp->next;
+        indice++;
+    }
+}
+
+int GetDirectionSnake(t_liste *snake)
+{
+    if(key[KEY_UP])
+    {
+        return 3;
+    }
+    else if(key[KEY_DOWN])
+    {
+        return 4;
+    }
+    else if(key[KEY_RIGHT])
+    {
+        return 2;
+    }
+    else if(key[KEY_LEFT])
+    {
+        return 1;
+    }
+    else
+    {
+        return snake->premier->direction;
+    }
+}
+
+
+void mouvementSnake(t_liste *snake)
+{
+    if(snake->premier->direction==1)
+    {
+        snake->premier->posX-=DEP;
+    }
+    if(snake->premier->direction==2)
+    {
+        snake->premier->posX+=DEP;
+    }
+    if(snake->premier->direction==3)
+    {
+        snake->premier->posY-=DEP;
+    }
+    if(snake->premier->direction==4)
+    {
+        snake->premier->posY+=DEP;
+    }
+}
+
+void actualiserSnake(t_liste *snake)
+{
+    t_maille *mailletmp=snake->premier;
+    if(GetDirectionSnake(snake)==1&&snake->premier->direction!=2)
+    {
+        snake->premier->direction=1;
+        while(mailletmp->next!=NULL)
+        {
+            mailletmp=mailletmp->next;
+
+        }
+        while(mailletmp->before!=NULL)
+        {
+            mailletmp->direction=mailletmp->before->direction;
+            mailletmp->posX=mailletmp->before->posX+mailletmp->tx;
+            mailletmp->posY=mailletmp->before->posY;
+            mailletmp=mailletmp->before;
+        }
+    }
+    if(GetDirectionSnake(snake)==2&&snake->premier->direction!=1)
+    {
+        snake->premier->direction=2;
+        while(mailletmp->next!=NULL)
+        {
+            mailletmp=mailletmp->next;
+        }
+        while(mailletmp->before!=NULL)
+        {
+            mailletmp->direction=mailletmp->before->direction;
+            mailletmp->posX=mailletmp->before->posX-mailletmp->tx;
+            mailletmp->posY=mailletmp->before->posY;
+            mailletmp=mailletmp->before;
+        }
+    }
+    if(GetDirectionSnake(snake)==3)
+    {
+        snake->premier->direction=3;
+        while(mailletmp->next!=NULL)
+        {
+            mailletmp=mailletmp->next;
+        }
+        while(mailletmp->before!=NULL)
+        {
+            mailletmp->direction=mailletmp->before->direction;
+            mailletmp->posX=mailletmp->before->posX;
+            mailletmp->posY=mailletmp->before->posY-mailletmp->ty;
+            mailletmp=mailletmp->before;
+        }
+    }
+    if(GetDirectionSnake(snake)==4)
+    {
+        snake->premier->direction=4;
+        while(mailletmp->next!=NULL)
+        {
+            mailletmp=mailletmp->next;
+        }
+        while(mailletmp->before!=NULL)
+        {
+            mailletmp->direction=mailletmp->before->direction;
+            mailletmp->posX=mailletmp->before->posX;
+            mailletmp->posY=mailletmp->before->posY+mailletmp->ty;
+            mailletmp=mailletmp->before;
+        }
+    }
+}
+
 void animationDebut()
 {
     if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
@@ -142,95 +335,52 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
 }
 
 
-void Snake( int *BoolSortie,int *BoolEntree)
+void Snake()
 {
-    if(set_gfx_mode(GFX_AUTODETECT_FULLSCREEN,1920,1080,0,0)!=0)
+    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
     {
         allegro_message("problem gfx");
         allegro_exit();
         exit(EXIT_FAILURE);
     }
+    set_color_depth(desktop_color_depth());
+    char nomDeFichier[5000];
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP *tete[3];
     for(int i=1;i<3;i++)
     {
-        tete[i]= importeImage("lol");
+        sprintf(nomDeFichier,"../image/image snake/tete/frame-%d.bmp",i);
+        tete[i]= importeImage(nomDeFichier);
     }
-    BITMAP *corps= importeImage("lol");
-    BITMAP *queue = importeImage("lol");
-    BITMAP *fond= importeImage("");
-    BITMAP *pomme= importeImage("");
-    t_liste *snake=creation();
-
-
-    while(!key[KEY_ESC])
+    BITMAP *corps[3];
+    for(int i=1;i<3;i++)
     {
 
+        sprintf(nomDeFichier,"../image/image snake/corps/frame-%d.bmp",i);
+        corps[i]= importeImage(nomDeFichier);
+    }
+    BITMAP *queue[3];
+    for(int i=1;i<3;i++)
+    {
+
+        sprintf(nomDeFichier,"../image/image snake/queue/frame-%d.bmp",i);
+        queue[i]= importeImage(nomDeFichier);
+    }
+    //BITMAP *fond= importeImage("");
+    //BITMAP *pomme= importeImage("");
+    t_liste *snake=creation();
+    for(int i=0;i<5;i++)
+    {
+        ajouter_maillonEnModePile(snake);
+    }
+    enlever_maillon(snake);
+    while(!key[KEY_ESC])
+    {
+        clear_bitmap(buffer);
+        mouvementSnake(snake);
+        actualiserSnake(snake);
+        drawAllSnake(snake,buffer,tete,corps,queue);
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(28);
     }
 }
-
-void drawAllSnake(t_liste *snake,BITMAP *buffer, BITMAP *tete, BITMAP * corps,BITMAP *queue)
-{
-    int indice=0;
-    t_maille *mailletmp=snake->premier;
-    while (mailletmp->next!=NULL)
-    {
-
-        indice++;
-    }
-}
-
-void drawPartSnake(t_maille *snakePartie,BITMAP *buffer, BITMAP *tete, BITMAP * corps,BITMAP *queue,int indice)
-{
-    if(indice==0)
-    {
-        if(snakePartie->direction==1)
-        {
-            draw_sprite(buffer,tete,snakePartie->posX,snakePartie->posY);
-        }
-        else if(snakePartie->direction==2)
-        {
-
-            draw_sprite_h_flip(buffer,tete,snakePartie->posX,snakePartie->posY);
-        }
-    }
-    else
-    {
-
-    }
-}
-/*if(key[KEY_R])
-        {
-            y-=DEP;
-        }
-        if(key[KEY_F])
-        {
-            y+=DEP;
-        }
-        if(key[KEY_D])
-        {
-            x-=DEP;
-        }
-        if(key[KEY_G])
-        {
-            x+=DEP;
-        }
-        if(x>SCREEN_W)
-        {
-            x=SCREEN_W;
-        }
-        if(x<0)
-        {
-            x=0;
-        }
-        if(y>SCREEN_H)
-        {
-            y=SCREEN_H;
-        }
-        if(y<0)
-        {
-            y=0;
-        }
-        printf("%d | %d\n",x,y);
-         */
