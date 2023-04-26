@@ -31,8 +31,26 @@ void ajouter_maillonEnModePile(t_liste *liste)
         }
         t_maille *nouvelleMaille= malloc(sizeof (t_maille));
         nouvelleMaille->direction=maillon->direction;
-        nouvelleMaille->posX=maillon->posX+maillon->tx;
-        nouvelleMaille->posY=maillon->posY;
+        if(nouvelleMaille->direction==1)
+        {
+            nouvelleMaille->posX=maillon->posX+maillon->tx;
+            nouvelleMaille->posY=maillon->posY;
+        }
+        if(nouvelleMaille->direction==2)
+        {
+            nouvelleMaille->posX=maillon->posX-maillon->tx;
+            nouvelleMaille->posY=maillon->posY;
+        }
+        if(nouvelleMaille->direction==3)
+        {
+            nouvelleMaille->posX=maillon->posX;
+            nouvelleMaille->posY=maillon->posY+maillon->ty;
+        }
+        if(nouvelleMaille->direction==4)
+        {
+            nouvelleMaille->posX=maillon->posX;
+            nouvelleMaille->posY=maillon->posY-maillon->ty;
+        }
         nouvelleMaille->tx=60;
         nouvelleMaille->ty=60;
         nouvelleMaille->next=NULL;

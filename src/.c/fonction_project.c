@@ -152,27 +152,33 @@ void drawAllSnake(t_liste *snake,BITMAP *buffer, BITMAP *tete[3], BITMAP * corps
     }
 }
 
-int GetDirectionSnake(t_liste *snake)
+int GetDirectionSnake(t_liste *snake,int nbIteration)
 {
-    if(key[KEY_UP])
+    if(nbIteration==12)
     {
-        return 3;
-    }
-    else if(key[KEY_DOWN])
+        if(key[KEY_UP])
+        {
+            return 3;
+        }
+        else if(key[KEY_DOWN])
+        {
+            return 4;
+        }
+        else if(key[KEY_RIGHT])
+        {
+            return 2;
+        }
+        else if(key[KEY_LEFT])
+        {
+            return 1;
+        }
+        else
+        {
+            return -1;
+        }
+    } else
     {
-        return 4;
-    }
-    else if(key[KEY_RIGHT])
-    {
-        return 2;
-    }
-    else if(key[KEY_LEFT])
-    {
-        return 1;
-    }
-    else
-    {
-        return snake->premier->direction;
+        return -1;
     }
 }
 
@@ -203,58 +209,72 @@ void mouvementAllSnake(t_liste *snake)
         return;
     }
     t_maille *mailleTmp=snake->premier;
-    mouvmentSnakePartie(mailleTmp);
-    while(mailleTmp->next!=NULL)
+    while(mailleTmp!=NULL)
     {
+        mouvmentSnakePartie(mailleTmp);
         mailleTmp= mailleTmp->next;
     }
-    while(mailleTmp->before!=NULL)
-    {
-        mailleTmp->posX=mailleTmp->before->posX+mailleTmp->tx;
-        mailleTmp->posY=mailleTmp->before->posY;
-        mailleTmp= mailleTmp->before;
-    }
 }
 
 
-
-void actualiserDirectionSnake(t_liste *snake)
+void actualiserDirectionSnakeCorps(t_liste *snake,int *posXEnregistre,int *posYEnregistre,int nb)
 {
+    t_maille *mailletmp=snake->premier->next;
+    while(mailletmp!=NULL)
+    {
+        for(int i=0;i<nb;i++)
+        {
+            if(mailletmp->posX==posXEnregistre[i]&&mailletmp->posY==posYEnregistre[i])
+            {
+                mailletmp->direction=mailletmp->before->direction;
+            }
+        }
+
+        mailletmp= mailletmp->next;
+    }
+}
+
+void actualiserDirectionSnake(t_liste *snake,int *posXEnregistre, int *posYEnregistre,int *nb, int nbIteration)
+{
+    int nbTmp=*nb;
     t_maille *mailletmp=snake->premier;
-    verifierPosGauche(mailletmp);
-    verifierPosDroite(mailletmp);
-    verifierPosHaut(mailletmp);
-    verifierPosBas(mailletmp);
     while(mailletmp->next!=NULL)
     {
         mailletmp= mailletmp->next;
     }
-    if(GetDirectionSnake(snake)==1&&snake->premier->direction!=2)
+    if(GetDirectionSnake(snake,nbIteration)==1&&snake->premier->direction!=2)
     {
         snake->premier->direction=1;
+        posXEnregistre[nbTmp]=snake->premier->posX;
+        posYEnregistre[nbTmp]=snake->premier->posY;
+        nbTmp++;
     }
-    if(GetDirectionSnake(snake)==2&&snake->premier->direction!=1)
+    if(GetDirectionSnake(snake,nbIteration)==2&&snake->premier->direction!=1)
     {
         snake->premier->direction=2;
+        posXEnregistre[nbTmp]=snake->premier->posX;
+        posYEnregistre[nbTmp]=snake->premier->posY;
+        nbTmp++;
     }
-    if(GetDirectionSnake(snake)==3&&snake->premier->direction!=4)
+    if(GetDirectionSnake(snake,nbIteration)==3&&snake->premier->direction!=4)
     {
+
         snake->premier->direction=3;
+        posXEnregistre[nbTmp]=snake->premier->posX;
+        posYEnregistre[nbTmp]=snake->premier->posY;
+        nbTmp++;
     }
-    if(GetDirectionSnake(snake)==4&&snake->premier->direction!=3)
+    if(GetDirectionSnake(snake,nbIteration)==4&&snake->premier->direction!=3)
     {
         snake->premier->direction=4;
+        posXEnregistre[nbTmp]=snake->premier->posX;
+        posYEnregistre[nbTmp]=snake->premier->posY;
+        nbTmp++;
     }
+    actualiserDirectionSnakeCorps(snake,posXEnregistre,posYEnregistre,nbTmp);
+    *nb=nbTmp;
 }
 
-void actualiserDirectionSnakeCorps(t_liste *snake)
-{
-    t_maille *mailletmp=snake->premier;
-    while(mailletmp->next!=NULL)
-    {
-        mailletmp= mailletmp->next;
-    }
-}
 
 
 void animationDebut()
@@ -392,7 +412,14 @@ void Snake()
     char nomDeFichier[5000];
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP *tete[3];
-    int bool=0;
+    int posXEnregistreTourne[256],posYEnregistreTourne[256];
+    int nbIteration=1;
+    for(int i=0;i<256;i++)
+    {
+        posXEnregistreTourne[i]=0;
+        posYEnregistreTourne[i]=0;
+    }
+    //int bool=0;
     for(int i=1;i<3;i++)
     {
         sprintf(nomDeFichier,"../image/image snake/tete/frame-%d.bmp",i);
@@ -412,6 +439,7 @@ void Snake()
         sprintf(nomDeFichier,"../image/image snake/queue/frame-%d.bmp",i);
         queue[i]= importeImage(nomDeFichier);
     }
+    int nbDeTourne=0;
     //BITMAP *fond= importeImage("");
     //BITMAP *pomme= importeImage("");
     t_liste *snake=creation();
@@ -424,9 +452,15 @@ void Snake()
     {
         clear_bitmap(buffer);
         mouvementAllSnake(snake);
-        actualiserDirectionSnake(snake);
+        actualiserDirectionSnake(snake,posXEnregistreTourne,posYEnregistreTourne,&nbDeTourne,nbIteration);
         drawAllSnake(snake,buffer,tete,corps,queue);
+        if(key[KEY_L])
+        {
+            ajouter_maillonEnModePile(snake);
+        }
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
-        rest(28);
+        nbIteration=(nbIteration+1)%13;
+        printf("%d\n",nbIteration);
+        rest(30);
     }
 }
