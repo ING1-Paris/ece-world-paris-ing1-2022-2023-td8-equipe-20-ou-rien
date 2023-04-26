@@ -6,11 +6,26 @@
 #include "allegro.h"
 #include "stdio.h"
 #define DEP 5
-int verifierPosGauche(t_maille *snake)
+
+int verifierPosGauche(t_maille *snake,t_maille *snakeAVerfier)
 {
-    if(snake->posX-snake->tx==snake->next->posX)
+    if(snake->posX==snakeAVerfier->posX+snake->tx)
     {
-        printf("a gauche\n");
+        printf("a gauche: %d | %d:\n",snake->posX-snake->tx,snakeAVerfier->posX);
+        return 1;
+    }
+    else
+    {
+        printf("a gauche: %d | %d:\n",snake->posX-snake->tx,snakeAVerfier->posX);
+        return 0;
+    }
+}
+
+int verifierPosDroite(t_maille *snake,t_maille *snakeAVerfier)
+{
+    if(snake->posX+snake->tx==snakeAVerfier->posX)
+    {
+        printf("a droite %d | %d:\n",snake->posX+snake->tx,snakeAVerfier->posX);
         return 1;
     }
     else
@@ -19,11 +34,11 @@ int verifierPosGauche(t_maille *snake)
     }
 }
 
-int verifierPosDroite(t_maille *snake)
+int verifierPosHaut(t_maille *snake,t_maille *snakeAVerfier)
 {
-    if(snake->posX+snake->tx==snake->next->posX)
+    if(snake->posY==snakeAVerfier->posY+snakeAVerfier->ty&&snake->posX==snakeAVerfier->posX)
     {
-        printf("a droite\n");
+        printf("en haut %d | %d:\n",snake->posY-snake->ty,snakeAVerfier->posY);
         return 1;
     }
     else
@@ -32,24 +47,11 @@ int verifierPosDroite(t_maille *snake)
     }
 }
 
-int verifierPosHaut(t_maille *snake)
+int verifierPosBas(t_maille *snake,t_maille *snakeAVerfier)
 {
-    if(snake->posY-snake->ty==snake->next->posY)
+    if(snake->posY+snake->ty==snakeAVerfier->posY&&snake->posX==snakeAVerfier->posX)
     {
-        printf("en haut\n");
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}
-
-int verifierPosBas(t_maille *snake)
-{
-    if(snake->posY+snake->ty==snake->next->posY)
-    {
-        printf("en bas\n");
+        printf("en bas %d | %d:\n",snake->posY+snake->ty,snakeAVerfier->posY);
         return 1;
     }
     else
@@ -154,29 +156,28 @@ void drawAllSnake(t_liste *snake,BITMAP *buffer, BITMAP *tete[3], BITMAP * corps
 
 int GetDirectionSnake(t_liste *snake,int nbIteration)
 {
-    if(nbIteration==12)
-    {
-        if(key[KEY_UP])
-        {
+    if(key[KEY_UP]) {
+        if (nbIteration == 13) {
             return 3;
         }
-        else if(key[KEY_DOWN])
-        {
+    }
+    else if(key[KEY_DOWN]) {
+        if (nbIteration == 13) {
             return 4;
         }
-        else if(key[KEY_RIGHT])
-        {
+    }
+    else if(key[KEY_RIGHT]) {
+        if (nbIteration == 13) {
             return 2;
         }
-        else if(key[KEY_LEFT])
+    }
+    else if(key[KEY_LEFT])
         {
-            return 1;
+            if(nbIteration==13) {
+                return 1;
+            }
         }
-        else
-        {
-            return -1;
-        }
-    } else
+    else
     {
         return -1;
     }
@@ -202,13 +203,53 @@ void mouvmentSnakePartie(t_maille * snake)
     }
 }
 
-void mouvementAllSnake(t_liste *snake)
+int detectionDefaite(t_liste *snake)
+{
+    t_maille  *mailletmp=snake->premier->next;
+    if(snake->premier->posX>SCREEN_W||snake->premier->posX<0||snake->premier->posY>SCREEN_H||snake->premier->posY<0)
+    {
+        return 1;
+    }
+    while(mailletmp!=NULL)
+    {
+
+        if(snake->premier->posX<mailletmp->posX&&snake->premier->posX>mailletmp->posX-20&&snake->premier->direction==1&&snake->premier->posY>mailletmp->posY&&snake->premier->posY<mailletmp->posY+20&&(mailletmp->direction==3||mailletmp->direction==4))
+        {
+            printf("%d>%d>%d| %d<%d<%d\n",mailletmp->posX,snake->premier->posX,mailletmp->posX-10,mailletmp->posY,snake->premier->posY,(mailletmp->posY+20));
+            return 1;
+        }
+        if(snake->premier->posX+snake->premier->tx>mailletmp->posX&&snake->premier->posX<mailletmp->posX+20&&snake->premier->direction==2&&snake->premier->posY>mailletmp->posY&&snake->premier->posY<mailletmp->posY+20&&(mailletmp->direction==3||mailletmp->direction==4))
+        {
+            printf("%d<%d<%d| %d<%d<%d\n",mailletmp->posX,snake->premier->posX,mailletmp->posX+20,mailletmp->posY,snake->premier->posY,(mailletmp->posY+20));
+            return 1;
+        }
+
+
+        if(snake->premier->posY<mailletmp->posY+60&&snake->premier->posY>mailletmp->posY&&snake->premier->direction==3&&snake->premier->posX>mailletmp->posX&&snake->premier->posX<mailletmp->posX+60&&(mailletmp->direction==1||mailletmp->direction==2))
+        {
+            printf("%d>%d>%d| %d<%d<%d\n",mailletmp->posY+60,snake->premier->posY,mailletmp->posY,mailletmp->posX,snake->premier->posX,(mailletmp->posX+60));
+            return 1;
+        }
+
+        if(snake->premier->posY+50>mailletmp->posY&&snake->premier->posY+snake->premier->ty<mailletmp->posY+30&&snake->premier->direction==4&&snake->premier->posX>mailletmp->posX&&snake->premier->posX<mailletmp->posX+50&&(mailletmp->direction==1||mailletmp->direction==2))
+        {
+            printf("%d<%d<%d| %d<%d<%d\n",mailletmp->posY,snake->premier->posY+snake->premier->ty,mailletmp->posY+30,mailletmp->posX,snake->premier->posX,(mailletmp->posX+50));
+            return 1;
+        }
+        mailletmp=mailletmp->next;
+    }
+    return 0;
+}
+
+void mouvementAllSnake(t_liste *snake, int *nbIteration)
 {
     if(snake->premier->posX>SCREEN_W||snake->premier->posX<0||snake->premier->posY>SCREEN_W||snake->premier->posY<0)
     {
         return;
     }
-    t_maille *mailleTmp=snake->premier;
+    t_maille *mailleTmp=snake->premier->next;
+    *nbIteration=(*nbIteration+1)%14;
+    mouvmentSnakePartie(snake->premier);
     while(mailleTmp!=NULL)
     {
         mouvmentSnakePartie(mailleTmp);
@@ -413,7 +454,7 @@ void Snake()
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP *tete[3];
     int posXEnregistreTourne[256],posYEnregistreTourne[256];
-    int nbIteration=1;
+    int nbIteration=0;
     for(int i=0;i<256;i++)
     {
         posXEnregistreTourne[i]=0;
@@ -451,7 +492,7 @@ void Snake()
     while(!key[KEY_ESC])
     {
         clear_bitmap(buffer);
-        mouvementAllSnake(snake);
+        mouvementAllSnake(snake,&nbIteration);
         actualiserDirectionSnake(snake,posXEnregistreTourne,posYEnregistreTourne,&nbDeTourne,nbIteration);
         drawAllSnake(snake,buffer,tete,corps,queue);
         if(key[KEY_L])
@@ -459,8 +500,10 @@ void Snake()
             ajouter_maillonEnModePile(snake);
         }
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
-        nbIteration=(nbIteration+1)%13;
-        printf("%d\n",nbIteration);
+        if(detectionDefaite(snake))
+        {
+            printf("defaite\n");
+        }
         rest(30);
     }
 }
