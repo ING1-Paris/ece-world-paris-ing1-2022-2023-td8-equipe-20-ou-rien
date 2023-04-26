@@ -369,9 +369,9 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
     SAMPLE *bruitVille= importeSon("../son/son bruit ville.wav");
     SAMPLE *bruitPluie= importeSon("../son/STORM_Pluie et orage.wav");
     SAMPLE *musiqueEasterEgg= importeSon("../son/son musique fond menu.wav");
-    play_sample(musiqueEasterEgg,100,128,1000,TRUE);
     play_sample(bruitVille, 235, 128, 1000, TRUE);
     play_sample(bruitPluie,255,128,1000,TRUE);
+    play_sample(musiqueEasterEgg,120,128,1000,FALSE);
     show_mouse(screen);
     while(!key[KEY_ESC])
     {
