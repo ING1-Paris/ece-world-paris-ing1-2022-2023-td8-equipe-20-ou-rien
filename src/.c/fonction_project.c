@@ -454,8 +454,14 @@ void animationDebut()
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(50);
     }
-
     stop_sample(sonfond);
+    destroy_sample(sonfond);
+    destroy_bitmap(slogan);
+    destroy_bitmap(company);
+    destroy_bitmap(Nom1);
+    destroy_bitmap(Nom2);
+    destroy_bitmap(Nom3);
+    destroy_bitmap(Nom4);
 }
 
 
@@ -557,6 +563,7 @@ void Snake()
     BITMAP *tete[3];
     BITMAP *corps[3];
     BITMAP *queue[3];
+    BITMAP *teteMort[3];
     for(int i=0;i<256;i++)
     {
         posXEnregistreTourne[i]=0;
@@ -578,6 +585,12 @@ void Snake()
 
         sprintf(nomDeFichier,"../image/image snake/queue/frame-%d.bmp",i);
         queue[i]= importeImage(nomDeFichier);
+    }
+    for(int i=1;i<3;i++)
+    {
+
+        sprintf(nomDeFichier,"../image/image snake/tete mort/frame-%d.bmp",i);
+        teteMort[i]= importeImage(nomDeFichier);
     }
     BITMAP *fond= importeImage("../image/image snake/fond/fond snake.bmp");
     BITMAP *pomme= importeImage("../image/image snake/pomme/pomme snake.bmp");
@@ -614,7 +627,8 @@ void Snake()
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         if(detectionDefaite(snake))
         {
-            printf("defaite\n");
+            drawAllSnake(snake,buffer,teteMort,corps,queue);
+
         }
         rest(30);
     }
