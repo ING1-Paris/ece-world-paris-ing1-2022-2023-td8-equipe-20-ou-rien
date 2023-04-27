@@ -41,7 +41,7 @@ BITMAP * importeImage(char *nomDeFichier)
 
 SAMPLE * importeSon(char *nomDeFichier)
 {
-    SAMPLE *sonARendre= load_wav(nomDeFichier);
+    SAMPLE *sonARendre= load_sample(nomDeFichier);
     if(!sonARendre)
     {
         allegro_message("ne peut pas ouvrir %s",nomDeFichier);

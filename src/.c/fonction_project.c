@@ -158,23 +158,23 @@ void drawAllSnake(t_liste *snake,BITMAP *buffer, BITMAP *tete[3], BITMAP * corps
 int GetDirectionSnake(t_liste *snake,int nbIteration)
 {
     if(key[KEY_UP]) {
-        if (nbIteration == 13) {
+        if (nbIteration == 12) {
             return 3;
         }
     }
     else if(key[KEY_DOWN]) {
-        if (nbIteration == 13) {
+        if (nbIteration == 12) {
             return 4;
         }
     }
     else if(key[KEY_RIGHT]) {
-        if (nbIteration == 13) {
+        if (nbIteration == 12) {
             return 2;
         }
     }
     else if(key[KEY_LEFT])
         {
-            if(nbIteration==13) {
+            if(nbIteration==12) {
                 return 1;
             }
         }
@@ -249,7 +249,7 @@ void mouvementAllSnake(t_liste *snake, int *nbIteration)
         return;
     }
     t_maille *mailleTmp=snake->premier->next;
-    *nbIteration=(*nbIteration+1)%14;
+    *nbIteration=(*nbIteration+1)%13;
     mouvmentSnakePartie(snake->premier);
     while(mailleTmp!=NULL)
     {
@@ -354,7 +354,7 @@ void mangePomme(t_liste *snake, t_pomme*pomme,int *score)
             pomme->posY=rand()%SCREEN_H-30;
         }
         pomme->posX=rand()%SCREEN_W-30;
-        while (pomme->posX%5!=0)
+        while (pomme->posX%5!=0||pomme->posX<15)
         {
             pomme->posX=rand()%SCREEN_W-30;
         }
@@ -371,8 +371,16 @@ void drawPomme(t_pomme *pomme,BITMAP *imagePomme,BITMAP*buffer)
 t_pomme *creerPomme()
 {
     t_pomme *pommeARendre= malloc(sizeof (t_pomme));
-    pommeARendre->posX=rand()%SCREEN_W;
-    pommeARendre->posY=rand()%SCREEN_H;
+    pommeARendre->posY=rand()%SCREEN_H-30;
+    while (pommeARendre->posY<15||pommeARendre->posY%5!=0)
+    {
+        pommeARendre->posY=rand()%SCREEN_H-30;
+    }
+    pommeARendre->posX=rand()%SCREEN_W-30;
+    while (pommeARendre->posX%5!=0||pommeARendre->posX<15)
+    {
+        pommeARendre->posX=rand()%SCREEN_W-30;
+    }
     pommeARendre->tx=30;
     pommeARendre->ty=33;
     pommeARendre->nb++;
@@ -449,6 +457,20 @@ void animationDebut()
 
     stop_sample(sonfond);
 }
+
+
+int cliqueSurMenu(BITMAP *PLAY)
+{
+    if((mouse_x>275&&mouse_x<275+PLAY->w)&&(mouse_y>310&&mouse_y<310+PLAY->h)&&mouse_b==1)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+
+}
 void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
 {
     if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
@@ -474,9 +496,9 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
     SAMPLE *musiqueEasterEgg= importeSon("../son/son musique fond menu.wav");
     play_sample(bruitVille, 235, 128, 1000, TRUE);
     play_sample(bruitPluie,255,128,1000,TRUE);
-    play_sample(musiqueEasterEgg,120,128,1000,FALSE);
+    play_sample(musiqueEasterEgg,150,145,1000,TRUE);
     show_mouse(screen);
-    while(!key[KEY_ESC])
+    while(!cliqueSurMenu(PLAY))
     {
         clear_bitmap(buffer);
         frame++;
@@ -500,6 +522,17 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
     stop_sample(bruitVille);
     stop_sample(bruitPluie);
     stop_sample(musiqueEasterEgg);
+    destroy_sample(bruitVille);
+    destroy_sample(bruitPluie);
+    destroy_sample(musiqueEasterEgg);
+    destroy_bitmap(PLAY);
+    for(int i=1;i<180;i++)
+    {
+        destroy_bitmap(fond[i]);
+    }
+    *BoolPlay=1;
+    *BoolMenu=0;
+    *BoolSettings=0;
 }
 
 
@@ -513,49 +546,58 @@ void Snake()
     }
     set_color_depth(desktop_color_depth());
     char nomDeFichier[5000];
+    int posXEnregistreTourne[256],posYEnregistreTourne[256];
+    int nbIteration=0;
+    int nbDeTourne=0;
+    int score=0;
+    int pano=0;
+    int depPano=1;
     srand(time(NULL));
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP *tete[3];
-    int posXEnregistreTourne[256],posYEnregistreTourne[256];
-    int nbIteration=0;
+    BITMAP *corps[3];
+    BITMAP *queue[3];
     for(int i=0;i<256;i++)
     {
         posXEnregistreTourne[i]=0;
         posYEnregistreTourne[i]=0;
     }
-    //int bool=0;
     for(int i=1;i<3;i++)
     {
         sprintf(nomDeFichier,"../image/image snake/tete/frame-%d.bmp",i);
         tete[i]= importeImage(nomDeFichier);
     }
-    BITMAP *corps[3];
     for(int i=1;i<3;i++)
     {
 
         sprintf(nomDeFichier,"../image/image snake/corps/frame-%d.bmp",i);
         corps[i]= importeImage(nomDeFichier);
     }
-    BITMAP *queue[3];
     for(int i=1;i<3;i++)
     {
 
         sprintf(nomDeFichier,"../image/image snake/queue/frame-%d.bmp",i);
         queue[i]= importeImage(nomDeFichier);
     }
-    int nbDeTourne=0;
     BITMAP *fond= importeImage("../image/image snake/fond/fond snake.bmp");
     BITMAP *pomme= importeImage("../image/image snake/pomme/pomme snake.bmp");
     t_pomme *pomme1=creerPomme();
     t_liste *snake=creation();
-    int score=0;
-    for(int i=0;i<4;i++)
+    SAMPLE * musicfond= importeSon("../son/test music.wav");
+    for(int i=0;i<3;i++)
     {
         ajouter_maillonEnModePile(snake);
     }
-    enlever_maillon(snake);
+    lock_sample(musicfond);
+    play_sample(musicfond,130,128,1000,TRUE);
     while(!key[KEY_ESC])
     {
+        pano+=depPano;
+        if(pano>255||pano<0)
+        {
+            depPano=-depPano;
+        }
+        adjust_sample(musicfond,130,pano,1000,TRUE);
         clear_bitmap(buffer);
         stretch_blit(fond,buffer,0,0,fond->w,fond->h,0,0,SCREEN_W,SCREEN_H);
         mouvementAllSnake(snake,&nbIteration);
@@ -576,4 +618,5 @@ void Snake()
         }
         rest(30);
     }
+    stop_sample(musicfond);
 }
