@@ -12,6 +12,13 @@ typedef struct maille
     struct maille *before;
 }t_maille;
 
+typedef struct pomme
+{
+    int posX,posY;
+    int tx,ty;
+    int nb;
+}t_pomme;
+
 typedef struct liste
 {
     t_maille * premier;

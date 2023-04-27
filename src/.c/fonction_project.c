@@ -5,6 +5,7 @@
 #include "../.h/fonction_project.h"
 #include "allegro.h"
 #include "stdio.h"
+#include "time.h"
 #define DEP 5
 
 int verifierPosGauche(t_maille *snake,t_maille *snakeAVerfier)
@@ -316,6 +317,67 @@ void actualiserDirectionSnake(t_liste *snake,int *posXEnregistre, int *posYEnreg
     *nb=nbTmp;
 }
 
+void animationDefaite()
+{
+
+}
+
+int detectPommeManger(t_pomme *pomme,t_liste *snake)
+{
+    if(snake->premier->direction==1&&(snake->premier->posX>pomme->posX&&snake->premier->posX<pomme->posX+pomme->tx)&&(snake->premier->posY+(snake->premier->ty)/2>=pomme->posY&&snake->premier->posY+(snake->premier->ty)/2<=pomme->posY+70))
+    {
+        return 1;
+    }
+    if(snake->premier->direction==2&&(snake->premier->posX+snake->premier->tx>pomme->posX&&snake->premier->posX+snake->premier->tx<pomme->posX+pomme->tx)&&(snake->premier->posY+(snake->premier->ty)/2>=pomme->posY&&snake->premier->posY+(snake->premier->ty)/2<=pomme->posY+70))
+    {
+        return 1;
+    }
+    if(snake->premier->direction==3&&(snake->premier->posY>=pomme->posY&&snake->premier->posY<=pomme->posY+pomme->ty)&&(snake->premier->posX+(snake->premier->tx)/2>=pomme->posX&&snake->premier->posX+(snake->premier->tx)/2<=pomme->posX+70))
+    {
+        return 1;
+    }
+    if(snake->premier->direction==4&&(snake->premier->posY+snake->premier->ty>=pomme->posY&&snake->premier->posY+snake->premier->ty<=pomme->posY+pomme->ty)&&(snake->premier->posX+(snake->premier->tx)/2>=pomme->posX&&snake->premier->posX+(snake->premier->tx)/2<=pomme->posX+70))
+    {
+        return 1;
+    }
+    return 0;
+}
+
+void mangePomme(t_liste *snake, t_pomme*pomme,int *score)
+{
+    if(detectPommeManger(pomme,snake))
+    {
+        *score=*score+1;
+        pomme->posY=rand()%SCREEN_H-30;
+        while (pomme->posY<15||pomme->posY%5!=0)
+        {
+            pomme->posY=rand()%SCREEN_H-30;
+        }
+        pomme->posX=rand()%SCREEN_W-30;
+        while (pomme->posX%5!=0)
+        {
+            pomme->posX=rand()%SCREEN_W-30;
+        }
+        ajouter_maillonEnModePile(snake);
+
+    }
+}
+
+void drawPomme(t_pomme *pomme,BITMAP *imagePomme,BITMAP*buffer)
+{
+    draw_sprite(buffer,imagePomme,pomme->posX,pomme->posY);
+}
+
+t_pomme *creerPomme()
+{
+    t_pomme *pommeARendre= malloc(sizeof (t_pomme));
+    pommeARendre->posX=rand()%SCREEN_W;
+    pommeARendre->posY=rand()%SCREEN_H;
+    pommeARendre->tx=30;
+    pommeARendre->ty=33;
+    pommeARendre->nb++;
+    return pommeARendre;
+}
 
 
 void animationDebut()
@@ -451,6 +513,7 @@ void Snake()
     }
     set_color_depth(desktop_color_depth());
     char nomDeFichier[5000];
+    srand(time(NULL));
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP *tete[3];
     int posXEnregistreTourne[256],posYEnregistreTourne[256];
@@ -481,10 +544,12 @@ void Snake()
         queue[i]= importeImage(nomDeFichier);
     }
     int nbDeTourne=0;
-    //BITMAP *fond= importeImage("");
-    //BITMAP *pomme= importeImage("");
+    BITMAP *fond= importeImage("../image/image snake/fond/fond snake.bmp");
+    BITMAP *pomme= importeImage("../image/image snake/pomme/pomme snake.bmp");
+    t_pomme *pomme1=creerPomme();
     t_liste *snake=creation();
-    for(int i=0;i<5;i++)
+    int score=0;
+    for(int i=0;i<4;i++)
     {
         ajouter_maillonEnModePile(snake);
     }
@@ -492,6 +557,7 @@ void Snake()
     while(!key[KEY_ESC])
     {
         clear_bitmap(buffer);
+        stretch_blit(fond,buffer,0,0,fond->w,fond->h,0,0,SCREEN_W,SCREEN_H);
         mouvementAllSnake(snake,&nbIteration);
         actualiserDirectionSnake(snake,posXEnregistreTourne,posYEnregistreTourne,&nbDeTourne,nbIteration);
         drawAllSnake(snake,buffer,tete,corps,queue);
@@ -499,6 +565,10 @@ void Snake()
         {
             ajouter_maillonEnModePile(snake);
         }
+        drawPomme(pomme1,pomme,buffer);
+        mangePomme(snake,pomme1,&score);
+        textout_ex(buffer,font,"score: ",100,50, makecol(255,255,255),-1);
+        textprintf_ex(buffer,font,150,50, makecol(255,255,255),-1,"%d",score);
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         if(detectionDefaite(snake))
         {
