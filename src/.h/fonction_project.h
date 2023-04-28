@@ -8,7 +8,8 @@
 #ifndef PROJET_FONCTION_SETTINGS_H
 #define PROJET_FONCTION_SETTINGS_H
 
+void fill_bitmap(BITMAP *bmp, int color,int posX,int posY);
 void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay);
 void animationDebut();
-void Snake();
+
 #endif //PROJET_FONCTION_SETTINGS_H

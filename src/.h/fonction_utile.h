@@ -5,25 +5,7 @@
 #ifndef PROJET_FONCTION_UTILE_H
 #define PROJET_FONCTION_UTILE_H
 
-typedef struct maille
-{
-    int posX,posY,tx,ty,direction;
-    struct maille *next;
-    struct maille *before;
-}t_maille;
-
-typedef struct pomme
-{
-    int posX,posY;
-    int tx,ty;
-    int nb;
-}t_pomme;
-
-typedef struct liste
-{
-    t_maille * premier;
-    int nb;
-}t_liste;
+#include "fonction game snake.h"
 
 void ajouter_maillonEnModePile(t_liste *liste);
 t_liste * creation();
