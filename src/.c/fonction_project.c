@@ -61,6 +61,12 @@ int verifierPosBas(t_maille *snake,t_maille *snakeAVerfier)
     }
 }
 
+
+void drawPomme(t_pomme *pomme,BITMAP *imagePomme,BITMAP*buffer)
+{
+    draw_sprite(buffer,imagePomme,pomme->posX,pomme->posY);
+}
+
 void fill_bitmap(BITMAP *bmp, int color,int posX,int posY) {
 
     for (posY=0; posY < bmp->h; posY++) {
@@ -317,9 +323,19 @@ void actualiserDirectionSnake(t_liste *snake,int *posXEnregistre, int *posYEnreg
     *nb=nbTmp;
 }
 
-void animationDefaite()
+void animationDefaite(BITMAP*buffer, BITMAP *defaite, BITMAP*teteMort[3],BITMAP*fond,BITMAP *pomme,BITMAP *corps[3],BITMAP *queue[3],t_liste *snake,t_pomme *structPomme)
 {
-
+    while(!key[KEY_ESC])
+    {
+        clear_bitmap(buffer);
+        stretch_blit(fond,buffer,0,0,fond->w,fond->h,0,0,SCREEN_W,SCREEN_H);
+        drawAllSnake(snake,buffer,teteMort,corps,queue);
+        drawPomme(structPomme,pomme,buffer);
+        draw_sprite(buffer,defaite,150,200);
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        rest(30);
+    }
+    rest(500);
 }
 
 int detectPommeManger(t_pomme *pomme,t_liste *snake)
@@ -361,11 +377,6 @@ void mangePomme(t_liste *snake, t_pomme*pomme,int *score)
         ajouter_maillonEnModePile(snake);
 
     }
-}
-
-void drawPomme(t_pomme *pomme,BITMAP *imagePomme,BITMAP*buffer)
-{
-    draw_sprite(buffer,imagePomme,pomme->posX,pomme->posY);
 }
 
 t_pomme *creerPomme()
@@ -594,6 +605,7 @@ void Snake()
     }
     BITMAP *fond= importeImage("../image/image snake/fond/fond snake.bmp");
     BITMAP *pomme= importeImage("../image/image snake/pomme/pomme snake.bmp");
+    BITMAP *Defaite= importeImage("../image/image ecriture/defaite.bmp");
     t_pomme *pomme1=creerPomme();
     t_liste *snake=creation();
     SAMPLE * musicfond= importeSon("../son/test music.wav");
@@ -616,10 +628,6 @@ void Snake()
         mouvementAllSnake(snake,&nbIteration);
         actualiserDirectionSnake(snake,posXEnregistreTourne,posYEnregistreTourne,&nbDeTourne,nbIteration);
         drawAllSnake(snake,buffer,tete,corps,queue);
-        if(key[KEY_L])
-        {
-            ajouter_maillonEnModePile(snake);
-        }
         drawPomme(pomme1,pomme,buffer);
         mangePomme(snake,pomme1,&score);
         textout_ex(buffer,font,"score: ",100,50, makecol(255,255,255),-1);
@@ -627,10 +635,11 @@ void Snake()
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         if(detectionDefaite(snake))
         {
-            drawAllSnake(snake,buffer,teteMort,corps,queue);
-
+            animationDefaite(buffer,Defaite,teteMort,fond,pomme,corps,queue,snake,pomme1);
+            break;
         }
         rest(30);
     }
+
     stop_sample(musicfond);
 }
