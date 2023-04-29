@@ -167,18 +167,22 @@ int ecritureSurJeux(BITMAP **EnsembleLettre)
     }
     else if(key[KEY_N])
     {
+
         return 13;
     }
     else if(key[KEY_O])
     {
+
         return 14;
     }
     else if(key[KEY_P])
     {
+
         return 15;
     }
     else if(key[KEY_Q])
     {
+
         return 1;
     }
     else if(key[KEY_R])
@@ -195,26 +199,32 @@ int ecritureSurJeux(BITMAP **EnsembleLettre)
     }
     else if(key[KEY_U])
     {
+
         return 21;
     }
     else if(key[KEY_V])
     {
+
         return 22;
     }
     else if(key[KEY_W])
     {
+
         return 23;
     }
     else if(key[KEY_X])
     {
+
         return 24;
     }
     else if(key[KEY_Y])
     {
+
         return 25;
     }
     else if(key[KEY_Z])
     {
+
         return 26;
     }
     else
@@ -223,18 +233,22 @@ int ecritureSurJeux(BITMAP **EnsembleLettre)
     }
 }
 
-void enregistrerNomJoueur(BITMAP**EnsembleLettre,BITMAP *buffer,char *NomJoueurARendre)
+void enregistrerNomJoueur(BITMAP**EnsembleLettre,BITMAP *buffer,char *NomJoueurARendre,int indice)
 {
-    int nb=0,iteration=0,tableauLettre[10],Bool=1;
+    int nb=0,tableauLettre[10],Bool=1;
+    char NomDeJoueur[10];
     for(int i=0;i<10;i++)
     {
         tableauLettre[i]=0;
+        NomDeJoueur[i]=' ';
     }
-    char *NomJoueur= malloc(sizeof (char));
+
     while(!key[KEY_ENTER])
     {
         clear_bitmap(buffer);
         rectfill(buffer,0,0,SCREEN_W,SCREEN_H, makecol(255,255,255));
+        textout_ex(buffer,font,"Choisissez votre nom: Joueur",SCREEN_W/2-100,200, makecol(255,0,0),-1);
+        textprintf_ex(buffer,font,530,200, makecol(255,0,0),-1,"%d",indice);
         if(keypressed()&&Bool!=1)
         {
             Bool=1;
@@ -244,51 +258,33 @@ void enregistrerNomJoueur(BITMAP**EnsembleLettre,BITMAP *buffer,char *NomJoueurA
             Bool=0;
         }
         if(Bool) {
-            if(ecritureSurJeux(EnsembleLettre)==0)
-            {
-
-            }
-            else
-            {
-                tableauLettre[nb]= ecritureSurJeux(EnsembleLettre);
-                nb++;
-                rest(100);
-            }
-        }
-        if(key[KEY_DEL])
-        {
-            tableauLettre[nb]=0;
-            nb--;
-            if(nb<0)
+            tableauLettre[nb]= ecritureSurJeux(EnsembleLettre);
+            nb++;
+            if(nb>9)
             {
                 nb=0;
             }
-            rest(100);
         }
-        printf("%d\n",Bool);
         for(int i=0;i<10;i++)
         {
-            if(tableauLettre[i]==0)
-            {
 
-            }
-            else
-            {
-                draw_sprite(buffer,EnsembleLettre[tableauLettre[i]],i*100,400);
-            }
+                NomDeJoueur[i]=(char)(96+tableauLettre[i]);
+                draw_sprite(buffer,EnsembleLettre[tableauLettre[i]],nb*100,400);
+                printf("lol\n");
         }
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
     }
 }
 
-t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer)
+t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice)
 {
     t_joueur *joueurArendre= malloc(sizeof (t_joueur));
     joueurArendre->posX=0;
     joueurArendre->posY=0;
     joueurArendre->DepY=5;
     joueurArendre->depX=5;
-    enregistrerNomJoueur(EnsembleLettre,buffer,joueurArendre->nom);
+    joueurArendre->indice=indice;
+    enregistrerNomJoueur(EnsembleLettre,buffer,joueurArendre->nom,indice);
     printf("%s\n",joueurArendre->nom);
     return joueurArendre;
 }
@@ -368,14 +364,14 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
     char *NomDeFichier= malloc(sizeof (char ));
     BITMAP *fondMap= importeImage("../image/image play map/carte projet allegro ing1.bmp");
     BITMAP *EnsembleLettre[26];
-    for(int i=1;i<26;i++)
+    for(int i=0;i<26;i++)
     {
         sprintf(NomDeFichier,"../image/image ecriture/alphabet/%d.bmp",i);
         EnsembleLettre[i]= importeImage(NomDeFichier);
     }
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
+    t_joueur *joueur1= creerJoueur(EnsembleLettre,buffer,1);
 
-    t_joueur *joueur1= creerJoueur(EnsembleLettre,buffer);
     while (!key[KEY_ESC])
     {
         clear_bitmap(buffer);
