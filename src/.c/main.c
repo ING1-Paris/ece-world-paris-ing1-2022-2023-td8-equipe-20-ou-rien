@@ -2,6 +2,7 @@
 #include "allegro.h"
 #include "../.h/fonction_allegro.h"
 #include "../.h/fonction_project.h"
+#include "../.h/fonction game snake.h"
 
 ///bonjour
 
@@ -18,7 +19,7 @@ int main(void) {
         }
         if(BoolPlay)
         {
-            Snake();
+            playMap(&BoolMenu,&BoolSettings,&BoolPlay);
         }
     }
     allegro_exit();

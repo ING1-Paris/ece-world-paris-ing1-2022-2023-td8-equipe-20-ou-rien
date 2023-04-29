@@ -2,31 +2,13 @@
 // Created by mathe on 28/04/2023.
 //
 
-
+#include "fonction_utile.h"
+#include "fonction_allegro.h"
 #ifndef PROJET_FONCTION_GAME_SNAKE_H
 #define PROJET_FONCTION_GAME_SNAKE_H
 
 
 
-typedef struct maille
-{
-    int posX,posY,tx,ty,direction;
-    struct maille *next;
-    struct maille *before;
-}t_maille;
-
-typedef struct pomme
-{
-    int posX,posY;
-    int tx,ty;
-    int nb;
-}t_pomme;
-
-typedef struct liste
-{
-    t_maille * premier;
-    int nb;
-}t_liste;
 
 
 void Snake();

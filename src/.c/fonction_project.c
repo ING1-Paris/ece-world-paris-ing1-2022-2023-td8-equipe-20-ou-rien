@@ -5,6 +5,7 @@
 #include "../.h/fonction_project.h"
 #include "allegro.h"
 #include "stdio.h"
+#include "string.h"
 #include "time.h"
 #define DEP 5
 
@@ -109,6 +110,188 @@ int cliqueSurMenu(BITMAP *PLAY)
     }
 
 }
+
+int ecritureSurJeux(BITMAP **EnsembleLettre)
+{
+    if(key[KEY_A])
+    {
+        return 16;
+    }
+    else if(key[KEY_B])
+    {
+        return 2;
+    }
+    else if(key[KEY_C])
+    {
+        return 3;
+    }
+    else if(key[KEY_D])
+    {
+        return 4;
+    }
+    else if(key[KEY_E])
+    {
+        return 5;
+    }
+    else if(key[KEY_F])
+    {
+        return 6;
+    }
+    else if(key[KEY_G])
+    {
+        return 7;
+    }
+    else if(key[KEY_H])
+    {
+        return 8;
+    }
+    else if(key[KEY_I])
+    {
+        return 8;
+    }
+    else if(key[KEY_J])
+    {
+        return 9;
+    }
+    else if(key[KEY_K])
+    {
+        return 10;
+    }
+    else if(key[KEY_L])
+    {
+        return 11;
+    }
+    else if(key[KEY_M])
+    {
+        return 12;
+    }
+    else if(key[KEY_N])
+    {
+        return 13;
+    }
+    else if(key[KEY_O])
+    {
+        return 14;
+    }
+    else if(key[KEY_P])
+    {
+        return 15;
+    }
+    else if(key[KEY_Q])
+    {
+        return 1;
+    }
+    else if(key[KEY_R])
+    {
+        return 17;
+    }
+    else if(key[KEY_S])
+    {
+        return 18;
+    }
+    else if(key[KEY_T])
+    {
+        return 19;
+    }
+    else if(key[KEY_U])
+    {
+        return 21;
+    }
+    else if(key[KEY_V])
+    {
+        return 22;
+    }
+    else if(key[KEY_W])
+    {
+        return 23;
+    }
+    else if(key[KEY_X])
+    {
+        return 24;
+    }
+    else if(key[KEY_Y])
+    {
+        return 25;
+    }
+    else if(key[KEY_Z])
+    {
+        return 26;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+void enregistrerNomJoueur(BITMAP**EnsembleLettre,BITMAP *buffer,char *NomJoueurARendre)
+{
+    int nb=0,iteration=0,tableauLettre[10],Bool=1;
+    for(int i=0;i<10;i++)
+    {
+        tableauLettre[i]=0;
+    }
+    char *NomJoueur= malloc(sizeof (char));
+    while(!key[KEY_ENTER])
+    {
+        clear_bitmap(buffer);
+        rectfill(buffer,0,0,SCREEN_W,SCREEN_H, makecol(255,255,255));
+        if(keypressed()&&Bool!=1)
+        {
+            Bool=1;
+        }
+        else
+        {
+            Bool=0;
+        }
+        if(Bool) {
+            if(ecritureSurJeux(EnsembleLettre)==0)
+            {
+
+            }
+            else
+            {
+                tableauLettre[nb]= ecritureSurJeux(EnsembleLettre);
+                nb++;
+                rest(100);
+            }
+        }
+        if(key[KEY_DEL])
+        {
+            tableauLettre[nb]=0;
+            nb--;
+            if(nb<0)
+            {
+                nb=0;
+            }
+            rest(100);
+        }
+        printf("%d\n",Bool);
+        for(int i=0;i<10;i++)
+        {
+            if(tableauLettre[i]==0)
+            {
+
+            }
+            else
+            {
+                draw_sprite(buffer,EnsembleLettre[tableauLettre[i]],i*100,400);
+            }
+        }
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+    }
+}
+
+t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer)
+{
+    t_joueur *joueurArendre= malloc(sizeof (t_joueur));
+    joueurArendre->posX=0;
+    joueurArendre->posY=0;
+    joueurArendre->DepY=5;
+    joueurArendre->depX=5;
+    enregistrerNomJoueur(EnsembleLettre,buffer,joueurArendre->nom);
+    printf("%s\n",joueurArendre->nom);
+    return joueurArendre;
+}
 void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
 {
     if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
@@ -171,6 +354,38 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
     *BoolPlay=1;
     *BoolMenu=0;
     *BoolSettings=0;
+}
+
+
+void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
+{
+    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
+    {
+        allegro_message("problem gfx");
+        allegro_exit();
+        exit(EXIT_FAILURE);
+    }
+    char *NomDeFichier= malloc(sizeof (char ));
+    BITMAP *fondMap= importeImage("../image/image play map/carte projet allegro ing1.bmp");
+    BITMAP *EnsembleLettre[26];
+    for(int i=1;i<26;i++)
+    {
+        sprintf(NomDeFichier,"../image/image ecriture/alphabet/%d.bmp",i);
+        EnsembleLettre[i]= importeImage(NomDeFichier);
+    }
+    BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
+
+    t_joueur *joueur1= creerJoueur(EnsembleLettre,buffer);
+    while (!key[KEY_ESC])
+    {
+        clear_bitmap(buffer);
+        blit(fondMap,buffer,0,0,0,0,SCREEN_W,SCREEN_H);
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+    }
+    *BoolPlay=0;
+    *BoolMenu=1;
+    *BoolSettings=0;
+    rest(500);
 }
 
 
