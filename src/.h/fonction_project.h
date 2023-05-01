@@ -13,6 +13,7 @@ typedef struct joueur
     int posX,posY;
     int depX,DepY;
     char nom[500];
+    int skin;
     int indice;
 }t_joueur;
 

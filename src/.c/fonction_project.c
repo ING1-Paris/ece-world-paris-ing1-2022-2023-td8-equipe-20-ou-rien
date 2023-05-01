@@ -109,8 +109,6 @@ void testAlphabet(BITMAP **EnsembleLettre,BITMAP *buffer)
         rest(1000);
     }
 }
-
-
 void testChiffre(BITMAP **EnsembleChiffre,BITMAP *buffer)
 {
     for(int i=0;i<10;i++)
@@ -122,6 +120,8 @@ void testChiffre(BITMAP **EnsembleChiffre,BITMAP *buffer)
         rest(1000);
     }
 }
+
+
 int cliqueSurMenu(BITMAP *PLAY)
 {
     if((mouse_x>275&&mouse_x<275+PLAY->w)&&(mouse_y>310&&mouse_y<310+PLAY->h)&&mouse_b==1)
@@ -187,7 +187,37 @@ void enregistrerNomJoueur(BITMAP**EnsembleLettre,BITMAP *buffer,char *NomJoueurA
     strcpy(NomJoueurARendre,tabNom);
 }
 
-t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP **EnsembleChiffre)
+int chooseSkin(BITMAP *buffer,BITMAP **skinChoose1,BITMAP **EnsembleChiffre)
+{
+    int BoolSortie=0;
+    int frame=1;
+    char *NomDeFichier=NULL;
+    show_mouse(screen);
+    while(1)
+    {
+        clear_bitmap(buffer);
+        frame++;
+        if(frame>4)
+        {
+            frame=1;
+        }
+        rectfill(buffer,0,0,SCREEN_W,SCREEN_H, makecol(255,255,255));
+        textout_ex(buffer,font,"Choisissez votre skin:",100,200, makecol(255,0,0),-1);
+        draw_sprite(buffer,skinChoose1[frame],100,400);
+        if(mouse_x>100&&mouse_x<100+skinChoose1[frame]->w&&mouse_y>400&&mouse_y<400+skinChoose1[frame]->h)
+        {
+            rect(buffer,100,400,100+skinChoose1[frame]->w,400+skinChoose1[frame]->h, makecol(255,0,0));
+            if(mouse_b==1)
+            {
+                return 1;
+            }
+        }
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        rest(80);
+    }
+}
+
+t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP **EnsembleChiffre,BITMAP **skinChoose1)
 {
     t_joueur *joueurArendre= malloc(sizeof (t_joueur));
     joueurArendre->posX=0;
@@ -201,6 +231,8 @@ t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP 
         enregistrerNomJoueur(EnsembleLettre,buffer,joueurArendre->nom,indice,EnsembleChiffre);
     }
     printf("%s\n",joueurArendre->nom);
+    joueurArendre->skin=chooseSkin(buffer,skinChoose1,EnsembleChiffre);
+    printf("%d\n",joueurArendre->skin);
     return joueurArendre;
 }
 void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
@@ -279,12 +311,18 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
     char *NomDeFichier= malloc(sizeof (char ));
     BITMAP *fondMap= importeImage("../image/image play map/carte projet allegro ing1.bmp");
     BITMAP *EnsembleLettre[27];
+    BITMAP *EnsembleChiffre[11];
+    BITMAP *Skin1Choose[5];
+    for(int i=1;i<5;i++)
+    {
+        sprintf(NomDeFichier,"../image/image personnage/skin 1/choose skin/frame-%d.bmp",i);
+        Skin1Choose[i]= importeImage(NomDeFichier);
+    }
     for(int i=0;i<27;i++)
     {
         sprintf(NomDeFichier,"../image/image ecriture/alphabet/%d.bmp",i);
         EnsembleLettre[i]= importeImage(NomDeFichier);
     }
-    BITMAP *EnsembleChiffre[11];
     for(int i=0;i<10;i++)
     {
         sprintf(NomDeFichier,"../image/image ecriture/chiffre/%d.bmp",i);
@@ -293,8 +331,8 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
     //testAlphabet(EnsembleLettre,buffer);
     //testChiffre(EnsembleChiffre,buffer);
-    t_joueur *joueur1= creerJoueur(EnsembleLettre,buffer,1,EnsembleChiffre);
-    t_joueur *joueur2= creerJoueur(EnsembleLettre,buffer,2,EnsembleChiffre);
+    t_joueur *joueur1= creerJoueur(EnsembleLettre,buffer,1,EnsembleChiffre,Skin1Choose);
+    t_joueur *joueur2= creerJoueur(EnsembleLettre,buffer,2,EnsembleChiffre,Skin1Choose);
 
     while (!key[KEY_ESC])
     {
