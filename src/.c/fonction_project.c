@@ -187,7 +187,7 @@ void enregistrerNomJoueur(BITMAP**EnsembleLettre,BITMAP *buffer,char *NomJoueurA
     strcpy(NomJoueurARendre,tabNom);
 }
 
-int chooseSkin(BITMAP *buffer,BITMAP **skinChoose1,BITMAP **EnsembleChiffre)
+int chooseSkin(BITMAP *buffer,BITMAP **skinChoose1,BITMAP **skinChoose2,BITMAP **skinChoose3,BITMAP **EnsembleChiffre)
 {
     int BoolSortie=0;
     int frame=1;
@@ -203,21 +203,39 @@ int chooseSkin(BITMAP *buffer,BITMAP **skinChoose1,BITMAP **EnsembleChiffre)
         }
         rectfill(buffer,0,0,SCREEN_W,SCREEN_H, makecol(255,255,255));
         textout_ex(buffer,font,"Choisissez votre skin:",100,200, makecol(255,0,0),-1);
-        draw_sprite(buffer,skinChoose1[frame],100,400);
         if(mouse_x>100&&mouse_x<100+skinChoose1[frame]->w&&mouse_y>400&&mouse_y<400+skinChoose1[frame]->h)
         {
-            rect(buffer,100,400,100+skinChoose1[frame]->w,400+skinChoose1[frame]->h, makecol(255,0,0));
+            rectfill(buffer,100,400,100+skinChoose1[frame]->w,400+skinChoose1[frame]->h, makecol(255,0,0));
             if(mouse_b==1)
             {
                 return 1;
             }
         }
+        if(mouse_x>300&&mouse_x<300+skinChoose2[frame]->w&&mouse_y>410&&mouse_y<410+skinChoose2[frame]->h)
+        {
+            rectfill(buffer,300,410,300+skinChoose2[frame]->w,410+skinChoose2[frame]->h, makecol(255,0,0));
+            if(mouse_b==1)
+            {
+                return 2;
+            }
+        }
+        if(mouse_x>500&&mouse_x<500+skinChoose3[frame]->w&&mouse_y>410&&mouse_y<410+skinChoose3[frame]->h)
+        {
+            rectfill(buffer,500,410,500+skinChoose2[frame]->w,410+skinChoose2[frame]->h, makecol(255,0,0));
+            if(mouse_b==1)
+            {
+                return 3;
+            }
+        }
+        draw_sprite(buffer,skinChoose1[frame],100,400);
+        draw_sprite(buffer,skinChoose2[frame],300,410);
+        draw_sprite(buffer,skinChoose3[frame],500,410);
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(80);
     }
 }
 
-t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP **EnsembleChiffre,BITMAP **skinChoose1)
+t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP **EnsembleChiffre,BITMAP **skinChoose1,BITMAP **skinChoose2,BITMAP **skinChoose3)
 {
     t_joueur *joueurArendre= malloc(sizeof (t_joueur));
     joueurArendre->posX=0;
@@ -231,7 +249,7 @@ t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP 
         enregistrerNomJoueur(EnsembleLettre,buffer,joueurArendre->nom,indice,EnsembleChiffre);
     }
     printf("%s\n",joueurArendre->nom);
-    joueurArendre->skin=chooseSkin(buffer,skinChoose1,EnsembleChiffre);
+    joueurArendre->skin=chooseSkin(buffer,skinChoose1,skinChoose2,skinChoose3,EnsembleChiffre);
     printf("%d\n",joueurArendre->skin);
     return joueurArendre;
 }
@@ -352,12 +370,62 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
     }
 
     //skin 2
+    BITMAP *Skin2Choose[5];
+    BITMAP *skin2MvmtDown[5];
+    BITMAP *skin2MvmtUp[5];
+    BITMAP *skin2MvmtCoter[5];
+    for(int i=1;i<5;i++)
+    {
+        sprintf(NomDeFichier,"../image/image personnage/skin 2/moove down/frame-%d.bmp",i);
+        skin2MvmtDown[i]= importeImage(NomDeFichier);
+    }
+    for(int i=1;i<5;i++)
+    {
+        sprintf(NomDeFichier,"../image/image personnage/skin 2/moove up/frame-%d.bmp",i);
+        skin2MvmtUp[i]= importeImage(NomDeFichier);
+    }
+    for(int i=1;i<5;i++)
+    {
+        sprintf(NomDeFichier,"../image/image personnage/skin 2/moove coter/frame-%d.bmp",i);
+        skin2MvmtCoter[i]= importeImage(NomDeFichier);
+    }
+    for(int i=1;i<5;i++)
+    {
+        sprintf(NomDeFichier,"../image/image personnage/skin 2/choose skin/frame-%d.bmp",i);
+        Skin2Choose[i]= importeImage(NomDeFichier);
+    }
+
+    //skin 3
+    BITMAP *Skin3Choose[5];
+    BITMAP *skin3MvmtDown[5];
+    BITMAP *skin3MvmtUp[5];
+    BITMAP *skin3MvmtCoter[5];
+    for(int i=1;i<5;i++)
+    {
+        sprintf(NomDeFichier,"../image/image personnage/skin 3/moove down/frame-%d.bmp",i);
+        skin3MvmtDown[i]= importeImage(NomDeFichier);
+    }
+    for(int i=1;i<5;i++)
+    {
+        sprintf(NomDeFichier,"../image/image personnage/skin 3/moove up/frame-%d.bmp",i);
+        skin3MvmtUp[i]= importeImage(NomDeFichier);
+    }
+    for(int i=1;i<5;i++)
+    {
+        sprintf(NomDeFichier,"../image/image personnage/skin 3/moove coter/frame-%d.bmp",i);
+        skin3MvmtCoter[i]= importeImage(NomDeFichier);
+    }
+    for(int i=1;i<5;i++)
+    {
+        sprintf(NomDeFichier,"../image/image personnage/skin 3/choose skin/frame-%d.bmp",i);
+        Skin3Choose[i]= importeImage(NomDeFichier);
+    }
 
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
     //testAlphabet(EnsembleLettre,buffer);
     //testChiffre(EnsembleChiffre,buffer);
-    t_joueur *joueur1= creerJoueur(EnsembleLettre,buffer,1,EnsembleChiffre,Skin1Choose);
-    t_joueur *joueur2= creerJoueur(EnsembleLettre,buffer,2,EnsembleChiffre,Skin1Choose);
+    t_joueur *joueur1= creerJoueur(EnsembleLettre,buffer,1,EnsembleChiffre,Skin1Choose,Skin2Choose,Skin3Choose);
+    t_joueur *joueur2= creerJoueur(EnsembleLettre,buffer,2,EnsembleChiffre,Skin1Choose,Skin2Choose,Skin3Choose);
 
     while (!key[KEY_ESC])
     {
