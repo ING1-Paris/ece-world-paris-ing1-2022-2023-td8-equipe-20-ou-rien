@@ -310,14 +310,10 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
     }
     char *NomDeFichier= malloc(sizeof (char ));
     BITMAP *fondMap= importeImage("../image/image play map/carte projet allegro ing1.bmp");
+
+    //ecriture
     BITMAP *EnsembleLettre[27];
     BITMAP *EnsembleChiffre[11];
-    BITMAP *Skin1Choose[5];
-    for(int i=1;i<5;i++)
-    {
-        sprintf(NomDeFichier,"../image/image personnage/skin 1/choose skin/frame-%d.bmp",i);
-        Skin1Choose[i]= importeImage(NomDeFichier);
-    }
     for(int i=0;i<27;i++)
     {
         sprintf(NomDeFichier,"../image/image ecriture/alphabet/%d.bmp",i);
@@ -328,6 +324,35 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
         sprintf(NomDeFichier,"../image/image ecriture/chiffre/%d.bmp",i);
         EnsembleChiffre[i]= importeImage(NomDeFichier);
     }
+
+    //skin 1
+    BITMAP *Skin1Choose[5];
+    BITMAP *skin1MvmtDown[5];
+    BITMAP *skin1MvmtUp[5];
+    BITMAP *skin1MvmtCoter[5];
+    for(int i=1;i<5;i++)
+    {
+        sprintf(NomDeFichier,"../image/image personnage/skin 1/moove down/frame-%d.bmp",i);
+        skin1MvmtDown[i]= importeImage(NomDeFichier);
+    }
+    for(int i=1;i<5;i++)
+    {
+        sprintf(NomDeFichier,"../image/image personnage/skin 1/moove up/frame-%d.bmp",i);
+        skin1MvmtUp[i]= importeImage(NomDeFichier);
+    }
+    for(int i=1;i<5;i++)
+    {
+        sprintf(NomDeFichier,"../image/image personnage/skin 1/moove coter/frame-%d.bmp",i);
+        skin1MvmtCoter[i]= importeImage(NomDeFichier);
+    }
+    for(int i=1;i<5;i++)
+    {
+        sprintf(NomDeFichier,"../image/image personnage/skin 1/choose skin/frame-%d.bmp",i);
+        Skin1Choose[i]= importeImage(NomDeFichier);
+    }
+
+    //skin 2
+
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
     //testAlphabet(EnsembleLettre,buffer);
     //testChiffre(EnsembleChiffre,buffer);
