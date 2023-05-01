@@ -30,6 +30,7 @@ void ajouter_maillonEnModePile(t_liste *liste);
 t_liste * creation();
 void enlever_maillon(t_liste *liste);
 void afficherListe(t_liste *liste);
+char * initTableauChar(int taille);
 
 
 #endif //PROJET_FONCTION_UTILE_H

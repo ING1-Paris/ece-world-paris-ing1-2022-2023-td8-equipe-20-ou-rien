@@ -98,6 +98,30 @@ void animationDebut()
     destroy_bitmap(Nom4);
 }
 
+void testAlphabet(BITMAP **EnsembleLettre,BITMAP *buffer)
+{
+    for(int i=0;i<27;i++)
+    {
+        clear_bitmap(buffer);
+        rectfill(buffer,0,0,SCREEN_W,SCREEN_H, makecol(255,255,255));
+        draw_sprite(buffer,EnsembleLettre[i],SCREEN_W/2,SCREEN_H/2);
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        rest(1000);
+    }
+}
+
+
+void testChiffre(BITMAP **EnsembleChiffre,BITMAP *buffer)
+{
+    for(int i=0;i<10;i++)
+    {
+        clear_bitmap(buffer);
+        rectfill(buffer,0,0,SCREEN_W,SCREEN_H, makecol(255,255,255));
+        draw_sprite(buffer,EnsembleChiffre[i],SCREEN_W/2,SCREEN_H/2);
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        rest(1000);
+    }
+}
 int cliqueSurMenu(BITMAP *PLAY)
 {
     if((mouse_x>275&&mouse_x<275+PLAY->w)&&(mouse_y>310&&mouse_y<310+PLAY->h)&&mouse_b==1)
@@ -111,172 +135,59 @@ int cliqueSurMenu(BITMAP *PLAY)
 
 }
 
-int ecritureSurJeux(BITMAP **EnsembleLettre)
+void enregistrerNomJoueur(BITMAP**EnsembleLettre,BITMAP *buffer,char *NomJoueurARendre,int indice,BITMAP **EnsembleChiffre)
 {
-    if(key[KEY_A])
-    {
-        return 16;
-    }
-    else if(key[KEY_B])
-    {
-        return 2;
-    }
-    else if(key[KEY_C])
-    {
-        return 3;
-    }
-    else if(key[KEY_D])
-    {
-        return 4;
-    }
-    else if(key[KEY_E])
-    {
-        return 5;
-    }
-    else if(key[KEY_F])
-    {
-        return 6;
-    }
-    else if(key[KEY_G])
-    {
-        return 7;
-    }
-    else if(key[KEY_H])
-    {
-        return 8;
-    }
-    else if(key[KEY_I])
-    {
-        return 8;
-    }
-    else if(key[KEY_J])
-    {
-        return 9;
-    }
-    else if(key[KEY_K])
-    {
-        return 10;
-    }
-    else if(key[KEY_L])
-    {
-        return 11;
-    }
-    else if(key[KEY_M])
-    {
-        return 12;
-    }
-    else if(key[KEY_N])
-    {
-
-        return 13;
-    }
-    else if(key[KEY_O])
-    {
-
-        return 14;
-    }
-    else if(key[KEY_P])
-    {
-
-        return 15;
-    }
-    else if(key[KEY_Q])
-    {
-
-        return 1;
-    }
-    else if(key[KEY_R])
-    {
-        return 17;
-    }
-    else if(key[KEY_S])
-    {
-        return 18;
-    }
-    else if(key[KEY_T])
-    {
-        return 19;
-    }
-    else if(key[KEY_U])
-    {
-
-        return 21;
-    }
-    else if(key[KEY_V])
-    {
-
-        return 22;
-    }
-    else if(key[KEY_W])
-    {
-
-        return 23;
-    }
-    else if(key[KEY_X])
-    {
-
-        return 24;
-    }
-    else if(key[KEY_Y])
-    {
-
-        return 25;
-    }
-    else if(key[KEY_Z])
-    {
-
-        return 26;
-    }
-    else
-    {
-        return 0;
-    }
-}
-
-void enregistrerNomJoueur(BITMAP**EnsembleLettre,BITMAP *buffer,char *NomJoueurARendre,int indice)
-{
-    int nb=0,tableauLettre[10],Bool=1;
-    char NomDeJoueur[10];
-    for(int i=0;i<10;i++)
-    {
-        tableauLettre[i]=0;
-        NomDeJoueur[i]=' ';
-    }
-
+    int Bool=1;
+    char *tabNom= initTableauChar(25);
+    char verifChar=0;
+    int nbDansTab=0;
     while(!key[KEY_ENTER])
     {
         clear_bitmap(buffer);
         rectfill(buffer,0,0,SCREEN_W,SCREEN_H, makecol(255,255,255));
-        textout_ex(buffer,font,"Choisissez votre nom: Joueur",SCREEN_W/2-100,200, makecol(255,0,0),-1);
-        textprintf_ex(buffer,font,530,200, makecol(255,0,0),-1,"%d",indice);
-        if(keypressed()&&Bool!=1)
+        textout_ex(buffer,font,"veuillez donner un nom au joueur :",100,200, makecol(255,0,0),-1);
+        draw_sprite(buffer,EnsembleChiffre[indice],400,150);
+        if(key[KEY_DEL]&&nbDansTab!=0)
         {
-            Bool=1;
+            tabNom[nbDansTab]=0;
+            nbDansTab--;
+            rest(100);
         }
-        else
+        if(keypressed())
         {
-            Bool=0;
-        }
-        if(Bool) {
-            tableauLettre[nb]= ecritureSurJeux(EnsembleLettre);
-            nb++;
-            if(nb>9)
+            verifChar=(char)readkey();
+            if(verifChar>=97&&verifChar<=122||verifChar>='A'&&verifChar<='Z')
             {
-                nb=0;
+                if(nbDansTab==0)
+                {
+                    tabNom= initTableauChar(25);
+                }
+                Bool=0;
+                tabNom[nbDansTab]=(char)verifChar;
+                nbDansTab++;
+                if(nbDansTab>25)
+                {
+                    break;
+                }
             }
         }
-        for(int i=0;i<10;i++)
+        for(int i=0;i<nbDansTab;i++)
         {
-
-                NomDeJoueur[i]=(char)(96+tableauLettre[i]);
-                draw_sprite(buffer,EnsembleLettre[tableauLettre[i]],nb*100,400);
-                printf("lol\n");
+            if(tabNom[i]>=97&&tabNom[i]<=122)
+            {
+                draw_sprite(buffer,EnsembleLettre[(tabNom[i]-96)],i*100,400);
+            }
+            if(tabNom[i]>=65&&tabNom[i]<=90)
+            {
+                draw_sprite(buffer,EnsembleLettre[(tabNom[i]-64)],i*100,400);
+            }
         }
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
     }
+    strcpy(NomJoueurARendre,tabNom);
 }
 
-t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice)
+t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP **EnsembleChiffre)
 {
     t_joueur *joueurArendre= malloc(sizeof (t_joueur));
     joueurArendre->posX=0;
@@ -284,7 +195,11 @@ t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice)
     joueurArendre->DepY=5;
     joueurArendre->depX=5;
     joueurArendre->indice=indice;
-    enregistrerNomJoueur(EnsembleLettre,buffer,joueurArendre->nom,indice);
+    enregistrerNomJoueur(EnsembleLettre,buffer,joueurArendre->nom,indice,EnsembleChiffre);
+    while (joueurArendre->nom[0]==0)
+    {
+        enregistrerNomJoueur(EnsembleLettre,buffer,joueurArendre->nom,indice,EnsembleChiffre);
+    }
     printf("%s\n",joueurArendre->nom);
     return joueurArendre;
 }
@@ -363,14 +278,23 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
     }
     char *NomDeFichier= malloc(sizeof (char ));
     BITMAP *fondMap= importeImage("../image/image play map/carte projet allegro ing1.bmp");
-    BITMAP *EnsembleLettre[26];
-    for(int i=0;i<26;i++)
+    BITMAP *EnsembleLettre[27];
+    for(int i=0;i<27;i++)
     {
         sprintf(NomDeFichier,"../image/image ecriture/alphabet/%d.bmp",i);
         EnsembleLettre[i]= importeImage(NomDeFichier);
     }
+    BITMAP *EnsembleChiffre[11];
+    for(int i=0;i<10;i++)
+    {
+        sprintf(NomDeFichier,"../image/image ecriture/chiffre/%d.bmp",i);
+        EnsembleChiffre[i]= importeImage(NomDeFichier);
+    }
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
-    t_joueur *joueur1= creerJoueur(EnsembleLettre,buffer,1);
+    //testAlphabet(EnsembleLettre,buffer);
+    //testChiffre(EnsembleChiffre,buffer);
+    t_joueur *joueur1= creerJoueur(EnsembleLettre,buffer,1,EnsembleChiffre);
+    t_joueur *joueur2= creerJoueur(EnsembleLettre,buffer,2,EnsembleChiffre);
 
     while (!key[KEY_ESC])
     {

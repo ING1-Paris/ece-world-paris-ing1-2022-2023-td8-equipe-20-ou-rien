@@ -111,3 +111,13 @@ void afficherListe(t_liste *liste)
         maillon=maillon->next;
     }
 }
+
+char * initTableauChar(int taille)
+{
+    char *tab= malloc(sizeof (char)*taille);
+    for(int i=0;i<taille;i++)
+    {
+        tab[i]=0;
+    }
+    return tab;
+}
