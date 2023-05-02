@@ -15,6 +15,8 @@ typedef struct joueur
     char nom[500];
     int skin;
     int indice;
+    int direction;
+    int BoolMvmt;
 }t_joueur;
 
 void fill_bitmap(BITMAP *bmp, int color,int posX,int posY);

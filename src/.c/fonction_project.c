@@ -243,6 +243,8 @@ t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP 
     joueurArendre->DepY=5;
     joueurArendre->depX=5;
     joueurArendre->indice=indice;
+    joueurArendre->direction=1;
+    joueurArendre->BoolMvmt=0;
     enregistrerNomJoueur(EnsembleLettre,buffer,joueurArendre->nom,indice,EnsembleChiffre);
     while (joueurArendre->nom[0]==0)
     {
@@ -253,6 +255,8 @@ t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP 
     printf("%d\n",joueurArendre->skin);
     return joueurArendre;
 }
+
+
 void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
 {
     if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
@@ -315,6 +319,199 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
     *BoolPlay=1;
     *BoolMenu=0;
     *BoolSettings=0;
+}
+
+
+void actualiserMvmtJoueur(t_joueur *joueur)
+{
+    if(key[KEY_RIGHT])
+    {
+        joueur->posX+=joueur->depX;
+        joueur->direction=1;
+        joueur->BoolMvmt=1;
+    }
+    else if(key[KEY_LEFT])
+    {
+        joueur->posX-=joueur->depX;
+        joueur->direction=2;
+        joueur->BoolMvmt=1;
+    }
+    else if(key[KEY_DOWN])
+    {
+        joueur->posY+=joueur->DepY;
+        joueur->direction=4;
+        joueur->BoolMvmt=1;
+    }
+    else if(key[KEY_UP])
+    {
+        joueur->posY-=joueur->DepY;
+        joueur->direction=3;
+        joueur->BoolMvmt=1;
+    }
+    else
+    {
+        joueur->BoolMvmt=0;
+    }
+
+}
+
+void drawJoueur(t_joueur *joueur,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP *buffer,int frame)
+{
+    //skin 1
+    if(joueur->skin==1)
+    {
+        if(joueur->direction==1)
+        {
+            if(joueur->BoolMvmt)
+            {
+                draw_sprite_h_flip(buffer,skin1MvmtCoter[frame],joueur->posX,joueur->posY);
+            }
+            else
+            {
+                draw_sprite_h_flip(buffer,skin1MvmtCoter[1],joueur->posX,joueur->posY);
+            }
+
+        }
+        if(joueur->direction==2)
+        {
+            if(joueur->BoolMvmt)
+            {
+                draw_sprite(buffer,skin1MvmtCoter[frame],joueur->posX,joueur->posY);
+            }
+            else
+            {
+                draw_sprite(buffer,skin1MvmtCoter[1],joueur->posX,joueur->posY);
+            }
+
+        }
+        if(joueur->direction==3)
+        {
+            if(joueur->BoolMvmt)
+            {
+                draw_sprite(buffer,skin1MvmtUp[frame],joueur->posX,joueur->posY);
+            }
+            else
+            {
+                draw_sprite(buffer,skin1MvmtUp[1],joueur->posX,joueur->posY);
+            }
+
+        }
+        if(joueur->direction==4)
+        {
+            if(joueur->BoolMvmt)
+            {
+                draw_sprite(buffer,skin1MvmtDown[frame],joueur->posX,joueur->posY);
+            }
+            else
+            {
+                draw_sprite(buffer,skin1MvmtDown[1],joueur->posX,joueur->posY);
+            }
+
+        }
+    }
+    //skin 2
+    if(joueur->skin==2)
+    {
+        if(joueur->direction==1)
+        {
+            if(joueur->BoolMvmt)
+            {
+                draw_sprite_h_flip(buffer,skin2MvmtCoter[frame],joueur->posX,joueur->posY);
+            }
+            else
+            {
+                draw_sprite_h_flip(buffer,skin2MvmtCoter[1],joueur->posX,joueur->posY);
+            }
+
+        }
+        if(joueur->direction==2)
+        {
+            if(joueur->BoolMvmt)
+            {
+                draw_sprite(buffer,skin2MvmtCoter[frame],joueur->posX,joueur->posY);
+            }
+            else
+            {
+                draw_sprite(buffer,skin2MvmtCoter[1],joueur->posX,joueur->posY);
+            }
+
+        }
+        if(joueur->direction==3)
+        {
+            if(joueur->BoolMvmt)
+            {
+                draw_sprite(buffer,skin2MvmtUp[frame],joueur->posX,joueur->posY);
+            }
+            else
+            {
+                draw_sprite(buffer,skin2MvmtUp[1],joueur->posX,joueur->posY);
+            }
+
+        }
+        if(joueur->direction==4)
+        {
+            if(joueur->BoolMvmt)
+            {
+                draw_sprite(buffer,skin2MvmtDown[frame],joueur->posX,joueur->posY);
+            }
+            else
+            {
+                draw_sprite(buffer,skin2MvmtDown[1],joueur->posX,joueur->posY);
+            }
+
+        }
+    }
+    if(joueur->skin==3)
+    {
+        if(joueur->direction==1)
+        {
+            if(joueur->BoolMvmt)
+            {
+                draw_sprite_h_flip(buffer,skin3MvmtCoter[frame],joueur->posX,joueur->posY);
+            }
+            else
+            {
+                draw_sprite_h_flip(buffer,skin3MvmtCoter[1],joueur->posX,joueur->posY);
+            }
+
+        }
+        if(joueur->direction==2)
+        {
+            if(joueur->BoolMvmt)
+            {
+                draw_sprite(buffer,skin3MvmtCoter[frame],joueur->posX,joueur->posY);
+            }
+            else
+            {
+                draw_sprite(buffer,skin3MvmtCoter[1],joueur->posX,joueur->posY);
+            }
+
+        }
+        if(joueur->direction==3)
+        {
+            if(joueur->BoolMvmt)
+            {
+                draw_sprite(buffer,skin3MvmtUp[frame],joueur->posX,joueur->posY);
+            }
+            else
+            {
+                draw_sprite(buffer,skin3MvmtUp[1],joueur->posX,joueur->posY);
+            }
+
+        }
+        if(joueur->direction==4)
+        {
+            if(joueur->BoolMvmt)
+            {
+                draw_sprite(buffer,skin3MvmtDown[frame],joueur->posX,joueur->posY);
+            }
+            else
+            {
+                draw_sprite(buffer,skin3MvmtDown[1],joueur->posX,joueur->posY);
+            }
+
+        }
+    }
 }
 
 
@@ -426,12 +623,20 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
     //testChiffre(EnsembleChiffre,buffer);
     t_joueur *joueur1= creerJoueur(EnsembleLettre,buffer,1,EnsembleChiffre,Skin1Choose,Skin2Choose,Skin3Choose);
     t_joueur *joueur2= creerJoueur(EnsembleLettre,buffer,2,EnsembleChiffre,Skin1Choose,Skin2Choose,Skin3Choose);
-
+    int frame=1;
     while (!key[KEY_ESC])
     {
         clear_bitmap(buffer);
         blit(fondMap,buffer,0,0,0,0,SCREEN_W,SCREEN_H);
+        frame++;
+        if(frame>4)
+        {
+            frame=1;
+        }
+        actualiserMvmtJoueur(joueur1);
+        drawJoueur(joueur1,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        rest(80);
     }
     *BoolPlay=0;
     *BoolMenu=1;
