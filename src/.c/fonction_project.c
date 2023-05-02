@@ -9,6 +9,8 @@
 #include "time.h"
 #define DEP 5
 
+//gestion of menu
+
 void fill_bitmap(BITMAP *bmp, int color,int posX,int posY) {
 
     for (posY=0; posY < bmp->h; posY++) {
@@ -20,7 +22,18 @@ void fill_bitmap(BITMAP *bmp, int color,int posX,int posY) {
         }
     }
 }
+int cliqueSurMenu(BITMAP *PLAY)
+{
+    if((mouse_x>275&&mouse_x<275+PLAY->w)&&(mouse_y>310&&mouse_y<310+PLAY->h)&&mouse_b==1)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 
+}
 
 void animationDebut()
 {
@@ -121,20 +134,71 @@ void testChiffre(BITMAP **EnsembleChiffre,BITMAP *buffer)
     }
 }
 
-
-int cliqueSurMenu(BITMAP *PLAY)
+void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
 {
-    if((mouse_x>275&&mouse_x<275+PLAY->w)&&(mouse_y>310&&mouse_y<310+PLAY->h)&&mouse_b==1)
+    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
     {
-        return 1;
+        allegro_message("problem gfx");
+        allegro_exit();
+        exit(EXIT_FAILURE);
     }
-    else
+    char nomDeFichier[5000];
+    int frame=1;
+    int x=0;
+    int y=0;
+    BITMAP *fond[181];
+    for(int i=1;i<180;i++)
     {
-        return 0;
+        sprintf(nomDeFichier,"../image/image fond menu/frame-%d.bmp",i);
+        fond[i]= importeImage(nomDeFichier);
     }
-
+    BITMAP *PLAY= importeImage("../image/image ecriture/PLAY.bmp");
+    BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
+    SAMPLE *bruitVille= importeSon("../son/son bruit ville.wav");
+    SAMPLE *bruitPluie= importeSon("../son/STORM_Pluie et orage.wav");
+    SAMPLE *musiqueEasterEgg= importeSon("../son/son musique fond menu.wav");
+    play_sample(bruitVille, 235, 128, 1000, TRUE);
+    play_sample(bruitPluie,255,128,1000,TRUE);
+    play_sample(musiqueEasterEgg,150,145,1000,TRUE);
+    show_mouse(screen);
+    while(!cliqueSurMenu(PLAY))
+    {
+        clear_bitmap(buffer);
+        frame++;
+        if(frame>179)
+        {
+            frame=1;
+        }
+        if((mouse_x>275&&mouse_x<275+PLAY->w)&&(mouse_y>310&&mouse_y<310+PLAY->h))
+        {
+            fill_bitmap(PLAY, makecol(255,0,0),0,0);
+        }
+        else
+        {
+            fill_bitmap(PLAY, makecol(255,255,255),0,0);
+        }
+        stretch_blit(fond[frame],buffer,0,0,fond[frame]->w,fond[frame]->h,0,0,SCREEN_W,SCREEN_H);
+        draw_sprite(buffer,PLAY,275,345);
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        rest(28);
+    }
+    stop_sample(bruitVille);
+    stop_sample(bruitPluie);
+    stop_sample(musiqueEasterEgg);
+    destroy_sample(bruitVille);
+    destroy_sample(bruitPluie);
+    destroy_sample(musiqueEasterEgg);
+    destroy_bitmap(PLAY);
+    for(int i=1;i<180;i++)
+    {
+        destroy_bitmap(fond[i]);
+    }
+    *BoolPlay=1;
+    *BoolMenu=0;
+    *BoolSettings=0;
 }
 
+//player gestion and map gestion
 void enregistrerNomJoueur(BITMAP**EnsembleLettre,BITMAP *buffer,char *NomJoueurARendre,int indice,BITMAP **EnsembleChiffre)
 {
     int Bool=1;
@@ -255,72 +319,6 @@ t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP 
     printf("%d\n",joueurArendre->skin);
     return joueurArendre;
 }
-
-
-void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
-{
-    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
-    {
-        allegro_message("problem gfx");
-        allegro_exit();
-        exit(EXIT_FAILURE);
-    }
-    char nomDeFichier[5000];
-    int frame=1;
-    int x=0;
-    int y=0;
-    BITMAP *fond[181];
-    for(int i=1;i<180;i++)
-    {
-        sprintf(nomDeFichier,"../image/image fond menu/frame-%d.bmp",i);
-        fond[i]= importeImage(nomDeFichier);
-    }
-    BITMAP *PLAY= importeImage("../image/image ecriture/PLAY.bmp");
-    BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
-    SAMPLE *bruitVille= importeSon("../son/son bruit ville.wav");
-    SAMPLE *bruitPluie= importeSon("../son/STORM_Pluie et orage.wav");
-    SAMPLE *musiqueEasterEgg= importeSon("../son/son musique fond menu.wav");
-    play_sample(bruitVille, 235, 128, 1000, TRUE);
-    play_sample(bruitPluie,255,128,1000,TRUE);
-    play_sample(musiqueEasterEgg,150,145,1000,TRUE);
-    show_mouse(screen);
-    while(!cliqueSurMenu(PLAY))
-    {
-        clear_bitmap(buffer);
-        frame++;
-        if(frame>179)
-        {
-            frame=1;
-        }
-        if((mouse_x>275&&mouse_x<275+PLAY->w)&&(mouse_y>310&&mouse_y<310+PLAY->h))
-        {
-            fill_bitmap(PLAY, makecol(255,0,0),0,0);
-        }
-        else
-        {
-            fill_bitmap(PLAY, makecol(255,255,255),0,0);
-        }
-        stretch_blit(fond[frame],buffer,0,0,fond[frame]->w,fond[frame]->h,0,0,SCREEN_W,SCREEN_H);
-        draw_sprite(buffer,PLAY,275,345);
-        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
-        rest(28);
-    }
-    stop_sample(bruitVille);
-    stop_sample(bruitPluie);
-    stop_sample(musiqueEasterEgg);
-    destroy_sample(bruitVille);
-    destroy_sample(bruitPluie);
-    destroy_sample(musiqueEasterEgg);
-    destroy_bitmap(PLAY);
-    for(int i=1;i<180;i++)
-    {
-        destroy_bitmap(fond[i]);
-    }
-    *BoolPlay=1;
-    *BoolMenu=0;
-    *BoolSettings=0;
-}
-
 
 void actualiserMvmtJoueur(t_joueur *joueur)
 {
@@ -514,7 +512,6 @@ void drawJoueur(t_joueur *joueur,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5]
     }
 }
 
-
 void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
 {
     if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
@@ -643,6 +640,3 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
     *BoolSettings=0;
     rest(500);
 }
-
-
-
