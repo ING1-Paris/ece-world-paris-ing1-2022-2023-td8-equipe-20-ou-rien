@@ -199,17 +199,23 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
 }
 
 //player gestion and map gestion
-void enregistrerNomJoueur(BITMAP**EnsembleLettre,BITMAP *buffer,char *NomJoueurARendre,int indice,BITMAP **EnsembleChiffre)
+void enregistrerNomJoueur(BITMAP**EnsembleLettre,BITMAP *buffer,char *NomJoueurARendre,int indice,BITMAP **EnsembleChiffre,BITMAP **fondNameSkin)
 {
     int Bool=1;
+    int framefond=1;
     char *tabNom= initTableauChar(25);
     char verifChar=0;
     int nbDansTab=0;
     while(!key[KEY_ENTER])
     {
         clear_bitmap(buffer);
-        rectfill(buffer,0,0,SCREEN_W,SCREEN_H, makecol(255,255,255));
-        textout_ex(buffer,font,"veuillez donner un nom au joueur :",100,200, makecol(255,0,0),-1);
+        framefond++;
+        if(framefond>47)
+        {
+            framefond=1;
+        }
+        stretch_blit(fondNameSkin[framefond],buffer,0,0,fondNameSkin[framefond]->w,fondNameSkin[framefond]->h,0,0,SCREEN_W,SCREEN_H);
+        textout_ex(buffer,font,"veuillez donner un nom au joueur :",100,200, makecol(0,0,0),-1);
         draw_sprite(buffer,EnsembleChiffre[indice],400,150);
         if(key[KEY_DEL]&&nbDansTab!=0)
         {
@@ -247,26 +253,33 @@ void enregistrerNomJoueur(BITMAP**EnsembleLettre,BITMAP *buffer,char *NomJoueurA
             }
         }
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        rest(70);
     }
     strcpy(NomJoueurARendre,tabNom);
 }
 
-int chooseSkin(BITMAP *buffer,BITMAP **skinChoose1,BITMAP **skinChoose2,BITMAP **skinChoose3,BITMAP **EnsembleChiffre)
+int chooseSkin(BITMAP *buffer,BITMAP **skinChoose1,BITMAP **skinChoose2,BITMAP **skinChoose3,BITMAP **EnsembleChiffre,BITMAP **fondNameSkin)
 {
     int BoolSortie=0;
     int frame=1;
+    int framefond=1;
     char *NomDeFichier=NULL;
     show_mouse(screen);
     while(1)
     {
         clear_bitmap(buffer);
         frame++;
+        framefond++;
+        if(framefond>47)
+        {
+            framefond=1;
+        }
         if(frame>4)
         {
             frame=1;
         }
-        rectfill(buffer,0,0,SCREEN_W,SCREEN_H, makecol(255,255,255));
-        textout_ex(buffer,font,"Choisissez votre skin:",100,200, makecol(255,0,0),-1);
+        stretch_blit(fondNameSkin[framefond],buffer,0,0,fondNameSkin[framefond]->w,fondNameSkin[framefond]->h,0,0,SCREEN_W,SCREEN_H);
+        textout_ex(buffer,font,"Choisissez votre skin:",100,200, makecol(0,0,0),-1);
         if(mouse_x>100&&mouse_x<100+skinChoose1[frame]->w&&mouse_y>400&&mouse_y<400+skinChoose1[frame]->h)
         {
             rectfill(buffer,100,400,100+skinChoose1[frame]->w,400+skinChoose1[frame]->h, makecol(255,0,0));
@@ -295,11 +308,11 @@ int chooseSkin(BITMAP *buffer,BITMAP **skinChoose1,BITMAP **skinChoose2,BITMAP *
         draw_sprite(buffer,skinChoose2[frame],300,410);
         draw_sprite(buffer,skinChoose3[frame],500,410);
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
-        rest(80);
+        rest(70);
     }
 }
 
-t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP **EnsembleChiffre,BITMAP **skinChoose1,BITMAP **skinChoose2,BITMAP **skinChoose3)
+t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP **EnsembleChiffre,BITMAP **skinChoose1,BITMAP **skinChoose2,BITMAP **skinChoose3,BITMAP **fondNameSkin)
 {
     t_joueur *joueurArendre= malloc(sizeof (t_joueur));
     joueurArendre->posX=0;
@@ -309,13 +322,13 @@ t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP 
     joueurArendre->indice=indice;
     joueurArendre->direction=1;
     joueurArendre->BoolMvmt=0;
-    enregistrerNomJoueur(EnsembleLettre,buffer,joueurArendre->nom,indice,EnsembleChiffre);
+    enregistrerNomJoueur(EnsembleLettre,buffer,joueurArendre->nom,indice,EnsembleChiffre,fondNameSkin);
     while (joueurArendre->nom[0]==0)
     {
-        enregistrerNomJoueur(EnsembleLettre,buffer,joueurArendre->nom,indice,EnsembleChiffre);
+        enregistrerNomJoueur(EnsembleLettre,buffer,joueurArendre->nom,indice,EnsembleChiffre,fondNameSkin);
     }
     printf("%s\n",joueurArendre->nom);
-    joueurArendre->skin=chooseSkin(buffer,skinChoose1,skinChoose2,skinChoose3,EnsembleChiffre);
+    joueurArendre->skin=chooseSkin(buffer,skinChoose1,skinChoose2,skinChoose3,EnsembleChiffre,fondNameSkin);
     printf("%d\n",joueurArendre->skin);
     return joueurArendre;
 }
@@ -615,16 +628,25 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
         Skin3Choose[i]= importeImage(NomDeFichier);
     }
 
+
+    //image fond choose name and skin
+    BITMAP *fondNameSkin[48];
+    for(int i=1;i<48;i++)
+    {
+        sprintf(NomDeFichier,"../image/image play map/image fond choose skin and name/frame-%d.bmp",i);
+        fondNameSkin[i]= importeImage(NomDeFichier);
+    }
+
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
     //testAlphabet(EnsembleLettre,buffer);
     //testChiffre(EnsembleChiffre,buffer);
-    t_joueur *joueur1= creerJoueur(EnsembleLettre,buffer,1,EnsembleChiffre,Skin1Choose,Skin2Choose,Skin3Choose);
-    t_joueur *joueur2= creerJoueur(EnsembleLettre,buffer,2,EnsembleChiffre,Skin1Choose,Skin2Choose,Skin3Choose);
+    t_joueur *joueur1= creerJoueur(EnsembleLettre,buffer,1,EnsembleChiffre,Skin1Choose,Skin2Choose,Skin3Choose,fondNameSkin);
+    t_joueur *joueur2= creerJoueur(EnsembleLettre,buffer,2,EnsembleChiffre,Skin1Choose,Skin2Choose,Skin3Choose,fondNameSkin);
     int frame=1;
     while (!key[KEY_ESC])
     {
         clear_bitmap(buffer);
-        blit(fondMap,buffer,0,0,0,0,SCREEN_W,SCREEN_H);
+        blit(fondMap,buffer,joueur1->posX,joueur1->posY,0,0,SCREEN_W,SCREEN_H);
         frame++;
         if(frame>4)
         {
@@ -632,6 +654,7 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
         }
         actualiserMvmtJoueur(joueur1);
         drawJoueur(joueur1,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
+        drawJoueur(joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(80);
     }
