@@ -9,7 +9,7 @@
 int main(void) {
     initiation();
     int BoolMenu=TRUE,BoolSettings=FALSE,BoolPlay=FALSE;
-    animationDebut();
+    //animationDebut();
     rest(30);
     while (!key[KEY_ESC])
     {
@@ -27,3 +27,16 @@ int main(void) {
     return 0;
 }
 END_OF_MAIN()
+
+//nether
+//63 90 -100
+
+
+//normal
+//345 -912
+
+//maison
+//650 -1050
+
+//portail
+//500 -780

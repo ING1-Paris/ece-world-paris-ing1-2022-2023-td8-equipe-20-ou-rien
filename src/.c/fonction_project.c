@@ -282,7 +282,7 @@ int chooseSkin(BITMAP *buffer,BITMAP **skinChoose1,BITMAP **skinChoose2,BITMAP *
         textout_ex(buffer,font,"Choisissez votre skin:",100,200, makecol(0,0,0),-1);
         if(mouse_x>100&&mouse_x<100+skinChoose1[frame]->w&&mouse_y>400&&mouse_y<400+skinChoose1[frame]->h)
         {
-            rectfill(buffer,100,400,100+skinChoose1[frame]->w,400+skinChoose1[frame]->h, makecol(255,0,0));
+            rectfill(buffer,100,400,100+skinChoose1[frame]->w,400+skinChoose1[frame]->h, makecol(0,0,0));
             if(mouse_b==1)
             {
                 return 1;
@@ -290,7 +290,7 @@ int chooseSkin(BITMAP *buffer,BITMAP **skinChoose1,BITMAP **skinChoose2,BITMAP *
         }
         if(mouse_x>300&&mouse_x<300+skinChoose2[frame]->w&&mouse_y>410&&mouse_y<410+skinChoose2[frame]->h)
         {
-            rectfill(buffer,300,410,300+skinChoose2[frame]->w,410+skinChoose2[frame]->h, makecol(255,0,0));
+            rectfill(buffer,300,410,300+skinChoose2[frame]->w,410+skinChoose2[frame]->h, makecol(0,0,0));
             if(mouse_b==1)
             {
                 return 2;
@@ -298,7 +298,7 @@ int chooseSkin(BITMAP *buffer,BITMAP **skinChoose1,BITMAP **skinChoose2,BITMAP *
         }
         if(mouse_x>500&&mouse_x<500+skinChoose3[frame]->w&&mouse_y>410&&mouse_y<410+skinChoose3[frame]->h)
         {
-            rectfill(buffer,500,410,500+skinChoose2[frame]->w,410+skinChoose2[frame]->h, makecol(255,0,0));
+            rectfill(buffer,500,410,500+skinChoose2[frame]->w,410+skinChoose2[frame]->h, makecol(0,0,0));
             if(mouse_b==1)
             {
                 return 3;
@@ -331,6 +331,26 @@ t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP 
     joueurArendre->skin=chooseSkin(buffer,skinChoose1,skinChoose2,skinChoose3,EnsembleChiffre,fondNameSkin);
     printf("%d\n",joueurArendre->skin);
     return joueurArendre;
+}
+
+t_train *creerTrain()
+{
+    t_train *TrainARendre= malloc(sizeof (t_train));
+    TrainARendre->posY=160;
+    TrainARendre->posX=-4000;
+    TrainARendre->direction=1;
+    TrainARendre->DepY=10;
+    TrainARendre->depX=10;
+    return TrainARendre;
+}
+
+void actualiserTrain(t_train *train)
+{
+    train->posX+=train->depX;
+    if(train->posX>6000)
+    {
+        train->posX=-4000;
+    }
 }
 
 void actualiserMvmtJoueur(t_joueur *joueur)
@@ -525,6 +545,73 @@ void drawJoueur(t_joueur *joueur,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5]
     }
 }
 
+void animationDebutMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP *buffer,int frame)
+{
+    t_train *train=creerTrain();
+    joueur1->posY=SCREEN_H-50;
+    joueur1->posX=380;
+    joueur1->direction=3;
+    joueur1->BoolMvmt=1;
+    joueur2->posY=SCREEN_H-30;
+    joueur2->posX=380;
+    joueur2->direction=3;
+    joueur2->BoolMvmt=1;
+    //image pour la map
+    int x=0,y=0;
+    int iteration=0;
+    BITMAP *Train= importeImage("../image/image play map/animation debut/train/train.bmp");
+    BITMAP *gare = importeImage("../image/image play map/animation debut/batiment sur train/gare.bmp");
+    BITMAP *batimentSurTrain= importeImage("../image/image play map/animation debut/batiment sur train/batimentSurTrain.bmp");
+    BITMAP *batiementSurJoueur= importeImage("../image/image play map/animation debut/batiement sur joueur/image pont.bmp");
+    BITMAP *map= importeImage("../image/image play map/animation debut/map/map.bmp");
+    while(!key[KEY_L])
+    {
+        clear_bitmap(buffer);
+        blit(map,buffer,0,0,0,0,SCREEN_W,SCREEN_H);
+        if(iteration==6)
+        {
+            frame++;
+            if(frame>4)
+            {
+                frame=1;
+            }
+            joueur1->posY-=joueur1->DepY;
+
+        }
+        joueur2->posX=joueur1->posX;
+        joueur2->posY=joueur1->posY+30;
+        drawJoueur(joueur1,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
+        drawJoueur(joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
+        actualiserTrain(train);
+        printf("%d %d\n",joueur1->posX,joueur1->posY);
+        draw_sprite(buffer,Train,train->posX,train->posY);
+        draw_sprite(buffer,batimentSurTrain,601,100);
+        draw_sprite(buffer,gare,287,132);
+        draw_sprite(buffer,batiementSurJoueur,366,651);
+        if(key[KEY_UP])
+        {
+            y-=1;
+        }
+        if(key[KEY_DOWN])
+        {
+            y+=1;
+        }
+        if(key[KEY_LEFT])
+        {
+            x-=1;
+        }
+        if(key[KEY_RIGHT])
+        {
+            x+=1;
+        }
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        iteration+=1;
+        iteration%=7;
+        rest(1);
+    }
+}
+
+
 void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
 {
     if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
@@ -658,6 +745,8 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(80);
     }
+    rest(500);
+    animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
     *BoolPlay=0;
     *BoolMenu=1;
     *BoolSettings=0;

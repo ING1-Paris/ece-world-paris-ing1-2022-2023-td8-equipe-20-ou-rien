@@ -19,6 +19,14 @@ typedef struct joueur
     int BoolMvmt;
 }t_joueur;
 
+typedef struct train
+{
+    int posX,posY;
+    int depX,DepY;
+    int direction;
+    int BoolMvmt;
+}t_train;
+
 void fill_bitmap(BITMAP *bmp, int color,int posX,int posY);
 void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay);
 void animationDebut();
