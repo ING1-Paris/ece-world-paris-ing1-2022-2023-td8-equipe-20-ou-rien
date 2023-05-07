@@ -611,6 +611,115 @@ void animationDebutMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown
     }
 }
 
+int verifJoueurCollision(t_joueur *joueur,BITMAP *sousBuffer)
+{
+    if(joueur->direction==1)
+    {
+        if(getpixel(sousBuffer,joueur->posX+joueur->depX+30,joueur->posY+20)!= makecol(255,0,255))
+        {
+            joueur->posX-=joueur->depX;
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else if(joueur->direction==2)
+    {
+        if(getpixel(sousBuffer,joueur->posX-joueur->depX,joueur->posY+20)!= makecol(255,0,255))
+        {
+            joueur->posX+=joueur->depX;
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else if(joueur->direction==3)
+    {
+        if(getpixel(sousBuffer,joueur->posX,joueur->posY-joueur->DepY)!= makecol(255,0,255))
+        {
+            joueur->posY+=joueur->DepY;
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else if(joueur->direction==4)
+    {
+        if(getpixel(sousBuffer,joueur->posX,joueur->posY+joueur->DepY+40)!= makecol(255,0,255))
+        {
+            joueur->posY-=joueur->DepY;
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+void snake(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP *buffer,int frame)
+{
+    joueur1->posY=SCREEN_H-50;
+    joueur1->posX=380;
+    joueur1->direction=3;
+    joueur1->BoolMvmt=1;
+    joueur2->posY=SCREEN_H-30;
+    joueur2->posX=380;
+    joueur2->direction=3;
+    joueur2->BoolMvmt=1;
+    int x=0,y=0;
+    //image pour la map
+    int iteration=0;
+    BITMAP *map= importeImage("../image/image play map/snake/image map/map snake.bmp");
+    BITMAP *sousMap= importeImage("../image/image play map/snake/image map/sous map snake.bmp");
+    BITMAP *portailBas= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
+    BITMAP *sousbuffer= create_bitmap(SCREEN_W,SCREEN_H);
+    while(1)
+    {
+        clear_bitmap(buffer);
+        clear_bitmap(sousbuffer);
+        blit(map, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+        blit(sousMap,sousbuffer,0,0,0,0,SCREEN_W,SCREEN_H);
+        if(iteration==6)
+        {
+            frame++;
+            if(frame>4)
+            {
+                frame=1;
+            }
+            if(!verifJoueurCollision(joueur1,sousbuffer))
+            {
+                actualiserMvmtJoueur(joueur1);
+            }
+            if(!verifJoueurCollision(joueur2,sousbuffer))
+            {
+                actualiserMvmtJoueur(joueur2);
+            }
+
+        }
+        drawJoueur(joueur1, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
+        drawJoueur(joueur2, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
+        draw_sprite(buffer,portailBas,371,763);
+        blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+        iteration += 1;
+        iteration %= 7;
+        if (verifFinAnimationFin(joueur1)) {
+            break;
+        }
+        rest(1);
+    }
+}
+
 
 void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
 {
@@ -731,7 +840,8 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
     t_joueur *joueur2= creerJoueur(EnsembleLettre,buffer,2,EnsembleChiffre,Skin1Choose,Skin2Choose,Skin3Choose,fondNameSkin);
     int frame=1;
 
-    animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
+    //animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
+    snake(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
     while (!key[KEY_ESC])
     {
         clear_bitmap(buffer);
