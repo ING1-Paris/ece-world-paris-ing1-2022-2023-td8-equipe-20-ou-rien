@@ -322,6 +322,7 @@ t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP 
     joueurArendre->indice=indice;
     joueurArendre->direction=1;
     joueurArendre->BoolMvmt=0;
+    joueurArendre->BoolTour=0;
     enregistrerNomJoueur(EnsembleLettre,buffer,joueurArendre->nom,indice,EnsembleChiffre,fondNameSkin);
     while (joueurArendre->nom[0]==0)
     {
@@ -353,9 +354,9 @@ void actualiserTrain(t_train *train)
     }
 }
 
-int verifFinAnimationFin(t_joueur *joueur1)
+int verifFinAnimationFin(t_joueur *joueur)
 {
-    if(joueur1->posY<20)
+    if(joueur->posY<30)
     {
         return 1;
     }
@@ -364,6 +365,19 @@ int verifFinAnimationFin(t_joueur *joueur1)
         return 0;
     }
 
+}
+
+int verfDebutAnimation(t_joueur *joueur)
+{
+    if(joueur->posY>SCREEN_H-60)
+    {
+        return 1;
+    }
+    else
+    {
+        printf("%d\n",joueur->posY);
+        return 0;
+    }
 }
 
 
@@ -562,12 +576,24 @@ void drawJoueur(t_joueur *joueur,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5]
 void animationDebutMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP *buffer,int frame)
 {
     t_train *train=creerTrain();
-    joueur1->posY=SCREEN_H-50;
-    joueur1->posX=380;
+    if(joueur1->BoolTour==0)
+    {
+        joueur2->posY=SCREEN_H-50;
+        joueur2->posX=380;
+        joueur1->posY=SCREEN_H-30;
+        joueur1->posX=380;
+    }
+    else
+    {
+        joueur1->posY=SCREEN_H-50;
+        joueur1->posX=380;
+        joueur2->posY=SCREEN_H-30;
+        joueur2->posX=380;
+    }
+
     joueur1->direction=3;
     joueur1->BoolMvmt=1;
-    joueur2->posY=SCREEN_H-30;
-    joueur2->posX=380;
+
     joueur2->direction=3;
     joueur2->BoolMvmt=1;
     //image pour la map
@@ -588,13 +614,37 @@ void animationDebutMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown
             {
                 frame=1;
             }
-            joueur1->posY-=joueur1->DepY;
+            if(joueur1->BoolTour==0)
+            {
+                joueur2->posY-=joueur2->DepY;
+            }
+            else
+            {
+                joueur1->posY-=joueur1->DepY;
+            }
 
         }
-        joueur2->posX=joueur1->posX;
-        joueur2->posY=joueur1->posY+30;
-        drawJoueur(joueur1,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
-        drawJoueur(joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
+        if(joueur1->BoolTour==0)
+        {
+            joueur1->posX=joueur2->posX;
+            joueur1->posY=joueur2->posY+30;
+        }
+        else
+        {
+            joueur2->posX=joueur1->posX;
+            joueur2->posY=joueur1->posY+30;
+        }
+        if(joueur1->BoolTour)
+        {
+            drawJoueur(joueur1,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
+            drawJoueur(joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
+        }
+        else
+        {
+            drawJoueur(joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
+            drawJoueur(joueur1,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
+
+        }
         actualiserTrain(train);
         draw_sprite(buffer,Train,train->posX,train->posY);
         draw_sprite(buffer,batimentSurTrain,601,100);
@@ -615,7 +665,7 @@ int verifJoueurCollision(t_joueur *joueur,BITMAP *sousBuffer)
 {
     if(joueur->direction==1)
     {
-        if(getpixel(sousBuffer,joueur->posX+joueur->depX+30,joueur->posY+20)!= makecol(255,0,255))
+        if(getpixel(sousBuffer,joueur->posX+1+30,joueur->posY+40)!= makecol(255,0,255))
         {
             joueur->posX-=joueur->depX;
             return 1;
@@ -627,7 +677,7 @@ int verifJoueurCollision(t_joueur *joueur,BITMAP *sousBuffer)
     }
     else if(joueur->direction==2)
     {
-        if(getpixel(sousBuffer,joueur->posX-joueur->depX,joueur->posY+20)!= makecol(255,0,255))
+        if(getpixel(sousBuffer,joueur->posX-1,joueur->posY+40)!= makecol(255,0,255))
         {
             joueur->posX+=joueur->depX;
             return 1;
@@ -639,7 +689,7 @@ int verifJoueurCollision(t_joueur *joueur,BITMAP *sousBuffer)
     }
     else if(joueur->direction==3)
     {
-        if(getpixel(sousBuffer,joueur->posX,joueur->posY-joueur->DepY)!= makecol(255,0,255))
+        if(getpixel(sousBuffer,joueur->posX,joueur->posY-1)!= makecol(255,0,255))
         {
             joueur->posY+=joueur->DepY;
             return 1;
@@ -651,7 +701,7 @@ int verifJoueurCollision(t_joueur *joueur,BITMAP *sousBuffer)
     }
     else if(joueur->direction==4)
     {
-        if(getpixel(sousBuffer,joueur->posX,joueur->posY+joueur->DepY+40)!= makecol(255,0,255))
+        if(getpixel(sousBuffer,joueur->posX,joueur->posY+1+40)!= makecol(255,0,255))
         {
             joueur->posY-=joueur->DepY;
             return 1;
@@ -667,22 +717,55 @@ int verifJoueurCollision(t_joueur *joueur,BITMAP *sousBuffer)
     }
 }
 
-void snake(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP *buffer,int frame)
+void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP *buffer,int frame,int *Map)
 {
-    joueur1->posY=SCREEN_H-50;
-    joueur1->posX=380;
-    joueur1->direction=3;
-    joueur1->BoolMvmt=1;
-    joueur2->posY=SCREEN_H-30;
-    joueur2->posX=380;
-    joueur2->direction=3;
-    joueur2->BoolMvmt=1;
+    if(*Map==0)
+    {
+        if(joueur1->BoolTour)
+        {
+            joueur1->posY=SCREEN_H-50;
+            joueur1->posX=380;
+            joueur2->posY=SCREEN_H-30;
+            joueur2->posX=380;
+        }
+        else
+        {
+            joueur2->posY=SCREEN_H-50;
+            joueur2->posX=380;
+            joueur1->posY=SCREEN_H-30;
+            joueur1->posX=380;
+        }
+        joueur1->direction=3;
+        joueur2->direction=3;
+    }
+    else if(*Map==1)
+    {
+        if(joueur1->BoolTour)
+        {
+            joueur1->posY=70;
+            joueur1->posX=380;
+            joueur2->posY=50;
+            joueur2->posX=380;
+        }
+        else
+        {
+            joueur2->posY=70;
+            joueur2->posX=380;
+            joueur1->posY=50;
+            joueur1->posX=380;
+        }
+        joueur1->direction=4;
+        joueur2->direction=4;
+    }
     int x=0,y=0;
     //image pour la map
     int iteration=0;
     BITMAP *map= importeImage("../image/image play map/snake/image map/map snake.bmp");
     BITMAP *sousMap= importeImage("../image/image play map/snake/image map/sous map snake.bmp");
     BITMAP *portailBas= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
+    BITMAP *mur= importeImage("../image/image play map/snake/batiment/mur.bmp");
+    BITMAP *abreRanger= importeImage("../image/image play map/snake/batiment/arbreRanger.bmp");
+    BITMAP *abreCarre= importeImage("../image/image play map/snake/batiment/arbreCarre.bmp");
     BITMAP *sousbuffer= create_bitmap(SCREEN_W,SCREEN_H);
     while(1)
     {
@@ -697,32 +780,227 @@ void snake(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *
             {
                 frame=1;
             }
-            if(!verifJoueurCollision(joueur1,sousbuffer))
+            if(joueur1->BoolTour)
             {
-                actualiserMvmtJoueur(joueur1);
+                if(!verifJoueurCollision(joueur1,sousbuffer))
+                {
+                    actualiserMvmtJoueur(joueur1);
+                }
             }
-            if(!verifJoueurCollision(joueur2,sousbuffer))
+            else
             {
-                actualiserMvmtJoueur(joueur2);
+                if(!verifJoueurCollision(joueur2,sousbuffer))
+                {
+                    actualiserMvmtJoueur(joueur2);
+                }
+            }
+        }
+        if(joueur1->BoolTour)
+        {
+            if((joueur1->posX==625&&joueur1->posY==305))
+            {
+                textout_ex(buffer,font,"Entrer ?",625,295, makecol(255,0,0),-1);
+                if(key[KEY_ENTER])
+                {
+                    Snake();
+                }
+            }
+            if((joueur1->posX==150&&joueur1->posY==175))
+            {
+                textout_ex(buffer,font,"Entrer ?",150,165, makecol(255,0,0),-1);
+            }
+            if(verifFinAnimationFin(joueur1))
+            {
+                *Map=1;
+                break;
             }
 
         }
+        if(joueur2->BoolTour)
+        {
+            if((joueur2->posX==625&&joueur2->posY==305))
+            {
+                textout_ex(buffer,font,"Entrer ?",625,295, makecol(255,0,0),-1);
+                if(key[KEY_ENTER])
+                {
+                    Snake();
+                }
+            }
+            if((joueur2->posX==150&&joueur2->posY==175))
+            {
+                textout_ex(buffer,font,"Entrer ?",150,165, makecol(255,0,0),-1);
+            }
+            if(verifFinAnimationFin(joueur2))
+            {
+                *Map=1;
+                break;
+            }
+        }
         drawJoueur(joueur1, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
         drawJoueur(joueur2, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
+        rectfill(sousbuffer,joueur1->posX,joueur1->posY,joueur1->posX+30,joueur1->posY+40, makecol(255,0,0));
         draw_sprite(buffer,portailBas,371,763);
+        draw_sprite(buffer,mur,0,213);
+        draw_sprite(buffer,abreCarre,624,430);
+        draw_sprite(buffer,abreRanger,410,0);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         iteration += 1;
         iteration %= 7;
-        if (verifFinAnimationFin(joueur1)) {
-            break;
-        }
         rest(1);
     }
 }
 
 
+void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP *buffer,int frame,int *Map)
+{
+    if(*Map==1)
+    {
+        joueur1->posY=SCREEN_H-70;
+        joueur1->posX=380;
+        joueur1->direction=3;
+        joueur2->posY=SCREEN_H-70;
+        joueur2->posX=380;
+        joueur2->direction=3;
+    }
+    else if(*Map==3)
+    {
+
+    }
+    int x=0,y=0;
+    //image pour la map
+    int iteration=0;
+    BITMAP *map= importeImage("../image/image play map/image ninja/image map/map.bmp");
+    BITMAP *sousMap= importeImage("../image/image play map/image ninja/image map/sousMap.bmp");
+    BITMAP *arbre= importeImage("../image/image play map/image ninja/batiment/abre1.bmp");
+    BITMAP *sousbuffer= create_bitmap(SCREEN_W,SCREEN_H);
+    while(1)
+    {
+        clear_bitmap(buffer);
+        clear_bitmap(sousbuffer);
+        blit(map, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+        blit(sousMap,sousbuffer,0,0,0,0,SCREEN_W,SCREEN_H);
+        if(iteration==6)
+        {
+            frame++;
+            if(frame>4)
+            {
+                frame=1;
+            }
+            if(joueur1->BoolTour)
+            {
+                if(!verifJoueurCollision(joueur1,sousbuffer))
+                {
+                    actualiserMvmtJoueur(joueur1);
+                }
+            }
+            else
+            {
+                if(!verifJoueurCollision(joueur2,sousbuffer))
+                {
+                    actualiserMvmtJoueur(joueur2);
+                }
+            }
+        }
+        if(joueur1->BoolTour)
+        {
+            if((joueur1->posX==625&&joueur1->posY==305))
+            {
+                textout_ex(buffer,font,"Entrer ?",625,295, makecol(255,0,0),-1);
+                if(key[KEY_ENTER])
+                {
+                    Snake();
+                }
+            }
+            if((joueur1->posX==150&&joueur1->posY==175))
+            {
+                textout_ex(buffer,font,"Entrer ?",150,165, makecol(255,0,0),-1);
+            }
+            if(verfDebutAnimation(joueur1))
+            {
+                *Map=0;
+                break;
+            }
+
+        }
+        if(joueur2->BoolTour)
+        {
+            if((joueur2->posX==625&&joueur2->posY==305))
+            {
+                textout_ex(buffer,font,"Entrer ?",625,295, makecol(255,0,0),-1);
+                if(key[KEY_ENTER])
+                {
+                    Snake();
+                }
+            }
+            if((joueur2->posX==150&&joueur2->posY==175))
+            {
+                textout_ex(buffer,font,"Entrer ?",150,165, makecol(255,0,0),-1);
+            }
+            if(verfDebutAnimation(joueur2))
+            {
+                *Map=0;
+                break;
+            }
+        }
+        drawJoueur(joueur1, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
+        drawJoueur(joueur2, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
+        draw_sprite(buffer,arbre,39,193);
+        rectfill(sousbuffer,joueur1->posX,joueur1->posY,joueur1->posX+30,joueur1->posY+40, makecol(255,0,0));
+        blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+        iteration += 1;
+        iteration %= 7;
+        rest(1);
+    }
+}
+
+int animationTourJoueur(BITMAP* buffer,BITMAP**EnsembleChiffre)
+{
+    int Bool=0;
+
+    int TourJoueur;
+    for(int i=0;i<100;i++)
+    {
+        clear_bitmap(buffer);
+        rectfill(buffer,0,0,SCREEN_W,SCREEN_H, makecol(255,255,255));
+        textout_centre_ex(buffer,font,"Au tour du Joueur:",SCREEN_W/2-40,200, makecol(255,0,0),-1);
+        if(i<75)
+        {
+            TourJoueur=rand()%2;
+            if(Bool)
+            {
+                draw_sprite(buffer,EnsembleChiffre[2],SCREEN_W/2-40,400);
+            }
+            else
+            {
+
+                draw_sprite(buffer,EnsembleChiffre[1],SCREEN_W/2-40,400);
+            }
+            Bool++;
+            Bool%=2;
+        }
+        else
+        {
+            if(TourJoueur)
+            {
+                draw_sprite(buffer,EnsembleChiffre[1],SCREEN_W/2-40,400);
+            }
+            else
+            {
+                draw_sprite(buffer,EnsembleChiffre[2],SCREEN_W/2-40,400);
+            }
+        }
+
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        rest(100);
+    }
+    return TourJoueur;
+}
+
+
 void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
 {
+    int Tour;
+    int Map=1;
     if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
     {
         allegro_message("problem gfx");
@@ -730,7 +1008,6 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
         exit(EXIT_FAILURE);
     }
     char *NomDeFichier= malloc(sizeof (char ));
-    BITMAP *fondMap= importeImage("../image/image play map/carte projet allegro ing1.bmp");
 
     //ecriture
     BITMAP *EnsembleLettre[27];
@@ -838,27 +1115,50 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
     //testChiffre(EnsembleChiffre,buffer);
     t_joueur *joueur1= creerJoueur(EnsembleLettre,buffer,1,EnsembleChiffre,Skin1Choose,Skin2Choose,Skin3Choose,fondNameSkin);
     t_joueur *joueur2= creerJoueur(EnsembleLettre,buffer,2,EnsembleChiffre,Skin1Choose,Skin2Choose,Skin3Choose,fondNameSkin);
-    int frame=1;
 
+    int frame=1;
+    Tour= animationTourJoueur(buffer,EnsembleChiffre);
+    if(Tour)
+    {
+        joueur1->BoolTour=1;
+        joueur2->BoolTour=0;
+    }
+    else
+    {
+        joueur2->BoolTour=1;
+        joueur1->BoolTour=0;
+    }
     //animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
-    snake(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
     while (!key[KEY_ESC])
     {
-        clear_bitmap(buffer);
-        blit(fondMap,buffer,joueur1->posX,joueur1->posY,0,0,SCREEN_W,SCREEN_H);
-        frame++;
-        if(frame>4)
+        if(Map==0)
         {
-            frame=1;
+            snakeMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame,&Map);
         }
-        actualiserMvmtJoueur(joueur1);
-        drawJoueur(joueur1,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
-        drawJoueur(joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
-        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
-        rest(80);
+        else if(Map==1)
+        {
+            ninjaMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame,&Map);
+        }
     }
     rest(500);
     *BoolPlay=0;
     *BoolMenu=1;
     *BoolSettings=0;
 }
+
+
+/*
+ *   if(key[KEY_UP]){
+            y--;
+        }
+        if(key[KEY_DOWN]){
+            y++;
+        }
+        if(key[KEY_LEFT]){
+            x--;
+        }
+        if(key[KEY_RIGHT]){
+            x++;
+        }
+        printf("%d %d\n",x,y);
+ */

@@ -473,6 +473,11 @@ void Snake()
         }
         rest(30);
     }
-
+    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
+    {
+        allegro_message("problem gfx");
+        allegro_exit();
+        exit(EXIT_FAILURE);
+    }
     stop_sample(musicfond);
 }

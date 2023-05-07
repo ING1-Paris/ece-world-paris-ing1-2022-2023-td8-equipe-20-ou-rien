@@ -3,10 +3,13 @@
 #include "../.h/fonction_allegro.h"
 #include "../.h/fonction_project.h"
 #include "../.h/fonction game snake.h"
+#include "time.h"
+#include "stdlib.h"
 
 ///bonjour
 
 int main(void) {
+    srand(time(NULL));
     initiation();
     int BoolMenu=TRUE,BoolSettings=FALSE,BoolPlay=FALSE;
     //animationDebut();
@@ -20,7 +23,6 @@ int main(void) {
         if(BoolPlay)
         {
             playMap(&BoolMenu,&BoolSettings,&BoolPlay);
-            Snake();
         }
     }
     allegro_exit();

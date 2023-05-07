@@ -4,6 +4,7 @@
 #include "allegro.h"
 #include "fonction_allegro.h"
 #include "fonction_utile.h"
+#include "../.h/fonction game snake.h"
 
 #ifndef PROJET_FONCTION_SETTINGS_H
 #define PROJET_FONCTION_SETTINGS_H
@@ -17,6 +18,7 @@ typedef struct joueur
     int indice;
     int direction;
     int BoolMvmt;
+    int BoolTour;
 }t_joueur;
 
 typedef struct train
