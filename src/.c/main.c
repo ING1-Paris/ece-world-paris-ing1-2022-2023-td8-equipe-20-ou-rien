@@ -27,5 +27,6 @@ int main(void) {
     }
     allegro_exit();
     return 0;
+    //commentaire
 }
 END_OF_MAIN()
