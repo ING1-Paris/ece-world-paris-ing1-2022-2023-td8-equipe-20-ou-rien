@@ -2,7 +2,7 @@
 // Created by mathe on 28/04/2023.
 //
 
-#include "../.h/fonction game snake.h"
+#include "../.h/fonction_game_snake.h"
 #include "allegro.h"
 #include "stdio.h"
 #define DEP 5
