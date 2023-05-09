@@ -2,7 +2,7 @@
 #include "allegro.h"
 #include "../.h/fonction_allegro.h"
 #include "../.h/fonction_project.h"
-#include "../.h/fonction game snake.h"
+#include "../.h/fonction_game_snake.h"
 #include "time.h"
 #include "stdlib.h"
 
@@ -22,10 +22,12 @@ int main(void) {
         }
         if(BoolPlay)
         {
-            playMap(&BoolMenu,&BoolSettings,&BoolPlay);
+            //playMap(&BoolMenu,&BoolSettings,&BoolPlay);
+            Snake();
         }
     }
     allegro_exit();
     return 0;
+    //commentaire
 }
 END_OF_MAIN()
