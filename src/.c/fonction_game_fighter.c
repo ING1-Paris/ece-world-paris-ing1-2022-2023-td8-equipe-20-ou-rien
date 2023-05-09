@@ -2,7 +2,7 @@
 // Created by mathe on 08/05/2023.
 //
 
-#include "../.h/fonction game fighter.h"
+#include "../.h/fonction_game_fighter.h"
 
 void FightPlay()
 {
