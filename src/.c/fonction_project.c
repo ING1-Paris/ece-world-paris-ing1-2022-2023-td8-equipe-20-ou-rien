@@ -724,7 +724,7 @@ int verifJoueurCollision(t_joueur *joueur,BITMAP *sousBuffer)
 
 void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP *buffer,int frame,int *Map)
 {
-    if(*Map==0)
+    if(*Map==-1)
     {
         if(joueur1->BoolTour)
         {
@@ -745,7 +745,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
         joueur1->BoolMvmt=0;
         joueur2->BoolMvmt=0;
     }
-    else if(*Map==1)
+    else if(*Map==0)
     {
         if(joueur1->BoolTour)
         {
@@ -1018,7 +1018,7 @@ int animationTourJoueur(BITMAP* buffer,BITMAP**EnsembleChiffre)
 void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
 {
     int Tour;
-    int Map=1;
+    int Map=-1;
     if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
     {
         allegro_message("problem gfx");
@@ -1149,7 +1149,7 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
     animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
     while (!key[KEY_ESC])
     {
-        if(Map==0)
+        if(Map==0||Map==-1)
         {
             snakeMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame,&Map);
         }
