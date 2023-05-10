@@ -657,8 +657,13 @@ void animationDebutMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown
         {
             break;
         }
-        rest(1);
+        rest(10);
     }
+    destroy_bitmap(Train);
+    destroy_bitmap(gare);
+    destroy_bitmap(batimentSurTrain);
+    destroy_bitmap(batiementSurJoueur);
+    destroy_bitmap(map);
 }
 
 int verifJoueurCollision(t_joueur *joueur,BITMAP *sousBuffer)
@@ -737,6 +742,8 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
         }
         joueur1->direction=3;
         joueur2->direction=3;
+        joueur1->BoolMvmt=0;
+        joueur2->BoolMvmt=0;
     }
     else if(*Map==1)
     {
@@ -756,6 +763,8 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
         }
         joueur1->direction=4;
         joueur2->direction=4;
+        joueur1->BoolMvmt=0;
+        joueur2->BoolMvmt=0;
     }
     int x=0,y=0;
     //image pour la map
@@ -846,8 +855,15 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         iteration += 1;
         iteration %= 7;
-        rest(1);
+        rest(10);
     }
+    destroy_bitmap(portailBas);
+    destroy_bitmap(map);
+    destroy_bitmap(mur);
+    destroy_bitmap(abreRanger);
+    destroy_bitmap(abreCarre);
+    destroy_bitmap(sousbuffer);
+    destroy_bitmap(sousMap);
 }
 
 
@@ -861,6 +877,8 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
         joueur2->posY=SCREEN_H-70;
         joueur2->posX=380;
         joueur2->direction=3;
+        joueur1->BoolMvmt=0;
+        joueur2->BoolMvmt=0;
     }
     else if(*Map==3)
     {
@@ -949,7 +967,7 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         iteration += 1;
         iteration %= 7;
-        rest(1);
+        rest(10);
     }
 }
 
