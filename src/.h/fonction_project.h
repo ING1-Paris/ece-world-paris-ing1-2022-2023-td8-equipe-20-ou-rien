@@ -4,6 +4,7 @@
 #include "allegro.h"
 #include "fonction_allegro.h"
 #include "fonction_utile.h"
+#include "../.h/fonction_game_snake.h"
 
 #ifndef PROJET_FONCTION_SETTINGS_H
 #define PROJET_FONCTION_SETTINGS_H
@@ -17,7 +18,16 @@ typedef struct joueur
     int indice;
     int direction;
     int BoolMvmt;
+    int BoolTour;
 }t_joueur;
+
+typedef struct train
+{
+    int posX,posY;
+    int depX,DepY;
+    int direction;
+    int BoolMvmt;
+}t_train;
 
 void fill_bitmap(BITMAP *bmp, int color,int posX,int posY);
 void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay);
