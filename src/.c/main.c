@@ -23,7 +23,7 @@ int main(void) {
         if(BoolPlay)
         {
             playMap(&BoolMenu,&BoolSettings,&BoolPlay);
-            //Snake();
+            Snake();
         }
     }
     allegro_exit();
