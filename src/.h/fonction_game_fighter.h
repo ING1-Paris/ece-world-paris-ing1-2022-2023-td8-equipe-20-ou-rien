@@ -15,7 +15,7 @@ typedef struct joueurFight
     int nbVie;
     int tx,ty;
     int direction;
-    int BoolMvmt,BoolTouche;
+    int BoolMvmt,BoolTouche,BoolJump;
     int skin;
     int indice;
 }t_joueurFight;
