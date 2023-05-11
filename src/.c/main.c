@@ -22,8 +22,8 @@ int main(void) {
         }
         if(BoolPlay)
         {
-            //playMap(&BoolMenu,&BoolSettings,&BoolPlay);
-            Snake();
+            playMap(&BoolMenu,&BoolSettings,&BoolPlay);
+            //Snake();
         }
     }
     allegro_exit();
