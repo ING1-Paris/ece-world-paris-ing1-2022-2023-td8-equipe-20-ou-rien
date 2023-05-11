@@ -402,7 +402,6 @@ void Snake()
     int score=0;
     int pano=0;
     int depPano=1;
-    srand(time(NULL));
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP *tete[3];
     BITMAP *corps[3];
