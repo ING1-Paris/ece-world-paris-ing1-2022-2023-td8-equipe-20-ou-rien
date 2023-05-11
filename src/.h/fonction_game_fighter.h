@@ -9,4 +9,17 @@
 #ifndef PROJET_FONCTION_GAME_FIGHTER_H
 #define PROJET_FONCTION_GAME_FIGHTER_H
 
+typedef struct joueurFight
+{
+    int posX,posY;
+    int nbVie;
+    int tx,ty;
+    int direction;
+    int BoolMvmt,BoolTouche;
+    int skin;
+    int indice;
+}t_joueurFight;
+
+void FightPlay();
+
 #endif //PROJET_FONCTION_GAME_FIGHTER_H
