@@ -74,6 +74,7 @@ typedef struct game3d_s {
     int indexSaveData;
     BITMAP *buffer;
     BITMAP *sky;
+    BITMAP *pauseBanner;
     BITMAP **texture;
     BITMAP ****oppsAnim;
     BITMAP *munLogo;
