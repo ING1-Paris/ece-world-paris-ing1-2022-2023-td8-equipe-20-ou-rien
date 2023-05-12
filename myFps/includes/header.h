@@ -6,6 +6,8 @@
 #define PI 3.14159265358979323846
 #define SIZE 64
 
+void pauseMenu(game3d_t *game);
+
 void generateSpawnCoord(game3d_t *game, int *x, int *y);
 
 void animOpps(npc_t *opps, BITMAP ****anim);

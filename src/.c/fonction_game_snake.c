@@ -208,11 +208,13 @@ int detectionDefaite(t_liste *snake)
     while(mailletmp!=NULL)
     {
 
-        if(snake->premier->posX<mailletmp->posX&&snake->premier->posX>mailletmp->posX-20&&snake->premier->direction==1&&snake->premier->posY>mailletmp->posY&&snake->premier->posY<mailletmp->posY+20&&(mailletmp->direction==3||mailletmp->direction==4))
+        if(snake->premier->posX>=mailletmp->posX&&snake->premier->posX<=mailletmp->posX+20&&snake->premier->direction==1&&snake->premier->posY>=mailletmp->posY&&snake->premier->posY<=mailletmp->posY+20&&(mailletmp->direction==3||mailletmp->direction==4))
         {
-            printf("%d>%d>%d| %d<%d<%d\n",mailletmp->posX,snake->premier->posX,mailletmp->posX-10,mailletmp->posY,snake->premier->posY,(mailletmp->posY+20));
+            printf("%d<%d<%d| %d<%d<%d\n",mailletmp->posX,snake->premier->posX,mailletmp->posX+20,mailletmp->posY,snake->premier->posY,(mailletmp->posY+20));
             return 1;
         }
+
+
         if(snake->premier->posX+snake->premier->tx>mailletmp->posX&&snake->premier->posX<mailletmp->posX+20&&snake->premier->direction==2&&snake->premier->posY>mailletmp->posY&&snake->premier->posY<mailletmp->posY+20&&(mailletmp->direction==3||mailletmp->direction==4))
         {
             printf("%d<%d<%d| %d<%d<%d\n",mailletmp->posX,snake->premier->posX,mailletmp->posX+20,mailletmp->posY,snake->premier->posY,(mailletmp->posY+20));
@@ -347,18 +349,46 @@ int detectPommeManger(t_pomme *pomme,t_liste *snake)
     return 0;
 }
 
+int detectPommeSurSerpentX(t_liste* liste,t_pomme *pomme)
+{
+    t_maille *mailletmp=liste->premier;
+    while (mailletmp!=NULL)
+    {
+        if(pomme->posX>mailletmp->posX&&pomme->posX<mailletmp->posX+mailletmp->tx)
+        {
+            return 1;
+        }
+        mailletmp=mailletmp->next;
+    }
+    return 0;
+}
+
+int detectPommeSurSerpentY(t_liste* liste,t_pomme *pomme)
+{
+    t_maille *mailletmp=liste->premier;
+    while (mailletmp!=NULL)
+    {
+        if(pomme->posY>mailletmp->posY&&pomme->posY<mailletmp->posY+mailletmp->ty)
+        {
+            return 1;
+        }
+        mailletmp=mailletmp->next;
+    }
+    return 0;
+}
+
 void mangePomme(t_liste *snake, t_pomme*pomme,int *score)
 {
     if(detectPommeManger(pomme,snake))
     {
         *score=*score+1;
         pomme->posY=rand()%SCREEN_H-30;
-        while (pomme->posY<15||pomme->posY%5!=0)
+        while (pomme->posY<15||pomme->posY%5!=0|| detectPommeSurSerpentY(snake,pomme))
         {
             pomme->posY=rand()%SCREEN_H-30;
         }
         pomme->posX=rand()%SCREEN_W-30;
-        while (pomme->posX%5!=0||pomme->posX<15)
+        while (pomme->posX%5!=0||pomme->posX<15|| detectPommeSurSerpentX(snake,pomme))
         {
             pomme->posX=rand()%SCREEN_W-30;
         }
