@@ -845,8 +845,14 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                 break;
             }
         }
-        drawJoueur(joueur1, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
-        drawJoueur(joueur2, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
+        if(joueur1->BoolTour)
+        {
+            drawJoueur(joueur1, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
+        }
+        else
+        {
+            drawJoueur(joueur2, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
+        }
         rectfill(sousbuffer,joueur1->posX,joueur1->posY,joueur1->posX+30,joueur1->posY+40, makecol(255,0,0));
         draw_sprite(buffer,portailBas,371,763);
         draw_sprite(buffer,mur,0,213);
@@ -960,8 +966,14 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                 break;
             }
         }
-        drawJoueur(joueur1, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
-        drawJoueur(joueur2, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
+        if(joueur1->BoolTour)
+        {
+            drawJoueur(joueur1, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
+        }
+        else
+        {
+            drawJoueur(joueur2, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
+        }
         draw_sprite(buffer,arbre,39,193);
         rectfill(sousbuffer,joueur1->posX,joueur1->posY,joueur1->posX+30,joueur1->posY+40, makecol(255,0,0));
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
