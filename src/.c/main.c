@@ -3,6 +3,7 @@
 #include "../.h/fonction_allegro.h"
 #include "../.h/fonction_project.h"
 #include "../.h/fonction_game_snake.h"
+#include "../.h/fonction_game_fighter.h"
 #include "time.h"
 #include "stdlib.h"
 
@@ -22,8 +23,9 @@ int main(void) {
         }
         if(BoolPlay)
         {
+            FightPlay();
             //playMap(&BoolMenu,&BoolSettings,&BoolPlay);
-            Snake();
+            //Snake();
         }
     }
     allegro_exit();

@@ -5,24 +5,6 @@
 #include <winalleg.h>
 #include "header.h"
 
-void pauseMenu(game3d_t *game)
-{
-    BITMAP *tmpBuffer;
-
-    if (key[KEY_H]) {
-        tmpBuffer = create_bitmap(SCREEN_W, SCREEN_H);
-        
-        while (!key[KEY_A]) {
-            clear_bitmap(tmpBuffer);
-            blit(game->buffer, tmpBuffer, 0, 0, 0, 0, game->buffer->w, game->buffer->h);
-            textout_ex(tmpBuffer, font, "Sensitivity", 200, 300, makecol(255, 255, 255), -1);
-            textout_ex(tmpBuffer, font, "Volume", 500, 300, makecol(255, 255, 255), -1);
-            blit(tmpBuffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-        }
-        destroy_bitmap(tmpBuffer);
-    }
-}
-
 void gameLoop(void)
 {
     game3d_t *game = createGame();
