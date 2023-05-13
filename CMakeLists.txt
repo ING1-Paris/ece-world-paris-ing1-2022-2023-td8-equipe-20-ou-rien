@@ -3,6 +3,6 @@ project(PROJET C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(PROJET src/.c/main.c src/.c/fonction_allegro.c src/.c/fonction_project.c src/.c/fonction_utile.c src/.c/fonction_game_snake.c robin/fonction_affichage.c src/.c/fonction_game_fighter.c jadou/sous.c jadou/header.h jadou/main.c)
+add_executable(PROJET src/.c/main.c src/.c/fonction_allegro.c src/.c/fonction_project.c src/.c/fonction_utile.c src/.c/fonction_game_snake.c robin/fonction_affichage.c src/.c/fonction_game_fighter.c)
 
 target_link_libraries(PROJET -lmingw32 -lalleg44)
