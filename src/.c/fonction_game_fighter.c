@@ -11,7 +11,8 @@ t_joueurFight *creerJoueurFight(int indice){
     t_joueurFight *JoueurAretourner= malloc(sizeof (t_joueurFight));
     JoueurAretourner->indice=indice;
     JoueurAretourner->BoolMvmt=0;
-    JoueurAretourner->skin=2;
+    printf("choose skin: 1/2\n");
+    scanf("%d",&JoueurAretourner->skin);
     JoueurAretourner->posX=SCREEN_W/2;
     JoueurAretourner->posY=SCREEN_H-200;
     JoueurAretourner->direction=1;
@@ -43,7 +44,65 @@ void actualiserPosJoueur(t_joueurFight *Joueur)
 
 int getGesture(t_joueurFight *Joueur)
 {
-    if(Joueur->indice)
+    if(Joueur->indice==1)
+    {
+        if(key[KEY_D])
+        {
+            if(key[KEY_W])
+            {
+                Joueur->BoolJump=1;
+                return 3;
+            }
+            Joueur->direction=1;
+            Joueur->BoolMvmt=1;
+            Joueur->BoolJump=0;
+            return 1;
+        }
+        else if(key[KEY_A])
+        {
+            if(key[KEY_W])
+            {
+                Joueur->BoolJump=1;
+                return 3;
+            }
+            Joueur->direction=0;
+            Joueur->BoolMvmt=1;
+            Joueur->BoolJump=0;
+            return 2;
+        }
+        else if(key[KEY_W])
+        {
+            Joueur->BoolJump=1;
+            return 3;
+        }
+        else if(key[KEY_F])
+        {
+            Joueur->BoolMvmt=0;
+            return 4;
+        }
+        else if(key[KEY_T])
+        {
+            Joueur->BoolMvmt=0;
+            return 5;
+        }
+        else if(key[KEY_Y])
+        {
+            Joueur->BoolMvmt=0;
+            return 6;
+        }
+        else if(key[KEY_U])
+        {
+            Joueur->BoolMvmt=0;
+            return 7;
+        }
+        else
+        {
+            Joueur->BoolMvmt=0;
+            Joueur->BoolJump=0;
+            return 0;
+        }
+    }
+    if(Joueur->indice==2)
     {
         if(key[KEY_RIGHT])
         {
@@ -579,7 +638,9 @@ void FightPlay()
     BITMAP *fondMap= importeImage("../image/image fighter/fond/fond map fighter.bmp");
     BITMAP *sousfondMap= importeImage("../image/image fighter/fond/sous map fighter.bmp");
     t_joueurFight *Joueur1= creerJoueurFight(1);
-    int frame=1;
+    t_joueurFight *Joueur2 = creerJoueurFight(2);
+    int frame1=1;
+    int frame2=1;
     while(!key[KEY_ESC])
     {
         clear_bitmap(buffer);
@@ -588,14 +649,24 @@ void FightPlay()
         stretch_blit(sousfondMap,sousBuffer,0,0,sousfondMap->w,sousfondMap->h,0,0,SCREEN_W,SCREEN_H);
         if(!verifGravite(Joueur1,sousBuffer))
         {
-            Joueur1->posY+=DEP;
+            Joueur1->posY+=2*DEP;
+        }
+        if(!verifGravite(Joueur2,sousBuffer))
+        {
+            Joueur2->posY+=2*DEP;
         }
         if(!verifCollision(Joueur1,sousBuffer))
         {
             actualiserPosJoueur(Joueur1);
         }
-        drawPlayer(Joueur1,&frame,buffer,skin1Attack1,skin1Attack2,skin1Charge,skin1Dead,skin1Fireball,skin1FlameJet,skin1Idle,skin1Jump,skin1Walk,skin2Attack1,skin2Attack2,skin2Charge1,skin2Charge2,skin2Dead,skin2Magic_arrow,skin2Magic_sphere,skin2Hurt,skin2Idle,skin2Jump,skin2Run,skin2Walk);
+        if(!verifCollision(Joueur2,sousBuffer))
+        {
+            actualiserPosJoueur(Joueur2);
+        }
+        drawPlayer(Joueur1,&frame1,buffer,skin1Attack1,skin1Attack2,skin1Charge,skin1Dead,skin1Fireball,skin1FlameJet,skin1Idle,skin1Jump,skin1Walk,skin2Attack1,skin2Attack2,skin2Charge1,skin2Charge2,skin2Dead,skin2Magic_arrow,skin2Magic_sphere,skin2Hurt,skin2Idle,skin2Jump,skin2Run,skin2Walk);
+        drawPlayer(Joueur2,&frame2,buffer,skin1Attack1,skin1Attack2,skin1Charge,skin1Dead,skin1Fireball,skin1FlameJet,skin1Idle,skin1Jump,skin1Walk,skin2Attack1,skin2Attack2,skin2Charge1,skin2Charge2,skin2Dead,skin2Magic_arrow,skin2Magic_sphere,skin2Hurt,skin2Idle,skin2Jump,skin2Run,skin2Walk);
         rectfill(sousBuffer,Joueur1->posX,Joueur1->posY,Joueur1->posX+Joueur1->tx,Joueur1->posY+Joueur1->ty, makecol(0,0,0));
+        rectfill(sousBuffer,Joueur2->posX,Joueur2->posY,Joueur2->posX+Joueur1->tx,Joueur2->posY+Joueur2->ty, makecol(255,0,0));
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(100);
     }
