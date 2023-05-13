@@ -29,4 +29,5 @@ typedef struct player2 {
 
 BITMAP *charger_image(const char *image);
 
+
 #endif //PROJET_HEADER_H

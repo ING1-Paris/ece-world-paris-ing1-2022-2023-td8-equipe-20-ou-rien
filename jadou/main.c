@@ -23,6 +23,7 @@ int fonction_affichage(){
 
 
 
+
 int main (){
     player1 ballon1;
     player2 ballon2;

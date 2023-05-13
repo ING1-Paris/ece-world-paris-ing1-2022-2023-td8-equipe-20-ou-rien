@@ -11,3 +11,4 @@ BITMAP *charger_image(const char *image) {
 }
 
 
+
