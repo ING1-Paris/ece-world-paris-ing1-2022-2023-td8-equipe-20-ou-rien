@@ -25,9 +25,17 @@ int fonction_affichage(){
 
 
 int main (){
-    player1 ballon1;
-    player2 ballon2;
+    Joueur1 ballon1;
+    Joueur2 ballon2;
 
+    BITMAP *ballon = NULL;
+    BITMAP *stand_de_tir = NULL;
+    BITMAP *background;
+
+    while (!key[KEY_ESC]){
+        if (key[KEY_R])
+            jeu(background, ballon, stand_de_tir, ballon1, ballon2);
+    }
 
     allegro_exit();
     return 0;
