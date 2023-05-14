@@ -29,8 +29,6 @@ typedef struct train
     int direction;
     int BoolMvmt;
 }t_train;
-
-void fill_bitmap(BITMAP *bmp, int color,int posX,int posY);
 void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay);
 void animationDebut();
 void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay);

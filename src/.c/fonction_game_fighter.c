@@ -6,13 +6,74 @@
 #define DEP 5
 
 
-t_joueurFight *creerJoueurFight(int indice){
+int chooseSkinFight(BITMAP *buffer,int indice)
+{
+    char NomDeFichier[1000];
+    BITMAP *chooseSkin1[8];
+    int frame1=1,frame2=1;
+    for(int i=1;i<8;i++)
+    {
+        sprintf(NomDeFichier,"../image/image fighter/skin1/chooseSkin/frame-%d.bmp",i);
+        chooseSkin1[i]= importeImage(NomDeFichier);
+    }
+    BITMAP *chooseSkin2[9];
+    for(int i=1;i<9;i++)
+    {
+        sprintf(NomDeFichier,"../image/image fighter/skin2/chooseSkin/frame-%d.bmp",i);
+        chooseSkin2[i]= importeImage(NomDeFichier);
+    }
+    show_mouse(screen);
+    while(1)
+    {
+        frame1++;
+        frame2++;
+        if(frame1>7)
+        {
+            frame1=1;
+        }
+        if(frame2>8)
+        {
+            frame2=1;
+        }
+        clear_bitmap(buffer);
+        textout_ex(buffer,font,"Choisissez un skin pour le joueur: ",100,100, makecol(255,0,0),-1);
+        if(indice==1)
+        {
+            textout_ex(buffer,font,"1",400,100, makecol(255,0,0),-1);
+        }
+        else
+        {
+            textout_ex(buffer,font,"2",400,100, makecol(255,0,0),-1);
+        }
+        if(mouse_x>0&&mouse_x<400)
+        {
+            rectfill(buffer,0,400,400,800, makecol(255,255,255));
+            if(mouse_b==1)
+            {
+                return 1;
+            }
+        }
+        if(mouse_x>400&&mouse_x<800)
+        {
+            rectfill(buffer,400,400,800,800, makecol(255,255,255));
+            if(mouse_b==1)
+            {
+                return 2;
+            }
+        }
+        draw_sprite(buffer,chooseSkin1[frame1],0,400);
+        draw_sprite(buffer,chooseSkin2[frame2],400,400);
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        rest(100);
+    }
+}
+
+t_joueurFight *creerJoueurFight(int indice,BITMAP *buffer){
 
     t_joueurFight *JoueurAretourner= malloc(sizeof (t_joueurFight));
     JoueurAretourner->indice=indice;
     JoueurAretourner->BoolMvmt=0;
-    printf("choose skin: 1/2\n");
-    scanf("%d",&JoueurAretourner->skin);
+    JoueurAretourner->skin= chooseSkinFight(buffer,indice);
     JoueurAretourner->posX=SCREEN_W/2;
     JoueurAretourner->posY=SCREEN_H-200;
     JoueurAretourner->direction=1;
@@ -637,8 +698,9 @@ void FightPlay()
     BITMAP *sousBuffer= create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP *fondMap= importeImage("../image/image fighter/fond/fond map fighter.bmp");
     BITMAP *sousfondMap= importeImage("../image/image fighter/fond/sous map fighter.bmp");
-    t_joueurFight *Joueur1= creerJoueurFight(1);
-    t_joueurFight *Joueur2 = creerJoueurFight(2);
+    t_joueurFight *Joueur1= creerJoueurFight(1,buffer);
+    rest(100);
+    t_joueurFight *Joueur2 = creerJoueurFight(2,buffer);
     int frame1=1;
     int frame2=1;
     while(!key[KEY_ESC])

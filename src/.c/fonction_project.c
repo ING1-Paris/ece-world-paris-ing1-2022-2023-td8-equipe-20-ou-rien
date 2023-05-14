@@ -11,17 +11,6 @@
 
 //gestion of menu
 
-void fill_bitmap(BITMAP *bmp, int color,int posX,int posY) {
-
-    for (posY=0; posY < bmp->h; posY++) {
-        for (posX=0; posX < bmp->w; posX++) {
-            if(getpixel(bmp,posX,posY)!= makecol(255,0,255))
-            {
-                putpixel(bmp, posX, posY, color);
-            }
-        }
-    }
-}
 int cliqueSurMenu(BITMAP *PLAY)
 {
     if((mouse_x>275&&mouse_x<275+PLAY->w)&&(mouse_y>310&&mouse_y<310+PLAY->h)&&mouse_b==1)
