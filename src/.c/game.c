@@ -94,12 +94,12 @@ game3d_t *createGame(void)
     game->skyX = 0;
     game->skyX2 = SCREEN_W + 10;
     game->oldMouseX = mouse_x;
-    game->map = loadMap("./conf/map.conf", &game->row, &game->col);
-    game->sky = load_bitmap("./assets/skyNight.bmp", NULL);
-    game->texture = loadTexture("./assets/texture.bmp");
+    game->map = loadMap("../conf/map.conf", &game->row, &game->col);
+    game->sky = load_bitmap("../assets/skyNight.bmp", NULL);
+    game->texture = loadTexture("../assets/texture.bmp");
     game->player = createPlayer();
-    game->munLogo = load_bitmap("./assets/munLogo.bmp", NULL);
-    game->pauseBanner = load_bitmap("./assets/pause.bmp", NULL);
+    game->munLogo = load_bitmap("../assets/munLogo.bmp", NULL);
+    game->pauseBanner = load_bitmap("../assets/pause.bmp", NULL);
     loadOpps(game);
 
     checkPtrNull(game->munLogo, "Exit Failure: loading munition logo bitmap failed\n");
