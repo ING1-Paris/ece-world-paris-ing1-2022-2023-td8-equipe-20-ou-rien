@@ -1,8 +1,5 @@
 #include <time.h>
 #include <allegro.h>
-
-#include <stdio.h>
-#include <winalleg.h>
 #include "header.h"
 
 int main(void)

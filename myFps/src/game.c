@@ -1,4 +1,5 @@
 #include <allegro.h>
+#include <winalleg.h>
 #include "header.h"
 
 int gameLoop(void)
