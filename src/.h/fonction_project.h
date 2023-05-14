@@ -4,7 +4,8 @@
 #include "allegro.h"
 #include "fonction_allegro.h"
 #include "fonction_utile.h"
-#include "../.h/fonction_game_snake.h"
+#include "fonction_game_snake.h"
+#include "fonction_game_fighter.h"
 
 #ifndef PROJET_FONCTION_SETTINGS_H
 #define PROJET_FONCTION_SETTINGS_H

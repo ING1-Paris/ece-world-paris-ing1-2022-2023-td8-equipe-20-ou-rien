@@ -23,8 +23,8 @@ int main(void) {
         }
         if(BoolPlay)
         {
-            FightPlay();
-            //playMap(&BoolMenu,&BoolSettings,&BoolPlay);
+            //FightPlay();
+            playMap(&BoolMenu,&BoolSettings,&BoolPlay);
             //Snake();
         }
     }

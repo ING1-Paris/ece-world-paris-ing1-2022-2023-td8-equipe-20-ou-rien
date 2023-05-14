@@ -375,7 +375,6 @@ int verfDebutAnimation(t_joueur *joueur)
     }
     else
     {
-        printf("%d\n",joueur->posY);
         return 0;
     }
 }
@@ -817,6 +816,10 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
             if((joueur1->posX==150&&joueur1->posY==175))
             {
                 textout_ex(buffer,font,"Entrer ?",150,165, makecol(255,0,0),-1);
+                if(key[KEY_ENTER])
+                {
+                    FightPlay();
+                }
             }
             if(verifFinAnimationFin(joueur1))
             {
@@ -838,6 +841,10 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
             if((joueur2->posX==150&&joueur2->posY==175))
             {
                 textout_ex(buffer,font,"Entrer ?",150,165, makecol(255,0,0),-1);
+                if(key[KEY_ENTER])
+                {
+                    FightPlay();
+                }
             }
             if(verifFinAnimationFin(joueur2))
             {
@@ -953,17 +960,14 @@ void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITM
         }
         if(joueur1->BoolTour)
         {
-            if((joueur1->posX==625&&joueur1->posY==305))
+            printf("%d %d\n",joueur1->posX,joueur1->posY);
+            if((joueur1->posX==210&&joueur1->posY==330))
             {
-                textout_ex(buffer,font,"Entrer ?",625,295, makecol(255,0,0),-1);
-                if(key[KEY_ENTER])
-                {
-                    Snake();
-                }
+                textout_ex(buffer,font,"Entrer ?",210,320, makecol(255,0,0),-1);
             }
-            if((joueur1->posX==150&&joueur1->posY==175))
+            if((joueur1->posX==605&&joueur1->posY==70))
             {
-                textout_ex(buffer,font,"Entrer ?",150,165, makecol(255,0,0),-1);
+                textout_ex(buffer,font,"Entrer ?",605,60, makecol(255,0,0),-1);
             }
             if(verifFinAnimationFin(joueur1))
             {
@@ -979,17 +983,14 @@ void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITM
         }
         if(joueur2->BoolTour)
         {
-            if((joueur2->posX==625&&joueur2->posY==305))
+            printf("%d %d\n",joueur2->posX,joueur2->posY);
+            if((joueur2->posX==210&&joueur2->posY==330))
             {
-                textout_ex(buffer,font,"Entrer ?",625,295, makecol(255,0,0),-1);
-                if(key[KEY_ENTER])
-                {
-                    Snake();
-                }
+                textout_ex(buffer,font,"Entrer ?",210,320, makecol(255,0,0),-1);
             }
-            if((joueur2->posX==150&&joueur2->posY==175))
+            if((joueur2->posX==605&&joueur2->posY==70))
             {
-                textout_ex(buffer,font,"Entrer ?",150,165, makecol(255,0,0),-1);
+                textout_ex(buffer,font,"Entrer ?",605,60, makecol(255,0,0),-1);
             }
             if(verfDebutAnimation(joueur2))
             {
@@ -1104,17 +1105,13 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
         }
         if(joueur1->BoolTour)
         {
-            if((joueur1->posX==625&&joueur1->posY==305))
+            if((joueur1->posX==295&&joueur1->posY==440))
             {
-                textout_ex(buffer,font,"Entrer ?",625,295, makecol(255,0,0),-1);
-                if(key[KEY_ENTER])
-                {
-                    Snake();
-                }
+                textout_ex(buffer,font,"Entrer ?",295,430, makecol(255,0,0),-1);
             }
-            if((joueur1->posX==150&&joueur1->posY==175))
+            if((joueur1->posX==225&&joueur1->posY==135))
             {
-                textout_ex(buffer,font,"Entrer ?",150,165, makecol(255,0,0),-1);
+                textout_ex(buffer,font,"Entrer ?",225,125, makecol(255,0,0),-1);
             }
             if(verfDebutAnimation(joueur1))
             {
@@ -1130,17 +1127,13 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
         }
         if(joueur2->BoolTour)
         {
-            if((joueur2->posX==625&&joueur2->posY==305))
+            if((joueur2->posX==295&&joueur2->posY==440))
             {
-                textout_ex(buffer,font,"Entrer ?",625,295, makecol(255,0,0),-1);
-                if(key[KEY_ENTER])
-                {
-                    Snake();
-                }
+                textout_ex(buffer,font,"Entrer ?",295,430, makecol(255,0,0),-1);
             }
-            if((joueur2->posX==150&&joueur2->posY==175))
+            if((joueur2->posX==225&&joueur2->posY==135))
             {
-                textout_ex(buffer,font,"Entrer ?",150,165, makecol(255,0,0),-1);
+                textout_ex(buffer,font,"Entrer ?",225,125, makecol(255,0,0),-1);
             }
             if(verfDebutAnimation(joueur2))
             {
@@ -1168,6 +1161,124 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
         iteration %= 7;
         rest(10);
     }
+}
+
+
+void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP *buffer,int frame,int *Map)
+{
+    if(*Map==3)
+    {
+        if(joueur1->BoolTour)
+        {
+            joueur1->posY=SCREEN_H-80;
+            joueur1->posX=390;
+            joueur2->posY=SCREEN_H-80;
+            joueur2->posX=390;
+        }
+        else
+        {
+            joueur2->posY=SCREEN_H-80;
+            joueur2->posX=390;
+            joueur1->posY=SCREEN_H-80;
+            joueur1->posX=390;
+        }
+        joueur1->direction=3;
+        joueur2->direction=3;
+        joueur1->BoolMvmt=0;
+        joueur2->BoolMvmt=0;
+    }
+    int x=0,y=0;
+    //image pour la map
+    int iteration=0;
+    BITMAP *map= importeImage("../image/image play map/image riviere/maprobin.bmp");
+    BITMAP *sousMap= importeImage("../image/image play map/image riviere/SousMap.bmp");
+    BITMAP *portailBas= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
+    BITMAP *sousbuffer= create_bitmap(SCREEN_W,SCREEN_H);
+    while(1)
+    {
+        clear_bitmap(buffer);
+        clear_bitmap(sousbuffer);
+        blit(map, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+        blit(sousMap,sousbuffer,0,0,0,0,SCREEN_W,SCREEN_H);
+        if(iteration==6)
+        {
+            frame++;
+            if(frame>4)
+            {
+                frame=1;
+            }
+            if(joueur1->BoolTour)
+            {
+                if(!verifJoueurCollision(joueur1,sousbuffer))
+                {
+                    actualiserMvmtJoueur(joueur1);
+                }
+            }
+            else
+            {
+                if(!verifJoueurCollision(joueur2,sousbuffer))
+                {
+                    actualiserMvmtJoueur(joueur2);
+                }
+            }
+        }
+        if(joueur1->BoolTour)
+        {
+            printf("%d %d\n",joueur1->posX,joueur1->posY);
+            if((joueur1->posX==130&&joueur1->posY==325))
+            {
+                textout_ex(buffer,font,"Entrer ?",130,315, makecol(255,0,0),-1);
+            }
+            if(verifFinAnimationFin(joueur1))
+            {
+                textout_ex(buffer,font,"Quitter ?",455,10, makecol(255,0,0),-1);
+            }
+            if(verfDebutAnimation(joueur1))
+            {
+                *Map=-3;
+                break;
+            }
+
+        }
+        if(joueur2->BoolTour)
+        {
+            printf("%d %d\n",joueur2->posX,joueur2->posY);
+            if((joueur2->posX==210&&joueur2->posY==330))
+            {
+                textout_ex(buffer,font,"Entrer ?",210,320, makecol(255,0,0),-1);
+            }
+            if((joueur2->posX==605&&joueur2->posY==70))
+            {
+                textout_ex(buffer,font,"Entrer ?",605,60, makecol(255,0,0),-1);
+            }
+            if(verfDebutAnimation(joueur2))
+            {
+                *Map=-3;
+                break;
+            }
+            if(verifFinAnimationFin(joueur2))
+            {
+                textout_ex(buffer,font,"Quitter ?",455,10, makecol(255,0,0),-1);
+            }
+        }
+        if(joueur1->BoolTour)
+        {
+            drawJoueur(joueur1, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
+        }
+        else
+        {
+            drawJoueur(joueur2, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
+        }
+        rectfill(sousbuffer,joueur1->posX,joueur1->posY,joueur1->posX+30,joueur1->posY+40, makecol(255,0,0));
+        blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+        iteration += 1;
+        iteration %= 7;
+        rest(10);
+    }
+    destroy_bitmap(portailBas);
+    destroy_bitmap(map);
+    destroy_bitmap(sousbuffer);
+    destroy_bitmap(sousMap);
 }
 
 int animationTourJoueur(BITMAP* buffer,BITMAP**EnsembleChiffre)
@@ -1217,7 +1328,7 @@ int animationTourJoueur(BITMAP* buffer,BITMAP**EnsembleChiffre)
 void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
 {
     int Tour;
-    int Map=-1;
+    int Map=3;
     if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
     {
         allegro_message("problem gfx");
@@ -1345,7 +1456,7 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
         joueur2->BoolTour=1;
         joueur1->BoolTour=0;
     }
-    animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
+    //animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
     while (!key[KEY_ESC])
     {
         if(Map==0||Map==-1)
@@ -1359,6 +1470,10 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
         else if(Map==2||Map==-3)
         {
             BallonMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame,&Map);
+        }
+        else if(Map==3)
+        {
+            RiviereMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame,&Map);
         }
     }
     rest(500);
