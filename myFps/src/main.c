@@ -5,41 +5,10 @@
 #include <winalleg.h>
 #include "header.h"
 
-void gameLoop(void)
-{
-    game3d_t *game = createGame();
-
-    PlaySound("./assets/background.wav", NULL, SND_ASYNC | SND_LOOP);
-
-    while (!key[KEY_ESC]) {
-        clear_bitmap(game->buffer);
-
-        playerHeal(game);
-        displaySky(game);
-        movePlayer(game);
-        raycasting(game);
-        for (int i = 0; i < game->nbNpc; i++) {
-            calcSprite(game, i);
-            animOpps(&game->opps[i], game->oppsAnim);
-        }
-        display3D(game);
-        displayGun(game);
-        displayMiniMap(game);
-        displayTarget(game);
-        displayLife(game);
-        displayScore(game);
-        game->oldMouseX = mouse_x;
-        game->indexSaveData = 0;
-        pauseMenu(game);
-
-        blit(game->buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-    }
-    PlaySound(NULL, NULL, SND_ASYNC | SND_LOOP);
-    freeGame(game);
-}
-
 int main(void)
 {
+    int score;
+
     allegro_init();
     BITMAP *buffer;
 
@@ -57,8 +26,18 @@ int main(void)
     }
     set_alpha_blender();
 
-    gameLoop();
+    score = gameLoop();
    
+    /*
+
+        Pour Matteo:
+
+        Tu transformes ce main en une fonction qui va lancer mon jeu.
+        Elle retournera le score définie plus haut.
+        Je pense qu'avant le rendu final j'apporterais quelques modif enore.
+        
+    */
+
     allegro_exit();
     return 0;
 }

@@ -22,6 +22,7 @@ void displayLife(game3d_t *game);
 void displayScore(game3d_t *game);
 
 game3d_t *createGame(void);
+int gameLoop(void);
 
 void quickSort(int arr[], int label1[], char label2[], int label3[], int left, int right);
 
