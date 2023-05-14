@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "header.h"
+#include "../.h/header.h"
 
 void freePlayer(player_t *player)
 {

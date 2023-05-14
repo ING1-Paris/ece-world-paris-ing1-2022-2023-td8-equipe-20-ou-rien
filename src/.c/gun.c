@@ -1,6 +1,6 @@
 #include <allegro.h>
 #include <stdio.h>
-#include "header.h"
+#include "../.h/header.h"
 
 void changeGun(player_t *player)
 {

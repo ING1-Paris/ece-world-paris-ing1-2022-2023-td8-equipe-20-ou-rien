@@ -315,7 +315,7 @@ void actualiserDirectionSnake(t_liste *snake,int *posXEnregistre, int *posYEnreg
 
 void animationDefaite(BITMAP*buffer, BITMAP *defaite, BITMAP*teteMort[3],BITMAP*fond,BITMAP *pomme,BITMAP *corps[3],BITMAP *queue[3],t_liste *snake,t_pomme *structPomme)
 {
-    while(!key[KEY_ESC])
+    for(int i=0;i<300;i++)
     {
         clear_bitmap(buffer);
         stretch_blit(fond,buffer,0,0,fond->w,fond->h,0,0,SCREEN_W,SCREEN_H);
@@ -416,7 +416,7 @@ t_pomme *creerPomme()
     return pommeARendre;
 }
 
-void Snake()
+int Snake()
 {
     if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
     {
@@ -509,4 +509,5 @@ void Snake()
         exit(EXIT_FAILURE);
     }
     stop_sample(musicfond);
+    return score;
 }

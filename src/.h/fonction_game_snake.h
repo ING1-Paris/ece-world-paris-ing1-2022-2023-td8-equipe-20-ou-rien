@@ -11,6 +11,6 @@
 
 
 
-void Snake();
+int Snake();
 
 #endif //PROJET_FONCTION_GAME_SNAKE_H

@@ -1,5 +1,5 @@
 #include <allegro.h>
-#include "header.h"
+#include "../.h/header.h"
 
 void changeVolume(game3d_t *game)
 {

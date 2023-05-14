@@ -1,7 +1,7 @@
 #include <allegro.h>
 #include <math.h>
 #include <stdio.h>
-#include "header.h"
+#include "../.h/header.h"
 
 void displayScore(game3d_t *game)
 {

@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <math.h>
 #include <stdio.h>
-#include "header.h"
+#include "../.h/header.h"
 
 void playerHeal(game3d_t *game)
 {

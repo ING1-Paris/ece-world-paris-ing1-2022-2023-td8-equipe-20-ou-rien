@@ -1,7 +1,7 @@
 #include <allegro.h>
 #include <stdbool.h>
 #include <math.h>
-#include "header.h"
+#include "../.h/header.h"
 
 void displayMapDebug(char **map, BITMAP *buffer)
 {

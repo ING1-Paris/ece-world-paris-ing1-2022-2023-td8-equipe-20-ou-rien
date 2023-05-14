@@ -1,8 +1,8 @@
 #include <time.h>
 #include <allegro.h>
-#include "header.h"
+#include "../.h/header.h"
 
-int main(void)
+int fonction_labyrinth(void)
 {
     int score;
 
@@ -38,4 +38,3 @@ int main(void)
     allegro_exit();
     return 0;
 }
-END_OF_MAIN();

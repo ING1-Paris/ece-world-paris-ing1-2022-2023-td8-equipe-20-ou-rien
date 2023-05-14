@@ -1,6 +1,6 @@
 #include <allegro.h>
 #include <winalleg.h>
-#include "header.h"
+#include "../.h/header.h"
 
 int gameLoop(void)
 {
@@ -33,7 +33,7 @@ int gameLoop(void)
         blit(game->buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     }
     PlaySound(NULL, NULL, SND_ASYNC | SND_LOOP);
-    score = game->score;
+    score = game->player->score;
     freeGame(game);
 
     return score;
