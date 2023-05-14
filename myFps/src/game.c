@@ -6,7 +6,7 @@ int gameLoop(void)
     int score;
     game3d_t *game = createGame();
 
-    PlaySound("./assets/background.wav", NULL, SND_ASYNC | SND_LOOP);
+    PlaySound("../assets/background.wav", NULL, SND_ASYNC | SND_LOOP);
 
     while (!key[KEY_ESC]) {
         clear_bitmap(game->buffer);

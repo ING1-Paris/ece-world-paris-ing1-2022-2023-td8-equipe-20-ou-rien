@@ -128,14 +128,6 @@ void raycasting(game3d_t *game)
     int heightWall;
     int j = -1;
 
-    // displayMapDebug(game->map, game->buffer);
-    // circlefill(game->buffer, game->player->screenX, game->player->screenY, 5, makecol(0, 255, 0));
-    // for (int i = 0; i < game->nbNpc; i++) {
-    //     circlefill(game->buffer, game->opps[i].x, game->opps[i].y, 5, makecol(255, 0, 0));
-    //     if (game->opps[i].playerSeen)
-    //         line(game->buffer, game->player->screenX, game->player->screenY, game->opps[i].x, game->opps[i].y, makecol(0, 0, 0));
-    // }
-
     getPosCase(game->player);
     for (float i = game->player->angle + ((0.0175 * 60) / 2.00); i > game->player->angle - ((0.0175 * 60) / 2.00); i -= 0.004375) {
         j++;
