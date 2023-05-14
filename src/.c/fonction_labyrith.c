@@ -5,8 +5,6 @@
 int fonction_labyrinth(void)
 {
     int score;
-
-    allegro_init();
     BITMAP *buffer;
 
     srand(time(NULL));
