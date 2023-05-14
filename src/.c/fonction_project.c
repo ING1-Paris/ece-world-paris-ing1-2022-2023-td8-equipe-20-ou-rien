@@ -1097,6 +1097,10 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
             if((joueur1->posX==295&&joueur1->posY==440))
             {
                 textout_ex(buffer,font,"Entrer ?",295,430, makecol(255,0,0),-1);
+                if(key[KEY_ENTER])
+                {
+                    fonction_labyrinth();
+                }
             }
             if((joueur1->posX==225&&joueur1->posY==135))
             {
@@ -1119,6 +1123,10 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
             if((joueur2->posX==295&&joueur2->posY==440))
             {
                 textout_ex(buffer,font,"Entrer ?",295,430, makecol(255,0,0),-1);
+                if(key[KEY_ENTER])
+                {
+                    fonction_labyrinth();
+                }
             }
             if((joueur2->posX==225&&joueur2->posY==135))
             {

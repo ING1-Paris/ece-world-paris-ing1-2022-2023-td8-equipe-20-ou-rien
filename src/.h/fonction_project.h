@@ -6,6 +6,7 @@
 #include "fonction_utile.h"
 #include "fonction_game_snake.h"
 #include "fonction_game_fighter.h"
+#include "header.h"
 
 #ifndef PROJET_FONCTION_SETTINGS_H
 #define PROJET_FONCTION_SETTINGS_H
