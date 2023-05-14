@@ -87,4 +87,4 @@ void jeu(BITMAP *background, BITMAP *ballon, BITMAP *stand_de_tir, Joueur1 ballo
         draw_sprite(background, ballon_affichage, ballon.pose_x8, ballon.pose_y8);
     }
 
-
+}
