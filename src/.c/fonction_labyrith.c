@@ -32,7 +32,5 @@ int fonction_labyrinth(void)
         Je pense qu'avant le rendu final j'apporterais quelques modif enore.
         
     */
-
-    allegro_exit();
-    return 0;
+    return score;
 }

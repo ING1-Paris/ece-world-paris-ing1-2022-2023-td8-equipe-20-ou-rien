@@ -13,7 +13,7 @@
 
 int cliqueSurMenu(BITMAP *PLAY)
 {
-    if((mouse_x>275&&mouse_x<275+PLAY->w)&&(mouse_y>310&&mouse_y<310+PLAY->h)&&mouse_b==1)
+    if((mouse_x>275&&mouse_x<275+PLAY->w)&&(mouse_y>200&&mouse_y<200+PLAY->h)&&mouse_b==1)
     {
         return 1;
     }
@@ -26,12 +26,6 @@ int cliqueSurMenu(BITMAP *PLAY)
 
 void animationDebut()
 {
-    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
-    {
-        allegro_message("problem gfx");
-        allegro_exit();
-        exit(EXIT_FAILURE);
-    }
     BITMAP *slogan= importeImage("../image/image utile/slogan 2.bmp");
     BITMAP *company= importeImage("../image/image utile/company project.bmp");
     BITMAP *Nom1= importeImage("../image/image ecriture/nom projet-1.bmp");
@@ -125,12 +119,6 @@ void testChiffre(BITMAP **EnsembleChiffre,BITMAP *buffer)
 
 void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
 {
-    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
-    {
-        allegro_message("problem gfx");
-        allegro_exit();
-        exit(EXIT_FAILURE);
-    }
     char nomDeFichier[5000];
     int frame=1;
     int x=0;
@@ -158,7 +146,7 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
         {
             frame=1;
         }
-        if((mouse_x>275&&mouse_x<275+PLAY->w)&&(mouse_y>310&&mouse_y<310+PLAY->h))
+        if((mouse_x>275&&mouse_x<275+PLAY->w)&&(mouse_y>200&&mouse_y<200+PLAY->h))
         {
             fill_bitmap(PLAY, makecol(255,0,0),0,0);
         }
@@ -167,7 +155,7 @@ void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
             fill_bitmap(PLAY, makecol(255,255,255),0,0);
         }
         stretch_blit(fond[frame],buffer,0,0,fond[frame]->w,fond[frame]->h,0,0,SCREEN_W,SCREEN_H);
-        draw_sprite(buffer,PLAY,275,345);
+        draw_sprite(buffer,PLAY,275,200);
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(28);
     }
@@ -759,7 +747,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
     int iteration=0;
     BITMAP *map= importeImage("../image/image play map/snake/image map/map snake.bmp");
     BITMAP *sousMap= importeImage("../image/image play map/snake/image map/sous map snake.bmp");
-    BITMAP *portailBas= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
+    BITMAP *portail= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
     BITMAP *mur= importeImage("../image/image play map/snake/batiment/mur.bmp");
     BITMAP *abreRanger= importeImage("../image/image play map/snake/batiment/arbreRanger.bmp");
     BITMAP *abreCarre= importeImage("../image/image play map/snake/batiment/arbreCarre.bmp");
@@ -850,7 +838,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
             drawJoueur(joueur2, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
         }
         rectfill(sousbuffer,joueur1->posX,joueur1->posY,joueur1->posX+30,joueur1->posY+40, makecol(255,0,0));
-        draw_sprite(buffer,portailBas,371,763);
+        draw_sprite(buffer,portail,371,SCREEN_H-portail->h);
         draw_sprite(buffer,mur,0,213);
         draw_sprite(buffer,abreCarre,624,430);
         draw_sprite(buffer,abreRanger,410,0);
@@ -859,7 +847,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
         iteration %= 7;
         rest(10);
     }
-    destroy_bitmap(portailBas);
+    destroy_bitmap(portail);
     destroy_bitmap(map);
     destroy_bitmap(mur);
     destroy_bitmap(abreRanger);
@@ -917,7 +905,7 @@ void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITM
     int iteration=0;
     BITMAP *map= importeImage("../image/image play map/image ballon/Map/mapJade.bmp");
     BITMAP *sousMap= importeImage("../image/image play map/image ballon/Map/sousMapJade.bmp");
-    BITMAP *portailBas= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
+    BITMAP *portail= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
     BITMAP *sousbuffer= create_bitmap(SCREEN_W,SCREEN_H);
     while(1)
     {
@@ -1001,12 +989,13 @@ void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITM
             drawJoueur(joueur2, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
         }
         rectfill(sousbuffer,joueur1->posX,joueur1->posY,joueur1->posX+30,joueur1->posY+40, makecol(255,0,0));
+        draw_sprite(buffer,portail,371,SCREEN_H-portail->h);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         iteration += 1;
         iteration %= 7;
         rest(10);
     }
-    destroy_bitmap(portailBas);
+    destroy_bitmap(portail);
     destroy_bitmap(map);
     destroy_bitmap(sousbuffer);
     destroy_bitmap(sousMap);
@@ -1063,6 +1052,7 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
     BITMAP *map= importeImage("../image/image play map/image ninja/image map/map.bmp");
     BITMAP *sousMap= importeImage("../image/image play map/image ninja/image map/sousMap.bmp");
     BITMAP *arbre= importeImage("../image/image play map/image ninja/batiment/abre1.bmp");
+    BITMAP *portail= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
     BITMAP *sousbuffer= create_bitmap(SCREEN_W,SCREEN_H);
     while(1)
     {
@@ -1152,6 +1142,7 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
             drawJoueur(joueur2, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
         }
         draw_sprite(buffer,arbre,39,193);
+        draw_sprite(buffer,portail,371,SCREEN_H-portail->h);
         rectfill(sousbuffer,joueur1->posX,joueur1->posY,joueur1->posX+30,joueur1->posY+40, makecol(255,0,0));
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         iteration += 1;
@@ -1189,7 +1180,7 @@ void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BIT
     int iteration=0;
     BITMAP *map= importeImage("../image/image play map/image riviere/maprobin.bmp");
     BITMAP *sousMap= importeImage("../image/image play map/image riviere/SousMap.bmp");
-    BITMAP *portailBas= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
+    BITMAP *portail= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
     BITMAP *sousbuffer= create_bitmap(SCREEN_W,SCREEN_H);
     while(1)
     {
@@ -1267,12 +1258,13 @@ void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BIT
             drawJoueur(joueur2, skin1MvmtDown, skin1MvmtUp, skin1MvmtCoter, skin2MvmtDown, skin2MvmtUp, skin2MvmtCoter,skin3MvmtDown, skin3MvmtUp, skin3MvmtCoter, buffer, frame);
         }
         rectfill(sousbuffer,joueur1->posX,joueur1->posY,joueur1->posX+30,joueur1->posY+40, makecol(255,0,0));
+        draw_sprite(buffer,portail,385,SCREEN_H-portail->h);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         iteration += 1;
         iteration %= 7;
         rest(10);
     }
-    destroy_bitmap(portailBas);
+    destroy_bitmap(portail);
     destroy_bitmap(map);
     destroy_bitmap(sousbuffer);
     destroy_bitmap(sousMap);
@@ -1326,7 +1318,7 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
 {
     int Tour;
     int Map=3;
-    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
+    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
     {
         allegro_message("problem gfx");
         allegro_exit();
