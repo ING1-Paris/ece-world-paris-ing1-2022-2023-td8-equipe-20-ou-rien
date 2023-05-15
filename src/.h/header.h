@@ -51,8 +51,6 @@ typedef struct npc_s {
     int life;
     int points;
     time_t tempoAttack;
-    int maxStep;
-    int nbStep;
     int maxLife;
     int speed;
     int dps;
@@ -69,6 +67,7 @@ typedef struct npc_s {
     int dead;
     int playerSeen;
     int agro;
+    long clockStep;
 } npc_t;
 
 typedef struct game3d_s {
