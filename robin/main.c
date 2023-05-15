@@ -22,16 +22,15 @@ void defilement_map_verticale(BITMAP *decor, BITMAP *buffer,int vitesse_vertical
 
 void premiere_riviere(BITMAP *spritebanquise, BITMAP *buffer, BITMAP *spriteourspolaire, int vitesse_verticale, int vitesse_horizontale){
 
-    draw_sprite(buffer, spritebanquise, 0 - vitesse_horizontale, 230 + vitesse_horizontale );
+    draw_sprite(buffer, spritebanquise, 0 - vitesse_horizontale, 240 + vitesse_horizontale );
 
     draw_sprite(buffer, spritebanquise, SCREEN_W-spritebanquise->w + vitesse_horizontale, 100 + vitesse_verticale);
 
-    draw_sprite(buffer, spritebanquise, 0 - vitesse_horizontale, -40 + vitesse_verticale );
+    draw_sprite(buffer, spritebanquise, 0 - vitesse_horizontale, -35 + vitesse_verticale );
 
-    draw_sprite(buffer, spriteourspolaire, (SCREEN_W-spriteourspolaire->w) /6, 160 + vitesse_horizontale );
-    draw_sprite(buffer, spriteourspolaire, 5*(SCREEN_W-spriteourspolaire->w) /6, 160 + vitesse_horizontale );
-
-    draw_sprite(buffer, spriteourspolaire, (SCREEN_W-spriteourspolaire->w) /2, 30 + vitesse_horizontale );
+    draw_sprite(buffer, spriteourspolaire, (SCREEN_W-spriteourspolaire->w) /6, 155 + vitesse_horizontale );
+    draw_sprite(buffer, spriteourspolaire, 5*(SCREEN_W-spriteourspolaire->w) /6, 155 + vitesse_horizontale );
+    draw_sprite(buffer, spriteourspolaire, (SCREEN_W-spriteourspolaire->w) /2, 20 + vitesse_horizontale );
 
 
 }
@@ -46,9 +45,9 @@ void deuxieme_riviere(BITMAP *spritebanquise, BITMAP *buffer, BITMAP *spriteours
 
         draw_sprite(buffer, spritebanquise, 400 - vitesse_horizontale, -720 + vitesse_verticale );
 
-        draw_sprite(buffer, spriteourspolaire, (SCREEN_W-spriteourspolaire->w) /6,  vitesse_verticale-580 );
-        draw_sprite(buffer, spriteourspolaire, (SCREEN_W-spriteourspolaire->w) /2,  vitesse_verticale -580);
-        draw_sprite(buffer, spriteourspolaire, 5*(SCREEN_W-spriteourspolaire->w) /6,  vitesse_verticale-580 );
+        draw_sprite(buffer, spriteourspolaire, (SCREEN_W-spriteourspolaire->w) /6,  vitesse_verticale-590 );
+        draw_sprite(buffer, spriteourspolaire, (SCREEN_W-spriteourspolaire->w) /2,  vitesse_verticale -590);
+        draw_sprite(buffer, spriteourspolaire, 5*(SCREEN_W-spriteourspolaire->w) /6,  vitesse_verticale-590 );
 
     }
     if(vitesse_verticale>=900) {
@@ -58,26 +57,24 @@ void deuxieme_riviere(BITMAP *spritebanquise, BITMAP *buffer, BITMAP *spriteours
 
         draw_sprite(buffer, spritebanquise, 400 - vitesse_horizontale, -720 + 900);
 
-        draw_sprite(buffer, spriteourspolaire, (SCREEN_W - spriteourspolaire->w) / 6, 900 - 580);
-        draw_sprite(buffer, spriteourspolaire, (SCREEN_W - spriteourspolaire->w) / 2, 900 - 580);
-        draw_sprite(buffer, spriteourspolaire, 5 * (SCREEN_W - spriteourspolaire->w) / 6, 900 - 580);
+        draw_sprite(buffer, spriteourspolaire, (SCREEN_W - spriteourspolaire->w) / 6, 900 - 590);
+        draw_sprite(buffer, spriteourspolaire, (SCREEN_W - spriteourspolaire->w) / 2, 900 - 590);
+        draw_sprite(buffer, spriteourspolaire, 5 * (SCREEN_W - spriteourspolaire->w) / 6, 900 - 590);
     }
 }
 
-void decoration(BITMAP *buffer, BITMAP *spritemorse, BITMAP *spritearbre, BITMAP *spritetronc,BITMAP *spritemap, int  vitesse_verticale){
+void decoration(BITMAP *buffer, BITMAP *spritemorse, BITMAP *spritetronc, BITMAP *spritemap, BITMAP *phoque, BITMAP *phoque1, pingouin *ping, int  vitesse_verticale){
 
     draw_sprite(buffer, spritemorse, 600, 400 + vitesse_verticale );
     draw_sprite(buffer, spritetronc, 50,   300+vitesse_verticale );
     draw_sprite(buffer, spritemap, 0,   -400+vitesse_verticale );
 
-    if(vitesse_verticale>=900){
-
-        draw_sprite(buffer, spritemorse, 600, 400 + 900 );
-        draw_sprite(buffer, spritetronc, 50,   300 + 900 );
-        draw_sprite(buffer, spritemap, 0,   -400 + 900 );
-
+    if(ping->y + vitesse_verticale >= -840) {
+        draw_sprite(buffer, phoque, 10, -880 + vitesse_verticale);
     }
-
+    if(ping->y + vitesse_verticale <= -840)
+        printf("f");
+        //draw_sprite(buffer, phoque1, 10, -880 + vitesse_verticale);
 
 }
 
@@ -119,18 +116,25 @@ pingouin *creer_pingouin(void)
     return ping;
 }
 
-void anim_pingouin(pingouin *ping, int *tempo_marche)
+void anim_pingouin(pingouin *ping, int *tempo_marche, int vitesse_verticale)
 {
+
     if (key[KEY_UP]) {
-        if (*tempo_marche == 2) {
+        if(*tempo_marche == 6 && ping->y-vitesse_verticale <= -157 && ping->y-vitesse_verticale >= -470 && (ping->x <= 340 || ping->x >= 390)) {
+            ping->y = ping->y;
+        }else if (*tempo_marche == 6) {
             *tempo_marche = 0;
             ping->y--;
+            if(ping->y-vitesse_verticale==-157)
+                ping->y=ping->y;
         } else
             *tempo_marche += 1;
         ping->index_anim = 0;
         ping->flip = 0;
     } else if (key[KEY_DOWN]) {
-        if (*tempo_marche == 2) {
+        if (*tempo_marche == 6 && ping->y-vitesse_verticale <= -157 && ping->y-vitesse_verticale >= -470 && (ping->x <= 340 || ping->x >= 390)) {
+            ping->y = ping->y;
+        }else if (*tempo_marche == 6 ) {
             *tempo_marche = 0;
             ping->y++;
         } else
@@ -138,7 +142,9 @@ void anim_pingouin(pingouin *ping, int *tempo_marche)
         ping->flip = 0;
         ping->index_anim = 0;
     } else if (key[KEY_LEFT]) {
-        if (*tempo_marche == 2) {
+        if (*tempo_marche == 6 && ping->y-vitesse_verticale <= -157 && ping->y-vitesse_verticale >= -470 && ping->x == 341 ) {
+            ping->x=ping->x;
+        } else if (*tempo_marche == 6 ) {
             *tempo_marche = 0;
             ping->x--;
         } else
@@ -146,7 +152,9 @@ void anim_pingouin(pingouin *ping, int *tempo_marche)
         ping->flip = 1;
         ping->index_anim = 1;
     } else if (key[KEY_RIGHT]) {
-        if (*tempo_marche == 2) {
+        if (*tempo_marche == 6 && ping->y-vitesse_verticale <= -157 && ping->y-vitesse_verticale >= -470 && ping->x == 389 ) {
+            ping->x=ping->x;
+        } else if (*tempo_marche == 6 ) {
             *tempo_marche = 0;
             ping->x++;
         } else
@@ -158,10 +166,10 @@ void anim_pingouin(pingouin *ping, int *tempo_marche)
 
 void affiche_pingouin(pingouin *ping, BITMAP *buffer)
 {
-    if (ping->anim[ping->index_anim][ping->index_sprite + 1] != NULL && ping->tempo_anim == 40) {
+    if (ping->anim[ping->index_anim][ping->index_sprite + 1] != NULL && ping->tempo_anim == 90) {
         ping->index_sprite++;
         ping->tempo_anim = 0;
-    } else if (ping->anim[ping->index_anim][ping->index_sprite + 1] == NULL && ping->tempo_anim == 40) {
+    } else if (ping->anim[ping->index_anim][ping->index_sprite + 1] == NULL && ping->tempo_anim == 90) {
         ping->index_sprite = 0;
         ping->tempo_anim = 0;
     } else
@@ -179,15 +187,77 @@ int defaite(pingouin *ping){
     return 0;
 
 };
-/*
-int tomber_dans_eau(pingouin *ping){
 
-    if(ping->y >=296 && ping->y <= 637)
-        return 1;
-    return 0;
+int tomber_dans_eau(BITMAP *buffer, pingouin *ping){
+
+    int i,j;
+    int pixel_courant, pixel_prochain;
+    int r, g, b;
+    int r2, g2, b2;
+
+    if(KEY_UP) {
+        for (i = ping->x + 30; i < ping->x + 70; i++) {
+            pixel_courant = getpixel(buffer, i, ping->y + 95);
+            pixel_prochain = getpixel(buffer, i, ping->y + 65);
+            r = getr(pixel_courant);
+            g = getg(pixel_courant);
+            b = getb(pixel_courant);
+            r2 = getr(pixel_prochain);
+            g2 = getg(pixel_prochain);
+            b2 = getb(pixel_prochain);
+            if ((r == 162 && g == 225 && b == 253) && (r2 == 162 && g2 == 225 && b2 == 253))
+                return 1;
+            return 0;
+        }
+    }
+    if(KEY_DOWN) {
+        for (i = ping->x + 30; i < ping->x + 70; i++) {
+            pixel_courant = getpixel(buffer, i, ping->y + 95);
+            pixel_prochain = getpixel(buffer, i, ping->y + 125);
+            r = getr(pixel_courant);
+            g = getg(pixel_courant);
+            b = getb(pixel_courant);
+            r2 = getr(pixel_prochain);
+            g2 = getg(pixel_prochain);
+            b2 = getb(pixel_prochain);
+            if ((r == 162 && g == 225 && b == 253) && (r2 == 162 && g2 == 225 && b2 == 253))
+                return 1;
+            return 0;
+        }
+    }
+    if(KEY_RIGHT) {
+        for (i = ping->x + 30; i < ping->x + 70; i++) {
+            pixel_courant = getpixel(buffer, ping->x + 50, i);
+            pixel_prochain = getpixel(buffer, ping->x + 80, i);
+            r = getr(pixel_courant);
+            g = getg(pixel_courant);
+            b = getb(pixel_courant);
+            r2 = getr(pixel_prochain);
+            g2 = getg(pixel_prochain);
+            b2 = getb(pixel_prochain);
+            if ((r == 162 && g == 225 && b == 253) && (r2 == 162 && g2 == 225 && b2 == 253))
+                return 1;
+            return 0;
+        }
+    }
+    if(KEY_LEFT) {
+        for (i = ping->x + 30; i < ping->x + 70; i++) {
+            pixel_courant = getpixel(buffer, ping->x - 50, i);
+            pixel_prochain = getpixel(buffer, ping->x - 80, i);
+            r = getr(pixel_courant);
+            g = getg(pixel_courant);
+            b = getb(pixel_courant);
+            r2 = getr(pixel_prochain);
+            g2 = getg(pixel_prochain);
+            b2 = getb(pixel_prochain);
+            if ((r == 162 && g == 225 && b == 253) && (r2 == 162 && g2 == 225 && b2 == 253))
+                return 1;
+            return 0;
+        }
+    }
 
 }
-*/
+
 
 int main() {
 
@@ -213,9 +283,10 @@ int main() {
 
     //decor
     BITMAP *spritemorse;
-    BITMAP *spritearbre;
     BITMAP *spritetronc;
     BITMAP *spritemap;
+    BITMAP *phoque;
+    BITMAP *phoque1;
 
     decor=load_bitmap("../mapprojetneige.bmp",NULL);
     if (!decor)
@@ -224,7 +295,7 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    spritebanquise=load_bitmap("../spritebanquise.bmp",NULL);
+    spritebanquise=load_bitmap("../spritebanquise1.bmp",NULL);
     if (!spritebanquise)
     {
         allegro_message("pas pu trouver banquise.bmp");
@@ -259,18 +330,26 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
+    phoque=load_bitmap("../phoque.bmp",NULL);
+    if (!phoque)
+    {
+        allegro_message("pas pu trouver spritemap.bmp");
+        exit(EXIT_FAILURE);
+    }
+
+    phoque1=load_bitmap("../phoque1.bmp",NULL);
+    if (!phoque1)
+    {
+        allegro_message("pas pu trouver spritemap.bmp");
+        exit(EXIT_FAILURE);
+    }
+
     int vitesse_verticale=0;
     int vitesse_horizontale=0;
-    int saut=30;
-
-    int cptimg=0;
-    int tmpimg=3;
-    int positiony=450;
-    int positionx=350;
-
     int tempo_riviere = 0;
     int tempo_marche = 0;
     int vitesse = 1;
+
     pingouin *ping = creer_pingouin();
 
     while (!key[KEY_ESC]) {
@@ -279,38 +358,52 @@ int main() {
 
         defilement_map_verticale(decor, buffer, vitesse_verticale);
 
-        decoration( buffer, spritemorse, spritearbre, spritetronc, spritemap, vitesse_verticale);
+        decoration( buffer, spritemorse, spritetronc, spritemap, phoque, phoque1, ping, vitesse_verticale);
 
         premiere_riviere( spritebanquise, buffer, spriteourspolaire, vitesse_verticale, vitesse_horizontale);
 
         deuxieme_riviere(spritebanquise, buffer, spriteourspolaire, decor, vitesse_verticale, vitesse_horizontale);
 
+        if(tomber_dans_eau(buffer, ping)){
+            allegro_exit();
+            return 0;
+        }
 
         if (defaite(ping)) {
             allegro_exit();
             return 0;
         }
 
-        /*if (tomber_dans_eau(ping)) {
-            allegro_exit();
-            return 0;
-        }*/
-        printf("%d\n",ping->y-vitesse_verticale);
-        if (tempo_riviere == 5) {
+        if (tempo_riviere == 20) {
+
             if (vitesse_verticale < 900) {
                 vitesse_verticale += vitesse;
                 ping->y += 1;
             }
+
+            if(ping->y<=200+vitesse_verticale && ping->y>=140+vitesse_verticale )
+                ping->x--;
+            if(ping->y<=60+vitesse_verticale && ping->y>=0+vitesse_verticale )
+                ping->x++;
+            if(ping->y<=-75+vitesse_verticale && ping->y>=-135+vitesse_verticale )
+                ping->x--;
+
+            if(ping->y<=-545+vitesse_verticale && ping->y>=-605+vitesse_verticale )
+                ping->x--;
+            if(ping->y<=-690+vitesse_verticale && ping->y>=-750+vitesse_verticale )
+                ping->x++;
+            if(ping->y<=-760+vitesse_verticale && ping->y>=-820+vitesse_verticale )
+                ping->x--;
+
             vitesse_horizontale += vitesse;
             tempo_riviere = 0;
         } else
             tempo_riviere++;
 
-        anim_pingouin(ping, &tempo_marche);
+        anim_pingouin(ping, &tempo_marche, vitesse_verticale);
         affiche_pingouin(ping, buffer);
-
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-
+//printf("%d\n",ping->y-vitesse_verticale);
     }
     allegro_exit();
     return 0;
