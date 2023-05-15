@@ -27,9 +27,9 @@ int main(void) {
         {
             //fonction_labyrinth();
             //FightPlay();
-            //playMap(&BoolMenu,&BoolSettings,&BoolPlay);
+            playMap(&BoolMenu,&BoolSettings,&BoolPlay);
             //Snake();
-             fonction_riviere();
+             //fonction_riviere();
 
         }
     }
