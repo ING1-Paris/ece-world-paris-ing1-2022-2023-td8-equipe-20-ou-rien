@@ -295,8 +295,8 @@ t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP 
     t_joueur *joueurArendre= malloc(sizeof (t_joueur));
     joueurArendre->posX=0;
     joueurArendre->posY=0;
-    joueurArendre->DepY=5;
-    joueurArendre->depX=5;
+    joueurArendre->DepY=DEP;
+    joueurArendre->depX=DEP;
     joueurArendre->indice=indice;
     joueurArendre->direction=1;
     joueurArendre->BoolMvmt=0;
@@ -1446,7 +1446,7 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
         joueur2->BoolTour=1;
         joueur1->BoolTour=0;
     }
-    //animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
+    animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
     while (!key[KEY_ESC])
     {
         if(Map==0||Map==-1)

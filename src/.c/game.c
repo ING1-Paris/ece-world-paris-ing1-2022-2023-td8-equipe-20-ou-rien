@@ -2,6 +2,28 @@
 #include <winalleg.h>
 #include "../.h/header.h"
 
+
+void fonctionSortieDeSouris()
+{
+    if(mouse_x>SCREEN_W)
+    {
+        mouse_x=SCREEN_W-1;
+    }
+    if(mouse_x<0)
+    {
+        mouse_x=1;
+    }
+    if(mouse_y>SCREEN_H)
+    {
+        mouse_y=SCREEN_H-1;
+    }
+    if(mouse_y<0)
+    {
+        mouse_y=1;
+    }
+
+}
+
 int gameLoop(void)
 {
     int score;
@@ -11,7 +33,7 @@ int gameLoop(void)
 
     while (!key[KEY_ESC]) {
         clear_bitmap(game->buffer);
-
+        fonctionSortieDeSouris();
         playerHeal(game);
         displaySky(game);
         movePlayer(game);
@@ -38,6 +60,8 @@ int gameLoop(void)
 
     return score;
 }
+
+
 
 BITMAP **loadTexture(char *filepath)
 {
