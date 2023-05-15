@@ -45,6 +45,7 @@ typedef struct player_s {
     time_t timeHeal;
     time_t timeAttackedHeal;
     int score;
+    long clockStep;
 } player_t;
 
 typedef struct npc_s {
