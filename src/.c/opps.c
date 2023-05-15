@@ -84,13 +84,12 @@ BITMAP ***loadOneOpps(FILE *fp, game3d_t *game, int typeOpps, BITMAP ***animOpps
         game->opps[i].maxLife = game->opps[i].life;
         game->opps[i].dead = 0;
         game->opps[i].attacking = 0;
-        game->opps[i].maxStep = 3;
-        game->opps[i].nbStep = 0;
         game->opps[i].tempoAttack = time(NULL);
         game->opps[i].walking = 0;
         game->opps[i].playerSeen = 0;
         game->opps[i].agro = 0;
         game->opps[i].typeSprite = typeOpps;
+        game->opps[i].clockStep = clock();
     }
 
     return animOpps;
@@ -98,7 +97,7 @@ BITMAP ***loadOneOpps(FILE *fp, game3d_t *game, int typeOpps, BITMAP ***animOpps
 
 void loadOpps(game3d_t *game)
 {
-    FILE *fp = fopen("../conf/opps.conf", "r");
+    FILE *fp = fopen("./conf/opps.conf", "r");
     int nbOpps;
     int x, y;
 
@@ -269,7 +268,7 @@ void moveOpps(game3d_t *game, npc_t *opps, player_t *player, double angleMonster
     checkX = opps->x + posX;
     checkY = opps->y + posY;
 
-    if (checkCoordCrash((int)(checkY + posY * 3) / SIZE, (int)(checkX + posX * 3) / SIZE, game->row, game->col) && map[(int)(checkY + posY * 3) / SIZE][(int)(checkX + posX * 3) / SIZE] == '*' && opps->nbStep == opps->maxStep && opps->IndexAnim != 2 && !collideBetweenOpps(game, checkX, checkY, index) && (opps->playerSeen || opps->agro)) {
+    if (checkCoordCrash((int)(checkY + posY * 3) / SIZE, (int)(checkX + posX * 3) / SIZE, game->row, game->col) && map[(int)(checkY + posY * 3) / SIZE][(int)(checkX + posX * 3) / SIZE] == '*' && clock() - opps->clockStep >= 35 && opps->IndexAnim != 2 && !collideBetweenOpps(game, checkX, checkY, index) && (opps->playerSeen || opps->agro)) {
         if ((checkX >= player->screenX + 30 || checkX <= player->screenX - 30) && (checkY >= player->screenY + 30 || checkY <= player->screenY - 30)) {
             opps->x += round(posX);
             opps->y += round(posY);
@@ -284,9 +283,8 @@ void moveOpps(game3d_t *game, npc_t *opps, player_t *player, double angleMonster
             opps->IndexAnim = 1;
             opps->walking = 0;
         }
-        opps->nbStep = 0;
-    } else if (opps->nbStep < opps->maxStep)
-        opps->nbStep++;
+        opps->clockStep = clock();
+    }
 }
 
 void calcSprite(game3d_t *game, int index)
