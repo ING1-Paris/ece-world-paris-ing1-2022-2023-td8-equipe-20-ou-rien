@@ -315,7 +315,7 @@ void actualiserDirectionSnake(t_liste *snake,int *posXEnregistre, int *posYEnreg
 
 void animationDefaite(BITMAP*buffer, BITMAP *defaite, BITMAP*teteMort[3],BITMAP*fond,BITMAP *pomme,BITMAP *corps[3],BITMAP *queue[3],t_liste *snake,t_pomme *structPomme)
 {
-    for(int i=0;i<300;i++)
+    for(int i=0;i<30;i++)
     {
         clear_bitmap(buffer);
         stretch_blit(fond,buffer,0,0,fond->w,fond->h,0,0,SCREEN_W,SCREEN_H);
@@ -502,7 +502,7 @@ int Snake()
         }
         rest(30);
     }
-    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
+    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
     {
         allegro_message("problem gfx");
         allegro_exit();
