@@ -342,5 +342,4 @@ void jeu(BITMAP *background, BITMAP *ballon, BITMAP *tir, Joueur1 ballon1, Joueu
 
 
 
-
 }

@@ -74,5 +74,4 @@ void afficheBallonMob77(BITMAP* background, BITMAP* afficheBallon, Joueur2 *ball
 void afficheBallonMob88(BITMAP* background, BITMAP* afficheBallon, Joueur2 *ballon, const int *a, const int *b, const int *c);
 
 
-
 #endif //PROJET_HEADER_H
