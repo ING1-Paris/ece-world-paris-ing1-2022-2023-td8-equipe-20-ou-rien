@@ -1,15 +1,7 @@
 #include <allegro.h>
 #include <stdio.h>
+#include "../.h/fonction_riviere.h"
 
-typedef struct pingouin_s {
-    BITMAP ***anim;
-    int tempo_anim;
-    int index_anim;
-    int index_sprite;
-    int flip;
-    int x;
-    int y;
-}pingouin;
 
 void defilement_map_verticale(BITMAP *decor, BITMAP *buffer,int vitesse_verticale) {
 
@@ -69,16 +61,18 @@ void decoration(BITMAP *buffer, BITMAP *spritemorse, BITMAP *spritetronc, BITMAP
     draw_sprite(buffer, spritetronc, 50,   300+vitesse_verticale );
     draw_sprite(buffer, spritemap, 0,   -400+vitesse_verticale );
 
-    if(ping->y + vitesse_verticale >= -840) {
+    if(ping->y - vitesse_verticale > -835) {
         draw_sprite(buffer, phoque, 10, -880 + vitesse_verticale);
     }
-    if(ping->y + vitesse_verticale <= -840)
-        printf("f");
+
+    if(ping->y - vitesse_verticale <= -835)
+        draw_sprite(buffer, phoque1, 10, -880 + vitesse_verticale);
+
         //draw_sprite(buffer, phoque1, 10, -880 + vitesse_verticale);
 
 }
 
-void checkPtrNull(void *ptr, char *str)
+void checkPtrNullfonctionRiviere(void *ptr, char *str)
 {
     if (ptr == NULL) {
         printf("%s\n", str);
@@ -89,21 +83,21 @@ void checkPtrNull(void *ptr, char *str)
 
 pingouin *creer_pingouin(void)
 {
-    char chemin[] = "../a.bmp";
+    char chemin[] = "../robin/a.bmp";
     pingouin *ping = malloc(sizeof(pingouin));
 
-    checkPtrNull(ping, "Exit Failure: malloc failed\n");
+    checkPtrNullfonctionRiviere(ping, "Exit Failure: malloc failed\n");
     ping->anim = malloc(sizeof(BITMAP **) * (2 + 1));
-    checkPtrNull(ping->anim, "Exit Failure: malloc failed");
+    checkPtrNullfonctionRiviere(ping->anim, "Exit Failure: malloc failed");
     ping->anim[2] = NULL;
     for (int i = 0; i < 2; i++) {
         ping->anim[i] = malloc(sizeof(BITMAP *) * (3 + 1));
-        checkPtrNull(ping->anim[i], "Exit Failure: malloc failed");
+        checkPtrNullfonctionRiviere(ping->anim[i], "Exit Failure: malloc failed");
         ping->anim[i][3] = NULL;
         for (int j = 0; j < 3; j++) {
             ping->anim[i][j] = load_bitmap(chemin, NULL);
-            checkPtrNull(ping->anim[i][j], "Exit Failure: creating bitmap failed");
-            chemin[3] += 1;
+            checkPtrNullfonctionRiviere(ping->anim[i][j], "Exit Failure: creating bitmap failed");
+            chemin[9] += 1;
         }
     }
     ping->x = 350;
@@ -259,18 +253,7 @@ int tomber_dans_eau(BITMAP *buffer, pingouin *ping){
 }
 
 
-int main() {
-
-    allegro_init();
-    install_keyboard();
-
-    set_color_depth(desktop_color_depth());
-    if (set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
-    {
-        allegro_message("prb gfx mode");
-        allegro_exit();
-        exit(EXIT_FAILURE);
-    }
+int fonction_riviere() {
 
     BITMAP *decor;
     BITMAP *buffer = create_bitmap(SCREEN_W, SCREEN_H);
@@ -288,56 +271,56 @@ int main() {
     BITMAP *phoque;
     BITMAP *phoque1;
 
-    decor=load_bitmap("../mapprojetneige.bmp",NULL);
+    decor=load_bitmap("../robin/mapprojetneige.bmp",NULL);
     if (!decor)
     {
         allegro_message("pas pu trouver mapprojetneige.bmp");
         exit(EXIT_FAILURE);
     }
 
-    spritebanquise=load_bitmap("../spritebanquise1.bmp",NULL);
+    spritebanquise=load_bitmap("../robin/spritebanquise1.bmp",NULL);
     if (!spritebanquise)
     {
         allegro_message("pas pu trouver banquise.bmp");
         exit(EXIT_FAILURE);
     }
 
-    spriteourspolaire=load_bitmap("../spriteourspolaire.bmp",NULL);
+    spriteourspolaire=load_bitmap("../robin/spriteourspolaire.bmp",NULL);
     if (!spriteourspolaire)
     {
         allegro_message("pas pu trouver spriteourspolaire.bmp");
         exit(EXIT_FAILURE);
     }
 
-    spritemorse=load_bitmap("../spritemorse.bmp",NULL);
+    spritemorse=load_bitmap("../robin/spritemorse.bmp",NULL);
     if (!spritemorse)
     {
         allegro_message("pas pu trouver spritemorse.bmp");
         exit(EXIT_FAILURE);
     }
 
-    spritetronc=load_bitmap("../spritetronc.bmp",NULL);
+    spritetronc=load_bitmap("../robin/spritetronc.bmp",NULL);
     if (!spritetronc)
     {
         allegro_message("pas pu trouver spritetronc.bmp");
         exit(EXIT_FAILURE);
     }
 
-    spritemap=load_bitmap("../spritemap.bmp",NULL);
+    spritemap=load_bitmap("../robin/spritemap.bmp",NULL);
     if (!spritemap)
     {
         allegro_message("pas pu trouver spritemap.bmp");
         exit(EXIT_FAILURE);
     }
 
-    phoque=load_bitmap("../phoque.bmp",NULL);
+    phoque=load_bitmap("../robin/phoque.bmp",NULL);
     if (!phoque)
     {
         allegro_message("pas pu trouver spritemap.bmp");
         exit(EXIT_FAILURE);
     }
 
-    phoque1=load_bitmap("../phoque1.bmp",NULL);
+    phoque1=load_bitmap("../robin/phoque1.bmp",NULL);
     if (!phoque1)
     {
         allegro_message("pas pu trouver spritemap.bmp");
@@ -399,13 +382,11 @@ int main() {
             tempo_riviere = 0;
         } else
             tempo_riviere++;
-
         anim_pingouin(ping, &tempo_marche, vitesse_verticale);
         affiche_pingouin(ping, buffer);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
 //printf("%d\n",ping->y-vitesse_verticale);
     }
-    allegro_exit();
+    //return temps
     return 0;
 }
-END_OF_MAIN();
