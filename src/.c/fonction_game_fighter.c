@@ -47,7 +47,7 @@ int chooseSkinFight(BITMAP *buffer,int indice)
         }
         if(mouse_x>0&&mouse_x<400)
         {
-            rectfill(buffer,0,400,400,800, makecol(255,255,255));
+            rectfill(buffer,0,200,400,600, makecol(255,255,255));
             if(mouse_b==1)
             {
                 return 1;
@@ -55,14 +55,14 @@ int chooseSkinFight(BITMAP *buffer,int indice)
         }
         if(mouse_x>400&&mouse_x<800)
         {
-            rectfill(buffer,400,400,800,800, makecol(255,255,255));
+            rectfill(buffer,400,200,800,600, makecol(255,255,255));
             if(mouse_b==1)
             {
                 return 2;
             }
         }
-        draw_sprite(buffer,chooseSkin1[frame1],0,400);
-        draw_sprite(buffer,chooseSkin2[frame2],400,400);
+        draw_sprite(buffer,chooseSkin1[frame1],0,200);
+        draw_sprite(buffer,chooseSkin2[frame2],400,200);
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(100);
     }
@@ -81,6 +81,7 @@ t_joueurFight *creerJoueurFight(int indice,BITMAP *buffer){
     JoueurAretourner->ty=80;
     JoueurAretourner->BoolTouche=0;
     JoueurAretourner->BoolJump=0;
+    JoueurAretourner->nbVie=100;
     return JoueurAretourner;
 }
 
@@ -223,8 +224,115 @@ int getGesture(t_joueurFight *Joueur)
     }
 }
 
+int verifJoueurToucher(t_joueurFight *joueur1, t_joueurFight *joueur2,int gesture)
+{
+    if(joueur1->skin==1)
+    {
+        if(gesture==1)
+        {
+            if((joueur1->direction==1 && (joueur1->posX < joueur2->posX)) || (joueur1->direction==0 && (joueur1->posX > joueur2->posX)))
+            {
+                if(joueur1->posX>joueur2->posX-50&&joueur1->posX<joueur2->posX+50&&joueur1->posY==joueur2->posY)
+                {
+                    return 1;
+                }
+            }
+        }
+        if(gesture==2)
+        {
+            if((joueur1->direction==1 && (joueur1->posX < joueur2->posX)) || (joueur1->direction==0 && (joueur1->posX > joueur2->posX)))
+            {
+                if(joueur1->posX>joueur2->posX-100&&joueur1->posX<joueur2->posX+100&&joueur1->posY==joueur2->posY)
+                {
+                    return 1;
+                }
+            }
+        }
+        if(gesture==3)
+        {
+            if((joueur1->direction==1 && (joueur1->posX < joueur2->posX)) || (joueur1->direction==0 && (joueur1->posX > joueur2->posX)))
+            {
+                if(joueur1->posX>joueur2->posX-300&&joueur1->posX<joueur2->posX+300&&joueur1->posY==joueur2->posY)
+                {
+                    return 1;
+                }
+            }
+        }
+        if(gesture==4)
+        {
+            if((joueur1->direction==1 && (joueur1->posX < joueur2->posX)) || (joueur1->direction==0 && (joueur1->posX > joueur2->posX)))
+            {
+                if(joueur1->posX>joueur2->posX-200&&joueur1->posX<joueur2->posX+200&&joueur1->posY==joueur2->posY)
+                {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
 
-void drawPlayer(t_joueurFight *Joueur,int *frame,
+int drawCharge(t_joueurFight *joueurFight,BITMAP *buffer,BITMAP ** Skin1Charge,BITMAP ** Skin2Charge1,BITMAP ** Skin2Charge2,int gesture)
+{
+    if(joueurFight->skin==1)
+    {
+        if(joueurFight->direction==1)
+        {
+            for(int i=1;i<13;i++)
+            {
+                draw_sprite(buffer,Skin1Charge[i],joueurFight->posX+(i*20),joueurFight->posY);
+            }
+        }
+        if(joueurFight->direction==0)
+        {
+            for(int i=1;i<13;i++)
+            {
+                draw_sprite_h_flip(buffer,Skin1Charge[i],joueurFight->posX-(i*20),joueurFight->posY);
+            }
+        }
+    }
+    if(joueurFight->skin==2)
+    {
+        if(gesture==1)
+        {
+            if(joueurFight->direction==1)
+            {
+                for(int i=1;i<13;i++)
+                {
+                    draw_sprite(buffer,Skin2Charge1[i],joueurFight->posX+(i*20),joueurFight->posY);
+                }
+            }
+            if(joueurFight->direction==0)
+            {
+                for(int i=1;i<13;i++)
+                {
+                    draw_sprite_h_flip(buffer,Skin2Charge1[i],joueurFight->posX-(i*20),joueurFight->posY);
+                }
+            }
+        }
+        if(gesture==2)
+        {
+            if(joueurFight->direction==1)
+            {
+                for(int i=1;i<7;i++)
+                {
+                    draw_sprite(buffer,Skin2Charge2[i],joueurFight->posX+(i*20),joueurFight->posY+10);
+                }
+            }
+            if(joueurFight->direction==0)
+            {
+                for(int i=1;i<7;i++)
+                {
+                    draw_sprite_h_flip(buffer,Skin2Charge2[i],joueurFight->posX-(i*20),joueurFight->posY+10);
+                }
+            }
+        }
+
+    }
+}
+
+
+void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
                 BITMAP *buffer,
                 BITMAP**skin1Attack1,
                 BITMAP**skin1Attack2,
@@ -293,7 +401,6 @@ void drawPlayer(t_joueurFight *Joueur,int *frame,
                 *frame=1;
                 Joueur->BoolJump=0;
             }
-            printf("%d\n",*frame);
             if(Joueur->direction==1)
             {
                 draw_sprite(buffer,skin1Jump[*frame],Joueur->posX,Joueur->posY);
@@ -310,6 +417,7 @@ void drawPlayer(t_joueurFight *Joueur,int *frame,
             {
                 *frame=1;
                 Joueur->BoolJump=0;
+                printf("%d\n", verifJoueurToucher(Joueur,Joueur1,1));
             }
             if(Joueur->direction==1)
             {
@@ -328,6 +436,7 @@ void drawPlayer(t_joueurFight *Joueur,int *frame,
             {
                 *frame=1;
                 Joueur->BoolJump=0;
+                printf("%d\n", verifJoueurToucher(Joueur,Joueur1,2));
             }
             if(Joueur->direction==1)
             {
@@ -346,6 +455,8 @@ void drawPlayer(t_joueurFight *Joueur,int *frame,
             {
                 *frame=1;
                 Joueur->BoolJump=0;
+                drawCharge(Joueur,buffer,skin1Charge,skin2Charge1,skin2Charge2,1);
+                printf("%d\n", verifJoueurToucher(Joueur,Joueur1,3));
             }
             if(Joueur->direction==1)
             {
@@ -477,6 +588,7 @@ void drawPlayer(t_joueurFight *Joueur,int *frame,
             {
                 *frame=1;
                 Joueur->BoolJump=0;
+                drawCharge(Joueur,buffer,skin1Charge,skin2Charge1,skin2Charge2,2);
             }
             if(Joueur->direction==1)
             {
@@ -495,6 +607,7 @@ void drawPlayer(t_joueurFight *Joueur,int *frame,
             {
                 *frame=1;
                 Joueur->BoolJump=0;
+                drawCharge(Joueur,buffer,skin1Charge,skin2Charge1,skin2Charge2,1);
             }
             if(Joueur->direction==1)
             {
@@ -515,10 +628,9 @@ int verifGravite(t_joueurFight *joueurFight,BITMAP *buffer)
 {
     if(getpixel(buffer,joueurFight->posX,joueurFight->posY+joueurFight->ty+1)!= makecol(255,0,255))
     {
-        printf("en bas\n");
+        joueurFight->posY=490;
         return 1;
     }
-    printf("rien\n");
     return 0;
 }
 
@@ -528,7 +640,6 @@ int verifCollision(t_joueurFight *joueurFight,BITMAP *buffer)
     {
         if(getpixel(buffer,joueurFight->posX+joueurFight->tx+1,joueurFight->posY)!= makecol(255,0,255))
         {
-            printf("a droite\n");
             return 1;
         }
     }
@@ -536,7 +647,6 @@ int verifCollision(t_joueurFight *joueurFight,BITMAP *buffer)
     {
         if(getpixel(buffer,joueurFight->posX-1,joueurFight->posY)!= makecol(255,0,255))
         {
-            printf("a gauche\n");
             return 1;
         }
     }
@@ -545,12 +655,6 @@ int verifCollision(t_joueurFight *joueurFight,BITMAP *buffer)
 
 void FightPlay()
 {
-    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,800,0,0)!=0)
-    {
-        allegro_message("prblm gfx");
-        allegro_exit();
-        exit(EXIT_FAILURE);
-    }
     char NomDeFichier[900];
     //skin1
     BITMAP *skin1Attack1[6];
@@ -623,8 +727,8 @@ void FightPlay()
     //skin2
     BITMAP *skin2Attack1[8];
     BITMAP *skin2Attack2[10];
-    BITMAP *skin2Charge1[12];
-    BITMAP *skin2Charge2[6];
+    BITMAP *skin2Charge1[13];
+    BITMAP *skin2Charge2[7];
     BITMAP *skin2Dead[4];
     BITMAP *skin2Magic_arrow[7];
     BITMAP *skin2Magic_sphere[17];
@@ -643,12 +747,12 @@ void FightPlay()
         sprintf(NomDeFichier,"../image/image fighter/skin2/Attack2/frame-%d.bmp",i);
         skin2Attack2[i]= importeImage(NomDeFichier);
     }
-    for(int i=1;i<12;i++)
+    for(int i=1;i<13;i++)
     {
         sprintf(NomDeFichier,"../image/image fighter/skin2/Charge1/frame-%d.bmp",i);
         skin2Charge1[i]= importeImage(NomDeFichier);
     }
-    for(int i=1;i<6;i++)
+    for(int i=1;i<7;i++)
     {
         sprintf(NomDeFichier,"../image/image fighter/skin2/Charge2/frame-%d.bmp",i);
         skin2Charge2[i]= importeImage(NomDeFichier);
@@ -725,10 +829,16 @@ void FightPlay()
         {
             actualiserPosJoueur(Joueur2);
         }
-        drawPlayer(Joueur1,&frame1,buffer,skin1Attack1,skin1Attack2,skin1Charge,skin1Dead,skin1Fireball,skin1FlameJet,skin1Idle,skin1Jump,skin1Walk,skin2Attack1,skin2Attack2,skin2Charge1,skin2Charge2,skin2Dead,skin2Magic_arrow,skin2Magic_sphere,skin2Hurt,skin2Idle,skin2Jump,skin2Run,skin2Walk);
-        drawPlayer(Joueur2,&frame2,buffer,skin1Attack1,skin1Attack2,skin1Charge,skin1Dead,skin1Fireball,skin1FlameJet,skin1Idle,skin1Jump,skin1Walk,skin2Attack1,skin2Attack2,skin2Charge1,skin2Charge2,skin2Dead,skin2Magic_arrow,skin2Magic_sphere,skin2Hurt,skin2Idle,skin2Jump,skin2Run,skin2Walk);
+        drawPlayer(Joueur1,Joueur2,&frame1,buffer,skin1Attack1,skin1Attack2,skin1Charge,skin1Dead,skin1Fireball,skin1FlameJet,skin1Idle,skin1Jump,skin1Walk,skin2Attack1,skin2Attack2,skin2Charge1,skin2Charge2,skin2Dead,skin2Magic_arrow,skin2Magic_sphere,skin2Hurt,skin2Idle,skin2Jump,skin2Run,skin2Walk);
+        drawPlayer(Joueur2,Joueur1,&frame2,buffer,skin1Attack1,skin1Attack2,skin1Charge,skin1Dead,skin1Fireball,skin1FlameJet,skin1Idle,skin1Jump,skin1Walk,skin2Attack1,skin2Attack2,skin2Charge1,skin2Charge2,skin2Dead,skin2Magic_arrow,skin2Magic_sphere,skin2Hurt,skin2Idle,skin2Jump,skin2Run,skin2Walk);
         rectfill(sousBuffer,Joueur1->posX,Joueur1->posY,Joueur1->posX+Joueur1->tx,Joueur1->posY+Joueur1->ty, makecol(0,0,0));
         rectfill(sousBuffer,Joueur2->posX,Joueur2->posY,Joueur2->posX+Joueur1->tx,Joueur2->posY+Joueur2->ty, makecol(255,0,0));
+        textout_ex(buffer,font,"Vie Joueur 1:",70,20, makecol(255,255,255),-1);
+        textout_ex(buffer,font,"Vie Joueur 2:",500,20, makecol(255,255,255),-1);
+        rectfill(buffer,200,10,200+Joueur1->nbVie,40, makecol(255,255,255));
+        rectfill(buffer,630,10,630+Joueur2->nbVie,40, makecol(255,255,255));
+        rect(buffer,200,10,300,40, makecol(0,0,0));
+        rect(buffer,630,10,730,40, makecol(0,0,0));
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(100);
     }

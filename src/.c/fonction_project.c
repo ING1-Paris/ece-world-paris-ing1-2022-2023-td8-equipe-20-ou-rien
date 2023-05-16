@@ -789,6 +789,8 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                 if(key[KEY_ENTER])
                 {
                     Snake();
+                    joueur1->BoolTour=0;
+                    joueur2->BoolTour=1;
                 }
             }
             if((joueur1->posX==150&&joueur1->posY==175))
@@ -814,6 +816,8 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                 if(key[KEY_ENTER])
                 {
                     Snake();
+                    joueur1->BoolTour=1;
+                    joueur2->BoolTour=0;
                 }
             }
             if((joueur2->posX==150&&joueur2->posY==175))
