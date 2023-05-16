@@ -1,6 +1,6 @@
 #include "header.h"
 
-int fonction_affichage(){
+int Affichage(){
     allegro_init();
     install_keyboard();
     set_color_depth(desktop_color_depth());
@@ -9,8 +9,6 @@ int fonction_affichage(){
         allegro_message("prb gfx mode");
         allegro_exit();
         exit(EXIT_FAILURE);
-
-
 
 
 
@@ -29,15 +27,23 @@ int main (){
     Joueur2 ballon2;
 
     BITMAP *ballon = NULL;
-    BITMAP *stand_de_tir = NULL;
+    BITMAP *tir = NULL;
     BITMAP *background;
+
+    /*do{
+        if (key[KEY_R])
+        {
+            jeu(background, ballon, tir, ballon1, ballon2);
+        }
+    }while (!key[KEY_ESC])*/
 
     while (!key[KEY_ESC]){
         if (key[KEY_R])
-            jeu(background, ballon, stand_de_tir, ballon1, ballon2);
+            jeu(background, ballon, tir, ballon1, ballon2);
     }
 
     allegro_exit();
     return 0;
 }END_OF_MAIN();
+
 

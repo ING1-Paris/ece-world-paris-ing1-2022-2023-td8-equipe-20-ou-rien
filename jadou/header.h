@@ -6,54 +6,72 @@
 #include "time.h"
 
 typedef struct Joueur1{
-    int pose_x1, pose_y1;
-    int pose_x2, pose_y2;
-    int pose_x3, pose_y3;
-    int pose_x4, pose_y4;
-    int pose_x5, pose_y5;
-    int pose_x6, pose_y6;
-    int pose_x7, pose_y7;
-    int pose_x8, pose_y8;
+    int x1, y1;
+    int x2, y2;
+    int x3, y3;
+    int x4, y4;
+    int x5, y5;
+    int x6, y6;
+    int x7, y7;
+    int x8, y8;
 }Joueur1;
 
 typedef struct Joueur2{
-    int pose_x1, pose_y1;
-    int pose_x2, pose_y2;
-    int pose_x3, pose_y3;
-    int pose_x4, pose_y4;
-    int pose_x5, pose_y5;
-    int pose_x6, pose_y6;
-    int pose_x7, pose_y7;
-    int pose_x8, pose_y8;
+    int x1, y1;
+    int x2, y2;
+    int x3, y3;
+    int x4, y4;
+    int x5, y5;
+    int x6, y6;
+    int x7, y7;
+    int x8, y8;
 }Joueur2;
 
-BITMAP *charger_image(const char *image);
+BITMAP *chargeImage(const char *image);
 
-void jeu(BITMAP *background, BITMAP *ballon, BITMAP *stand_de_tir, Joueur1 ballon1, Joueur2 ballon2);
+void jeu(BITMAP *background, BITMAP *ballon, BITMAP *tir, Joueur1 ballon1, Joueur2 ballon2);
 
 
-BITMAP *charger_ballon1(BITMAP *ballon);
-BITMAP *charger_ballon2(BITMAP *ballon);
-BITMAP *charger_ballon3(BITMAP *ballon);
-BITMAP *charger_ballon4(BITMAP *ballon);
-BITMAP *charger_ballon5(BITMAP *ballon);
-BITMAP *charger_ballon6(BITMAP *ballon);
+BITMAP* chargeBallon1(BITMAP* ballon);
+BITMAP* chargeBallon2(BITMAP* ballon);
+BITMAP* chargeBallon3(BITMAP* ballon);
+BITMAP* chargeBallon4(BITMAP* ballon);
+BITMAP* chargeBallon5(BITMAP* ballon);
+BITMAP* chargeBallon6(BITMAP* ballon);
 
-void afficherBallonStatique1(BITMAP* background, BITMAP* ballon_affichage, Joueur1 ballon);
-void afficherBallonStatique2(BITMAP* background, BITMAP* ballon_affichage, Joueur1 ballon);
-void afficherBallonStatique3(BITMAP* background, BITMAP* ballon_affichage, Joueur1 ballon);
-void afficherBallonStatique4(BITMAP* background, BITMAP* ballon_affichage, Joueur1 ballon);
-void afficherBallonStatique5(BITMAP* background, BITMAP* ballon_affichage, Joueur1 ballon);
-void afficherBallonStatique6(BITMAP* background, BITMAP* ballon_affichage, Joueur1 ballon);
-void afficherBallonStatique7(BITMAP* background, BITMAP* ballon_affichage, Joueur1 ballon);
-void afficherBallonStatique8(BITMAP* background, BITMAP* ballon_affichage, Joueur1 ballon);
-void afficherBallonStatique11(BITMAP* background, BITMAP* ballon_affichage, Joueur2 ballon);
-void afficherBallonStatique12(BITMAP* background, BITMAP* ballon_affichage, Joueur2 ballon);
-void afficherBallonStatique13(BITMAP* background, BITMAP* ballon_affichage, Joueur2 ballon);
-void afficherBallonStatique14(BITMAP* background, BITMAP* ballon_affichage, Joueur2 ballon);
-void afficherBallonStatique15(BITMAP* background, BITMAP* ballon_affichage, Joueur2 ballon);
-void afficherBallonStatique16(BITMAP* background, BITMAP* ballon_affichage, Joueur2 ballon);
-void afficherBallonStatique17(BITMAP* background, BITMAP* ballon_affichage, Joueur2 ballon);
-void afficherBallonStatique18(BITMAP* background, BITMAP* ballon_affichage, Joueur2 ballon);
+void afficheBallonStat1(BITMAP* background, BITMAP* afficheBallon, Joueur1 ballon);
+void afficheBallonStat2(BITMAP* background, BITMAP* afficheBallon, Joueur1 ballon);
+void afficheBallonStat3(BITMAP* background, BITMAP* afficheBallon, Joueur1 ballon);
+void afficheBallonStat4(BITMAP* background, BITMAP* afficheBallon, Joueur1 ballon);
+void afficheBallonStat5(BITMAP* background, BITMAP* afficheBallon, Joueur1 ballon);
+void afficheBallonStat6(BITMAP* background, BITMAP* afficheBallon, Joueur1 ballon);
+void afficheBallonStat7(BITMAP* background, BITMAP* afficheBallon, Joueur1 ballon);
+void afficheBallonStat8(BITMAP* background, BITMAP* afficheBallon, Joueur1 ballon);
+void afficheBallonStat11(BITMAP* background, BITMAP* afficheBallon, Joueur2 ballon);
+void afficheBallonStat22(BITMAP* background, BITMAP* afficheBallon, Joueur2 ballon);
+void afficheBallonStat33(BITMAP* background, BITMAP* afficheBallon, Joueur2 ballon);
+void afficheBallonStat44(BITMAP* background, BITMAP* afficheBallon, Joueur2 ballon);
+void afficheBallonStat55(BITMAP* background, BITMAP* afficheBallon, Joueur2 ballon);
+void afficheBallonStat66(BITMAP* background, BITMAP* afficheBallon, Joueur2 ballon);
+void afficheBallonStat77(BITMAP* background, BITMAP* afficheBallon, Joueur2 ballon);
+void afficheBallonStat88(BITMAP* background, BITMAP* afficheBallon, Joueur2 ballon);
+
+void afficheBallonMob1(BITMAP* background, BITMAP* afficheBallon, Joueur1 *ballon, const int *a, const int *b, const int *c);
+void afficheBallonMob2(BITMAP* background, BITMAP* afficheBallon, Joueur1 *ballon, const int *a, const int *b, const int *c);
+void afficheBallonMob3(BITMAP* background, BITMAP* afficheBallon, Joueur1 *ballon, const int *a, const int *b, const int *c);
+void afficheBallonMob4(BITMAP* background, BITMAP* afficheBallon, Joueur1 *ballon, const int *a, const int *b, const int *c);
+void afficheBallonMob5(BITMAP* background, BITMAP* afficheBallon, Joueur1 *ballon, const int *a, const int *b, const int *c);
+void afficheBallonMob6(BITMAP* background, BITMAP* afficheBallon, Joueur1 *ballon, const int *a, const int *b, const int *c);
+void afficheBallonMob7(BITMAP* background, BITMAP* afficheBallon, Joueur1 *ballon, const int *a, const int *b, const int *c);
+void afficheBallonMob8(BITMAP* background, BITMAP* afficheBallon, Joueur1 *ballon, const int *a, const int *b, const int *c);
+void afficheBallonMob11(BITMAP* background, BITMAP* afficheBallon, Joueur2 *ballon, const int *a, const int *b, const int *c);
+void afficheBallonMob22(BITMAP* background, BITMAP* afficheBallon, Joueur2 *ballon, const int *a, const int *b, const int *c);
+void afficheBallonMob33(BITMAP* background, BITMAP* afficheBallon, Joueur2 *ballon, const int *a, const int *b, const int *c);
+void afficheBallonMob44(BITMAP* background, BITMAP* afficheBallon, Joueur2 *ballon, const int *a, const int *b, const int *c);
+void afficheBallonMob55(BITMAP* background, BITMAP* afficheBallon, Joueur2 *ballon, const int *a, const int *b, const int *c);
+void afficheBallonMob66(BITMAP* background, BITMAP* afficheBallon, Joueur2 *ballon, const int *a, const int *b, const int *c);
+void afficheBallonMob77(BITMAP* background, BITMAP* afficheBallon, Joueur2 *ballon, const int *a, const int *b, const int *c);
+void afficheBallonMob88(BITMAP* background, BITMAP* afficheBallon, Joueur2 *ballon, const int *a, const int *b, const int *c);
+
 
 #endif //PROJET_HEADER_H

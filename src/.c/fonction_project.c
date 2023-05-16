@@ -3,6 +3,7 @@
 //
 
 #include "../.h/fonction_project.h"
+#include "../.h/fonction_riviere.h"
 #include "allegro.h"
 #include "stdio.h"
 #include "string.h"
@@ -294,8 +295,8 @@ t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP 
     t_joueur *joueurArendre= malloc(sizeof (t_joueur));
     joueurArendre->posX=0;
     joueurArendre->posY=0;
-    joueurArendre->DepY=5;
-    joueurArendre->depX=5;
+    joueurArendre->DepY=DEP;
+    joueurArendre->depX=DEP;
     joueurArendre->indice=indice;
     joueurArendre->direction=1;
     joueurArendre->BoolMvmt=0;
@@ -937,7 +938,6 @@ void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITM
         }
         if(joueur1->BoolTour)
         {
-            printf("%d %d\n",joueur1->posX,joueur1->posY);
             if((joueur1->posX==210&&joueur1->posY==330))
             {
                 textout_ex(buffer,font,"Entrer ?",210,320, makecol(255,0,0),-1);
@@ -960,7 +960,6 @@ void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITM
         }
         if(joueur2->BoolTour)
         {
-            printf("%d %d\n",joueur2->posX,joueur2->posY);
             if((joueur2->posX==210&&joueur2->posY==330))
             {
                 textout_ex(buffer,font,"Entrer ?",210,320, makecol(255,0,0),-1);
@@ -1212,10 +1211,13 @@ void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BIT
         }
         if(joueur1->BoolTour)
         {
-            printf("%d %d\n",joueur1->posX,joueur1->posY);
             if((joueur1->posX==130&&joueur1->posY==325))
             {
                 textout_ex(buffer,font,"Entrer ?",130,315, makecol(255,0,0),-1);
+                if(key[KEY_ENTER])
+                {
+                    fonction_riviere();
+                }
             }
             if(verifFinAnimationFin(joueur1))
             {
@@ -1230,14 +1232,13 @@ void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BIT
         }
         if(joueur2->BoolTour)
         {
-            printf("%d %d\n",joueur2->posX,joueur2->posY);
-            if((joueur2->posX==210&&joueur2->posY==330))
+            if((joueur2->posX==130&&joueur2->posY==325))
             {
-                textout_ex(buffer,font,"Entrer ?",210,320, makecol(255,0,0),-1);
-            }
-            if((joueur2->posX==605&&joueur2->posY==70))
-            {
-                textout_ex(buffer,font,"Entrer ?",605,60, makecol(255,0,0),-1);
+                textout_ex(buffer,font,"Entrer ?",130,315, makecol(255,0,0),-1);
+                if(key[KEY_ENTER])
+                {
+                    fonction_riviere();
+                }
             }
             if(verfDebutAnimation(joueur2))
             {
@@ -1317,7 +1318,7 @@ int animationTourJoueur(BITMAP* buffer,BITMAP**EnsembleChiffre)
 void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
 {
     int Tour;
-    int Map=3;
+    int Map=-1;
     if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
     {
         allegro_message("problem gfx");
@@ -1445,7 +1446,7 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
         joueur2->BoolTour=1;
         joueur1->BoolTour=0;
     }
-    //animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
+    animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
     while (!key[KEY_ESC])
     {
         if(Map==0||Map==-1)
