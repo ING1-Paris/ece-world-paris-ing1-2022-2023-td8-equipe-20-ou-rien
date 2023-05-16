@@ -224,6 +224,19 @@ int getGesture(t_joueurFight *Joueur)
     }
 }
 
+void animationVictoire(BITMAP *buffer,t_joueurFight *JoueurVictoire)
+{
+    for(int i=0;i<40;i++)
+    {
+        clear_bitmap(buffer);
+        rectfill(buffer,0,0,0,0, makecol(255,255,255));
+        textout_ex(buffer,font,"Le grand gagnant est le Joueur :",300,300, makecol(255,0,0),-1);
+        textprintf_centre_ex(buffer,font,570,300, makecol(255,0,0),-1,"%d",JoueurVictoire->indice);
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        rest(30);
+    }
+}
+
 int verifJoueurToucher(t_joueurFight *joueur1, t_joueurFight *joueur2,int gesture)
 {
     if(joueur1->skin==1)
@@ -967,6 +980,16 @@ void FightPlay()
         rectfill(buffer,630,10,630+Joueur2->nbVie,40, makecol(255,0,0));
         rect(buffer,200,10,300,40, makecol(0,0,0));
         rect(buffer,630,10,730,40, makecol(0,0,0));
+        if(Joueur1->nbVie<0)
+        {
+            animationVictoire(buffer,Joueur2);
+            break;
+        }
+        if(Joueur2->nbVie<0)
+        {
+            animationVictoire(buffer,Joueur1);
+            break;
+        }
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(100);
     }
