@@ -27,7 +27,7 @@ void premiere_riviere(BITMAP *spritebanquise, BITMAP *buffer, BITMAP *spriteours
 
 }
 
-void deuxieme_riviere(BITMAP *spritebanquise, BITMAP *buffer, BITMAP *spriteourspolaire, BITMAP *decor, int vitesse_verticale, int vitesse_horizontale){
+void deuxieme_riviere(BITMAP *spritebanquise, BITMAP *buffer, BITMAP *spriteourspolaire, int vitesse_verticale, int vitesse_horizontale){
 
     if(vitesse_verticale >= 423 && vitesse_verticale <=900){
 
@@ -180,11 +180,11 @@ int defaite(pingouin *ping){
         return 1;
     return 0;
 
-};
+}
 
 int tomber_dans_eau(BITMAP *buffer, pingouin *ping){
 
-    int i,j;
+    int i;
     int pixel_courant, pixel_prochain;
     int r, g, b;
     int r2, g2, b2;
@@ -252,15 +252,18 @@ int tomber_dans_eau(BITMAP *buffer, pingouin *ping){
 
 }
 
+void temps(){
+
+long temps = 0;
+temps = clock();
+printf("%ld\n",temps);
+}
 
 int fonction_riviere() {
 
     BITMAP *decor;
     BITMAP *buffer = create_bitmap(SCREEN_W, SCREEN_H);
 
-    BITMAP *pinguoin0;
-    BITMAP *pinguoin1;
-    BITMAP *pinguoin2;
     BITMAP *spritebanquise;
     BITMAP *spriteourspolaire;
 
@@ -335,6 +338,8 @@ int fonction_riviere() {
 
     pingouin *ping = creer_pingouin();
 
+    //temps();
+
     while (!key[KEY_ESC]) {
 
         clear_bitmap(buffer);
@@ -345,7 +350,7 @@ int fonction_riviere() {
 
         premiere_riviere( spritebanquise, buffer, spriteourspolaire, vitesse_verticale, vitesse_horizontale);
 
-        deuxieme_riviere(spritebanquise, buffer, spriteourspolaire, decor, vitesse_verticale, vitesse_horizontale);
+        deuxieme_riviere(spritebanquise, buffer, spriteourspolaire, vitesse_verticale, vitesse_horizontale);
 
         if(tomber_dans_eau(buffer, ping)){
             allegro_exit();
