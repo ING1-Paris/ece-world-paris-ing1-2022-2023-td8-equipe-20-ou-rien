@@ -252,7 +252,7 @@ int verifJoueurToucher(t_joueurFight *joueur1, t_joueurFight *joueur2,int gestur
         {
             if((joueur1->direction==1 && (joueur1->posX < joueur2->posX)) || (joueur1->direction==0 && (joueur1->posX > joueur2->posX)))
             {
-                if(joueur1->posX>joueur2->posX-300&&joueur1->posX<joueur2->posX+300&&joueur1->posY==joueur2->posY)
+                if(joueur1->posX>joueur2->posX-250&&joueur1->posX<joueur2->posX+250&&joueur1->posY==joueur2->posY)
                 {
                     return 1;
                 }
@@ -262,7 +262,50 @@ int verifJoueurToucher(t_joueurFight *joueur1, t_joueurFight *joueur2,int gestur
         {
             if((joueur1->direction==1 && (joueur1->posX < joueur2->posX)) || (joueur1->direction==0 && (joueur1->posX > joueur2->posX)))
             {
-                if(joueur1->posX>joueur2->posX-200&&joueur1->posX<joueur2->posX+200&&joueur1->posY==joueur2->posY)
+                if(joueur1->posX>joueur2->posX-100&&joueur1->posX<joueur2->posX+100&&joueur1->posY==joueur2->posY)
+                {
+                    return 1;
+                }
+            }
+        }
+    }
+    if(joueur1->skin==2)
+    {
+        if(gesture==1)
+        {
+            if((joueur1->direction==1 && (joueur1->posX < joueur2->posX)) || (joueur1->direction==0 && (joueur1->posX > joueur2->posX)))
+            {
+                if(joueur1->posX>joueur2->posX-50&&joueur1->posX<joueur2->posX+50&&joueur1->posY==joueur2->posY)
+                {
+                    return 1;
+                }
+            }
+        }
+        if(gesture==2)
+        {
+            if((joueur1->direction==1 && (joueur1->posX < joueur2->posX)) || (joueur1->direction==0 && (joueur1->posX > joueur2->posX)))
+            {
+                if(joueur1->posX>joueur2->posX-100&&joueur1->posX<joueur2->posX+100&&joueur1->posY==joueur2->posY)
+                {
+                    return 1;
+                }
+            }
+        }
+        if(gesture==3)
+        {
+            if((joueur1->direction==1 && (joueur1->posX < joueur2->posX)) || (joueur1->direction==0 && (joueur1->posX > joueur2->posX)))
+            {
+                if(joueur1->posX>joueur2->posX-250&&joueur1->posX<joueur2->posX+250&&joueur1->posY==joueur2->posY)
+                {
+                    return 1;
+                }
+            }
+        }
+        if(gesture==4)
+        {
+            if((joueur1->direction==1 && (joueur1->posX < joueur2->posX)) || (joueur1->direction==0 && (joueur1->posX > joueur2->posX)))
+            {
+                if(joueur1->posX>joueur2->posX-250&&joueur1->posX<joueur2->posX+250&&joueur1->posY==joueur2->posY)
                 {
                     return 1;
                 }
@@ -316,14 +359,14 @@ int drawCharge(t_joueurFight *joueurFight,BITMAP *buffer,BITMAP ** Skin1Charge,B
             {
                 for(int i=1;i<7;i++)
                 {
-                    draw_sprite(buffer,Skin2Charge2[i],joueurFight->posX+(i*20),joueurFight->posY+10);
+                    draw_sprite(buffer,Skin2Charge2[i],joueurFight->posX+(i*30),joueurFight->posY+10);
                 }
             }
             if(joueurFight->direction==0)
             {
                 for(int i=1;i<7;i++)
                 {
-                    draw_sprite_h_flip(buffer,Skin2Charge2[i],joueurFight->posX-(i*20),joueurFight->posY+10);
+                    draw_sprite_h_flip(buffer,Skin2Charge2[i],joueurFight->posX-(i*30),joueurFight->posY+10);
                 }
             }
         }
@@ -356,6 +399,7 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
                 BITMAP **skin2Run,
                 BITMAP **skin2Walk)
 {
+
     if(Joueur->skin==1)
     {
         if(getGesture(Joueur)==0)
@@ -417,7 +461,17 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
             {
                 *frame=1;
                 Joueur->BoolJump=0;
-                printf("%d\n", verifJoueurToucher(Joueur,Joueur1,1));
+                if(verifJoueurToucher(Joueur,Joueur1,1)==1)
+                {
+                    if(Joueur->indice==1)
+                    {
+                        Joueur1->nbVie-=3;
+                    }
+                    if(Joueur->indice==2)
+                    {
+                        Joueur1->nbVie-=3;
+                    }
+                }
             }
             if(Joueur->direction==1)
             {
@@ -436,7 +490,17 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
             {
                 *frame=1;
                 Joueur->BoolJump=0;
-                printf("%d\n", verifJoueurToucher(Joueur,Joueur1,2));
+                if(verifJoueurToucher(Joueur,Joueur1,2)==1)
+                {
+                    if(Joueur->indice==1)
+                    {
+                        Joueur1->nbVie-=1;
+                    }
+                    if(Joueur->indice==2)
+                    {
+                        Joueur1->nbVie-=1;
+                    }
+                }
             }
             if(Joueur->direction==1)
             {
@@ -456,7 +520,17 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
                 *frame=1;
                 Joueur->BoolJump=0;
                 drawCharge(Joueur,buffer,skin1Charge,skin2Charge1,skin2Charge2,1);
-                printf("%d\n", verifJoueurToucher(Joueur,Joueur1,3));
+                if(verifJoueurToucher(Joueur,Joueur1,3)==1)
+                {
+                    if(Joueur->indice==1)
+                    {
+                        Joueur1->nbVie-=2;
+                    }
+                    if(Joueur->indice==2)
+                    {
+                        Joueur1->nbVie-=2;
+                    }
+                }
             }
             if(Joueur->direction==1)
             {
@@ -475,6 +549,17 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
             {
                 *frame=1;
                 Joueur->BoolJump=0;
+                if(verifJoueurToucher(Joueur,Joueur1,4)==1)
+                {
+                    if(Joueur->indice==1)
+                    {
+                        Joueur1->nbVie-=5;
+                    }
+                    if(Joueur->indice==2)
+                    {
+                        Joueur1->nbVie-=5;
+                    }
+                }
             }
             if(Joueur->direction==1)
             {
@@ -533,7 +618,6 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
                 *frame=1;
                 Joueur->BoolJump=0;
             }
-            printf("%d\n",*frame);
             if(Joueur->direction==1)
             {
                 draw_sprite(buffer,skin2Jump[*frame],Joueur->posX,Joueur->posY);
@@ -550,6 +634,17 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
             {
                 *frame=1;
                 Joueur->BoolJump=0;
+                if(verifJoueurToucher(Joueur,Joueur1,1)==1)
+                {
+                    if(Joueur->indice==1)
+                    {
+                        Joueur1->nbVie-=3;
+                    }
+                    if(Joueur->indice==2)
+                    {
+                        Joueur1->nbVie-=3;
+                    }
+                }
             }
             Joueur->posY-=20;
             if(Joueur->direction==1)
@@ -569,6 +664,17 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
             {
                 *frame=1;
                 Joueur->BoolJump=0;
+                if(verifJoueurToucher(Joueur,Joueur1,2)==1)
+                {
+                    if(Joueur->indice==1)
+                    {
+                        Joueur1->nbVie-=1;
+                    }
+                    if(Joueur->indice==2)
+                    {
+                        Joueur1->nbVie-=1;
+                    }
+                }
             }
             Joueur->posY-=20;
             if(Joueur->direction==1)
@@ -589,6 +695,17 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
                 *frame=1;
                 Joueur->BoolJump=0;
                 drawCharge(Joueur,buffer,skin1Charge,skin2Charge1,skin2Charge2,2);
+                if(verifJoueurToucher(Joueur,Joueur1,3)==1)
+                {
+                    if(Joueur->indice==1)
+                    {
+                        Joueur1->nbVie-=2;
+                    }
+                    if(Joueur->indice==2)
+                    {
+                        Joueur1->nbVie-=2;
+                    }
+                }
             }
             if(Joueur->direction==1)
             {
@@ -608,6 +725,17 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
                 *frame=1;
                 Joueur->BoolJump=0;
                 drawCharge(Joueur,buffer,skin1Charge,skin2Charge1,skin2Charge2,1);
+                if(verifJoueurToucher(Joueur,Joueur1,4)==1)
+                {
+                    if(Joueur->indice==1)
+                    {
+                        Joueur1->nbVie-=5;
+                    }
+                    if(Joueur->indice==2)
+                    {
+                        Joueur1->nbVie-=5;
+                    }
+                }
             }
             if(Joueur->direction==1)
             {
@@ -835,8 +963,8 @@ void FightPlay()
         rectfill(sousBuffer,Joueur2->posX,Joueur2->posY,Joueur2->posX+Joueur1->tx,Joueur2->posY+Joueur2->ty, makecol(255,0,0));
         textout_ex(buffer,font,"Vie Joueur 1:",70,20, makecol(255,255,255),-1);
         textout_ex(buffer,font,"Vie Joueur 2:",500,20, makecol(255,255,255),-1);
-        rectfill(buffer,200,10,200+Joueur1->nbVie,40, makecol(255,255,255));
-        rectfill(buffer,630,10,630+Joueur2->nbVie,40, makecol(255,255,255));
+        rectfill(buffer,200,10,200+Joueur1->nbVie,40, makecol(255,0,0));
+        rectfill(buffer,630,10,630+Joueur2->nbVie,40, makecol(255,0,0));
         rect(buffer,200,10,300,40, makecol(0,0,0));
         rect(buffer,630,10,730,40, makecol(0,0,0));
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
