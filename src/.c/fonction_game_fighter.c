@@ -3,6 +3,7 @@
 //
 
 #include "../.h/fonction_game_fighter.h"
+#include "time.h"
 #define DEP 5
 
 
@@ -224,7 +225,7 @@ int getGesture(t_joueurFight *Joueur)
     }
 }
 
-void animationVictoire(BITMAP *buffer,t_joueurFight *JoueurVictoire)
+void animationVictoire(BITMAP *buffer,t_joueurFight *JoueurVictoire,float tempsRealise)
 {
     for(int i=0;i<40;i++)
     {
@@ -232,6 +233,8 @@ void animationVictoire(BITMAP *buffer,t_joueurFight *JoueurVictoire)
         rectfill(buffer,0,0,0,0, makecol(255,255,255));
         textout_ex(buffer,font,"Le grand gagnant est le Joueur :",300,300, makecol(255,0,0),-1);
         textprintf_centre_ex(buffer,font,570,300, makecol(255,0,0),-1,"%d",JoueurVictoire->indice);
+        textout_ex(buffer,font,"Avec un temps réalisé de  :",300,400, makecol(255,0,0),-1);
+        textprintf_centre_ex(buffer,font,570,400, makecol(255,0,0),-1,"%f",tempsRealise);
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(30);
     }
@@ -797,6 +800,7 @@ int verifCollision(t_joueurFight *joueurFight,BITMAP *buffer)
 void FightPlay()
 {
     char NomDeFichier[900];
+    clock_t debut,fin;
     //skin1
     BITMAP *skin1Attack1[6];
     BITMAP *skin1Attack2[6];
@@ -948,6 +952,8 @@ void FightPlay()
     t_joueurFight *Joueur2 = creerJoueurFight(2,buffer);
     int frame1=1;
     int frame2=1;
+    float tempsRealise;
+    debut=clock();
     while(!key[KEY_ESC])
     {
         clear_bitmap(buffer);
@@ -982,12 +988,16 @@ void FightPlay()
         rect(buffer,630,10,730,40, makecol(0,0,0));
         if(Joueur1->nbVie<0)
         {
-            animationVictoire(buffer,Joueur2);
+            fin=clock();
+            tempsRealise=(float )(fin-debut)/CLOCKS_PER_SEC;
+            animationVictoire(buffer,Joueur2,tempsRealise);
             break;
         }
         if(Joueur2->nbVie<0)
         {
-            animationVictoire(buffer,Joueur1);
+            fin=clock();
+            tempsRealise=(float )(fin-debut)/CLOCKS_PER_SEC;
+            animationVictoire(buffer,Joueur1,tempsRealise);
             break;
         }
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
