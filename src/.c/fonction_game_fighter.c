@@ -797,7 +797,7 @@ int verifCollision(t_joueurFight *joueurFight,BITMAP *buffer)
     return 0;
 }
 
-void FightPlay()
+int FightPlay()
 {
     char NomDeFichier[900];
     clock_t debut,fin;
@@ -954,7 +954,7 @@ void FightPlay()
     int frame2=1;
     float tempsRealise;
     debut=clock();
-    while(!key[KEY_ESC])
+    while(1)
     {
         clear_bitmap(buffer);
         clear_bitmap(sousBuffer);
@@ -991,14 +991,14 @@ void FightPlay()
             fin=clock();
             tempsRealise=(float )(fin-debut)/CLOCKS_PER_SEC;
             animationVictoire(buffer,Joueur2,tempsRealise);
-            break;
+            return 2;
         }
         if(Joueur2->nbVie<0)
         {
             fin=clock();
             tempsRealise=(float )(fin-debut)/CLOCKS_PER_SEC;
             animationVictoire(buffer,Joueur1,tempsRealise);
-            break;
+            return 1;
         }
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(100);

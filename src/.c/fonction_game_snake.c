@@ -477,7 +477,7 @@ int Snake()
     }
     lock_sample(musicfond);
     play_sample(musicfond,130,128,1000,TRUE);
-    while(!key[KEY_ESC])
+    while(1)
     {
         pano+=depPano;
         if(pano>255||pano<0)
