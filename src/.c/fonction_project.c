@@ -594,6 +594,8 @@ void animationDebutMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown
     BITMAP *batimentSurTrain= importeImage("../image/image play map/animation debut/batiment sur train/batimentSurTrain.bmp");
     BITMAP *batiementSurJoueur= importeImage("../image/image play map/animation debut/batiement sur joueur/image pont.bmp");
     BITMAP *map= importeImage("../image/image play map/animation debut/map/map.bmp");
+    SAMPLE *bruitDeFond= importeSon("../son/son intro anime.wav");
+    play_sample(bruitDeFond,255,128,1000,TRUE);
     while(1)
     {
         clear_bitmap(buffer);
@@ -643,13 +645,14 @@ void animationDebutMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown
         draw_sprite(buffer,batiementSurJoueur,366,651);
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         iteration+=1;
-        iteration%=7;
+        iteration%=12;
         if(verifFinAnimationFin(joueur1))
         {
             break;
         }
         rest(10);
     }
+    stop_sample(bruitDeFond);
     destroy_bitmap(Train);
     destroy_bitmap(gare);
     destroy_bitmap(batimentSurTrain);
@@ -768,6 +771,8 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
     BITMAP *abreRanger= importeImage("../image/image play map/snake/batiment/arbreRanger.bmp");
     BITMAP *abreCarre= importeImage("../image/image play map/snake/batiment/arbreCarre.bmp");
     BITMAP *sousbuffer= create_bitmap(SCREEN_W,SCREEN_H);
+    SAMPLE *bruitDeFond= importeSon("../son/sonJungle.wav");
+    play_sample(bruitDeFond,200,128,1000,TRUE);
     while(1)
     {
         clear_bitmap(buffer);
@@ -803,6 +808,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                 textout_ex(buffer,font,"Entrer ?",625,295, makecol(255,0,0),-1);
                 if(key[KEY_ENTER])
                 {
+                    stop_sample(bruitDeFond);
                     animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur1);
                     verifGagnant[0]=Snake();
                     animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur2);
@@ -819,6 +825,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                     }
                     joueur1->BoolTour=0;
                     joueur2->BoolTour=1;
+                    play_sample(bruitDeFond,200,128,1000,TRUE);
                 }
             }
             if((joueur1->posX==150&&joueur1->posY==175))
@@ -828,6 +835,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                 {
                     if(key[KEY_ENTER])
                     {
+                        stop_sample(bruitDeFond);
                         verifGagnant[0]=FightPlay();
                         if(verifGagnant[0]==2)
                         {
@@ -841,6 +849,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                         }
                         joueur2->BoolTour=0;
                         joueur1->BoolTour=1;
+                        play_sample(bruitDeFond,200,128,1000,TRUE);
                     }
                 }
             }
@@ -858,6 +867,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                 textout_ex(buffer,font,"Entrer ?",625,295, makecol(255,0,0),-1);
                 if(key[KEY_ENTER])
                 {
+                    stop_sample(bruitDeFond);
                     animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur2);
                     verifGagnant[0]=Snake();
                     animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur1);
@@ -874,6 +884,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                     }
                     joueur2->BoolTour=0;
                     joueur1->BoolTour=1;
+                    play_sample(bruitDeFond,200,128,1000,TRUE);
                 }
             }
             if((joueur2->posX==150&&joueur2->posY==175))
@@ -881,7 +892,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                 textout_ex(buffer,font,"Entrer ?",150,165, makecol(255,0,0),-1);
                 if(key[KEY_ENTER])
                 {
-
+                    stop_sample(bruitDeFond);
                     verifGagnant[0]=FightPlay();
                     if(verifGagnant[0]==2)
                     {
@@ -895,6 +906,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                     }
                     joueur2->BoolTour=0;
                     joueur1->BoolTour=1;
+                    play_sample(bruitDeFond,200,128,1000,TRUE);
                 }
             }
             if(verifFinAnimationFin(joueur2))
@@ -933,6 +945,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
         iteration %= 7;
         rest(10);
     }
+    stop_sample(bruitDeFond);
     destroy_bitmap(portail);
     destroy_bitmap(map);
     destroy_bitmap(mur);
@@ -1399,14 +1412,15 @@ void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BIT
 int animationTourJoueur(BITMAP* buffer,BITMAP**EnsembleChiffre)
 {
     int Bool=0;
-
+    SAMPLE *bruitDeFond= importeSon("../son/sonChooseTour.wav");
+    play_sample(bruitDeFond,255,128,1000,TRUE);
     int TourJoueur;
-    for(int i=0;i<100;i++)
+    for(int i=0;i<40;i++)
     {
         clear_bitmap(buffer);
         rectfill(buffer,0,0,SCREEN_W,SCREEN_H, makecol(255,255,255));
         textout_centre_ex(buffer,font,"Au tour du Joueur:",SCREEN_W/2-40,200, makecol(255,0,0),-1);
-        if(i<75)
+        if(i<30)
         {
             TourJoueur=rand()%2;
             if(Bool)
@@ -1436,6 +1450,7 @@ int animationTourJoueur(BITMAP* buffer,BITMAP**EnsembleChiffre)
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(100);
     }
+    stop_sample(bruitDeFond);
     return TourJoueur;
 }
 
@@ -1556,9 +1571,11 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
     //testAlphabet(EnsembleLettre,buffer);
     //testChiffre(EnsembleChiffre,buffer);
+    SAMPLE *bruitfondChooseJoueur= importeSon("../son/sonfondChooseSkin.wav");
+    play_sample(bruitfondChooseJoueur,150,128,1000,TRUE);
     t_joueur *joueur1= creerJoueur(EnsembleLettre,buffer,1,EnsembleChiffre,Skin1Choose,Skin2Choose,Skin3Choose,fondNameSkin);
     t_joueur *joueur2= creerJoueur(EnsembleLettre,buffer,2,EnsembleChiffre,Skin1Choose,Skin2Choose,Skin3Choose,fondNameSkin);
-
+    stop_sample(bruitfondChooseJoueur);
     int frame=1;
     Tour= animationTourJoueur(buffer,EnsembleChiffre);
     if(Tour)
@@ -1571,7 +1588,7 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
         joueur2->BoolTour=1;
         joueur1->BoolTour=0;
     }
-    //animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
+    animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
     while (!key[KEY_ESC])
     {
         if(Map==0||Map==-1)

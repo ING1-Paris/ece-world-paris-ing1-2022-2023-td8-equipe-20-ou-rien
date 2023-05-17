@@ -942,7 +942,8 @@ int FightPlay()
         sprintf(NomDeFichier,"../image/image fighter/skin2/walk/frame-%d.bmp",i);
         skin2Walk[i]= importeImage(NomDeFichier);
     }
-
+    SAMPLE *bruitDeFond= importeSon("../son/sonFondFighter.wav");
+    play_sample(bruitDeFond,200,128,1000,TRUE);
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP *sousBuffer= create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP *fondMap= importeImage("../image/image fighter/fond/fond map fighter.bmp");
@@ -991,6 +992,7 @@ int FightPlay()
             fin=clock();
             tempsRealise=(float )(fin-debut)/CLOCKS_PER_SEC;
             animationVictoire(buffer,Joueur2,tempsRealise);
+            stop_sample(bruitDeFond);
             return 2;
         }
         if(Joueur2->nbVie<0)
@@ -998,6 +1000,7 @@ int FightPlay()
             fin=clock();
             tempsRealise=(float )(fin-debut)/CLOCKS_PER_SEC;
             animationVictoire(buffer,Joueur1,tempsRealise);
+            stop_sample(bruitDeFond);
             return 1;
         }
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
