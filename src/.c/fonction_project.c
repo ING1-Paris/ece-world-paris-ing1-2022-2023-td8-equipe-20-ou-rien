@@ -772,7 +772,8 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
     BITMAP *abreCarre= importeImage("../image/image play map/snake/batiment/arbreCarre.bmp");
     BITMAP *sousbuffer= create_bitmap(SCREEN_W,SCREEN_H);
     SAMPLE *bruitDeFond= importeSon("../son/sonJungle.wav");
-    play_sample(bruitDeFond,200,128,1000,TRUE);
+    char tmpString[5];
+    //play_sample(bruitDeFond,200,128,1000,TRUE);
     while(1)
     {
         clear_bitmap(buffer);
@@ -825,7 +826,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                     }
                     joueur1->BoolTour=0;
                     joueur2->BoolTour=1;
-                    play_sample(bruitDeFond,200,128,1000,TRUE);
+                    //play_sample(bruitDeFond,200,128,1000,TRUE);
                 }
             }
             if((joueur1->posX==150&&joueur1->posY==175))
@@ -849,7 +850,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                         }
                         joueur2->BoolTour=0;
                         joueur1->BoolTour=1;
-                        play_sample(bruitDeFond,200,128,1000,TRUE);
+                        //play_sample(bruitDeFond,200,128,1000,TRUE);
                     }
                 }
             }
@@ -884,7 +885,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                     }
                     joueur2->BoolTour=0;
                     joueur1->BoolTour=1;
-                    play_sample(bruitDeFond,200,128,1000,TRUE);
+                    //play_sample(bruitDeFond,200,128,1000,TRUE);
                 }
             }
             if((joueur2->posX==150&&joueur2->posY==175))
@@ -906,7 +907,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                     }
                     joueur2->BoolTour=0;
                     joueur1->BoolTour=1;
-                    play_sample(bruitDeFond,200,128,1000,TRUE);
+                    //play_sample(bruitDeFond,200,128,1000,TRUE);
                 }
             }
             if(verifFinAnimationFin(joueur2))
@@ -932,13 +933,17 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
         {
             textout_ex(buffer,font,"Au tour du Joueur: 1",0,0, makecol(255,255,255),-1);
             textout_ex(buffer,font,"Nombre de ticket restant :",0,20, makecol(255,255,255),-1);
-            textprintf_centre_ex(buffer,font,230,20, makecol(255,255,255),-1,"%d",joueur1->nbTicket);
+            sprintf(tmpString, "%d", joueur1->nbTicket);
+            textout_ex(buffer, font, tmpString, 230, 20, makecol(255, 255, 255), -1);
+            //textprintf_centre_ex(buffer,font,230,20, makecol(255,255,255),-1,"%d",joueur1->nbTicket);
         }
         else
         {
             textout_ex(buffer,font,"Au tour du Joueur: 2",0,0, makecol(255,255,255),-1);
             textout_ex(buffer,font,"Nombre de ticket restant :",0,20, makecol(255,255,255),-1);
-            textprintf_centre_ex(buffer,font,230,20, makecol(255,255,255),-1,"%d",joueur2->nbTicket);
+            sprintf(tmpString, "%d", joueur2->nbTicket);
+            textout_ex(buffer, font, tmpString, 230, 20, makecol(255, 255, 255), -1);
+            //textprintf_centre_ex(buffer,font,230,20, makecol(255,255,255),-1,"%d",joueur2->nbTicket);
         }
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         iteration += 1;
@@ -1588,7 +1593,7 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
         joueur2->BoolTour=1;
         joueur1->BoolTour=0;
     }
-    animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
+    //animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
     while (!key[KEY_ESC])
     {
         if(Map==0||Map==-1)

@@ -26,7 +26,7 @@ int main(void) {
         if(BoolPlay)
         {
             //fonction_labyrinth();
-            FightPlay();
+            //FightPlay();
             //playMap(&BoolMenu,&BoolSettings,&BoolPlay);
             //Snake();
             //fonction_riviere();
