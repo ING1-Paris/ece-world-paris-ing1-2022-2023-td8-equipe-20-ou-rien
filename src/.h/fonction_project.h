@@ -21,6 +21,7 @@ typedef struct joueur
     int direction;
     int BoolMvmt;
     int BoolTour;
+    int nbTicket;
 }t_joueur;
 
 typedef struct train

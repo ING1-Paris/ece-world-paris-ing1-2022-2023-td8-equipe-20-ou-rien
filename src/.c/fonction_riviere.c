@@ -353,12 +353,10 @@ int fonction_riviere() {
         deuxieme_riviere(spritebanquise, buffer, spriteourspolaire, vitesse_verticale, vitesse_horizontale);
 
         if(tomber_dans_eau(buffer, ping)){
-            allegro_exit();
             return 0;
         }
 
         if (defaite(ping)) {
-            allegro_exit();
             return 0;
         }
 
