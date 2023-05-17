@@ -426,6 +426,7 @@ int Snake()
     }
     set_color_depth(desktop_color_depth());
     char nomDeFichier[5000];
+    char tmpString[20];
     int posXEnregistreTourne[256],posYEnregistreTourne[256];
     int nbIteration=0;
     int nbDeTourne=0;
@@ -493,7 +494,8 @@ int Snake()
         drawPomme(pomme1,pomme,buffer);
         mangePomme(snake,pomme1,&score);
         textout_ex(buffer,font,"score: ",100,50, makecol(255,255,255),-1);
-        textprintf_ex(buffer,font,150,50, makecol(255,255,255),-1,"%d",score);
+        sprintf(tmpString,"%d",score);
+        textout_ex(buffer,font,tmpString,150,50, makecol(255,255,255),-1);
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         if(detectionDefaite(snake))
         {

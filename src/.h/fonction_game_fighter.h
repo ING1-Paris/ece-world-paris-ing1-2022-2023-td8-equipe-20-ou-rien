@@ -20,6 +20,6 @@ typedef struct joueurFight
     int indice;
 }t_joueurFight;
 
-int FightPlay();
+int FightPlay(float *statARendre);
 
 #endif //PROJET_FONCTION_GAME_FIGHTER_H

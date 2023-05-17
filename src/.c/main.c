@@ -27,11 +27,7 @@ int main(void) {
         {
             //fonction_labyrinth();
             //FightPlay();
-<<<<<<< HEAD
             playMap(&BoolMenu,&BoolSettings,&BoolPlay);
-=======
-            //playMap(&BoolMenu,&BoolSettings,&BoolPlay);
->>>>>>> 7dfebeda400e099b17d15c5784e37225a560830d
             //Snake();
             //fonction_riviere();
 
