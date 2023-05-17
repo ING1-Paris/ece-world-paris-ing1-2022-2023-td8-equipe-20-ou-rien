@@ -392,6 +392,14 @@ int drawCharge(t_joueurFight *joueurFight,BITMAP *buffer,BITMAP ** Skin1Charge,B
 
 
 void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
+                SAMPLE *skin1Attack1Son,
+                SAMPLE *skin1Attack2Son,
+                SAMPLE *skin2Attack1Son,
+                SAMPLE *skin2Attack2Son,
+                SAMPLE *skin1Charge1Son,
+                SAMPLE *skin1Charge2Son,
+                SAMPLE *skin2Charge1Son,
+                SAMPLE *skin2Charge2Son,
                 BITMAP *buffer,
                 BITMAP**skin1Attack1,
                 BITMAP**skin1Attack2,
@@ -477,6 +485,7 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
             {
                 *frame=1;
                 Joueur->BoolJump=0;
+                play_sample(skin1Attack1Son,255,128,1000,FALSE);
                 if(verifJoueurToucher(Joueur,Joueur1,1)==1)
                 {
                     if(Joueur->indice==1)
@@ -506,6 +515,7 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
             {
                 *frame=1;
                 Joueur->BoolJump=0;
+                play_sample(skin1Attack2Son,255,128,1000,FALSE);
                 if(verifJoueurToucher(Joueur,Joueur1,2)==1)
                 {
                     if(Joueur->indice==1)
@@ -531,10 +541,12 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
         else if(getGesture(Joueur)==6)
         {
             *frame+=1;
+
             if(*frame>8)
             {
                 *frame=1;
                 Joueur->BoolJump=0;
+                play_sample(skin1Charge1Son,255,128,1000,FALSE);
                 drawCharge(Joueur,buffer,skin1Charge,skin2Charge1,skin2Charge2,1);
                 if(verifJoueurToucher(Joueur,Joueur1,3)==1)
                 {
@@ -561,6 +573,10 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
         else if(getGesture(Joueur)==7)
         {
             *frame+=1;
+            if(*frame>7)
+            {
+                play_sample(skin1Charge2Son,255,128,1000,FALSE);
+            }
             if(*frame>14)
             {
                 *frame=1;
@@ -650,6 +666,7 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
             {
                 *frame=1;
                 Joueur->BoolJump=0;
+                play_sample(skin2Attack1Son,255,128,1000,FALSE);
                 if(verifJoueurToucher(Joueur,Joueur1,1)==1)
                 {
                     if(Joueur->indice==1)
@@ -680,6 +697,7 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
             {
                 *frame=1;
                 Joueur->BoolJump=0;
+                play_sample(skin2Attack2Son,255,128,1000,FALSE);
                 if(verifJoueurToucher(Joueur,Joueur1,2)==1)
                 {
                     if(Joueur->indice==1)
@@ -710,6 +728,7 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
             {
                 *frame=1;
                 Joueur->BoolJump=0;
+                play_sample(skin2Charge1Son,255,128,1000,FALSE);
                 drawCharge(Joueur,buffer,skin1Charge,skin2Charge1,skin2Charge2,2);
                 if(verifJoueurToucher(Joueur,Joueur1,3)==1)
                 {
@@ -740,6 +759,7 @@ void drawPlayer(t_joueurFight *Joueur,t_joueurFight *Joueur1,int *frame,
             {
                 *frame=1;
                 Joueur->BoolJump=0;
+                play_sample(skin2Charge2Son,255,128,1000,FALSE);
                 drawCharge(Joueur,buffer,skin1Charge,skin2Charge1,skin2Charge2,1);
                 if(verifJoueurToucher(Joueur,Joueur1,4)==1)
                 {
@@ -948,6 +968,14 @@ int FightPlay()
     BITMAP *sousBuffer= create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP *fondMap= importeImage("../image/image fighter/fond/fond map fighter.bmp");
     BITMAP *sousfondMap= importeImage("../image/image fighter/fond/sous map fighter.bmp");
+    SAMPLE *skin1Charge1Son= importeSon("../son/skin1Charge1.wav");
+    SAMPLE *skin1Charge2Son= importeSon("../son/skin1Charge2.wav");
+    SAMPLE *skin2Charge2Son= importeSon("../son/skin2Charge2.wav");
+    SAMPLE *skin2Charge1Son= importeSon("../son/son skin2 charge1.wav");
+    SAMPLE *skin1Attack1Son= importeSon("../son/skin1Attack1.wav");
+    SAMPLE *skin1Attack2Son= importeSon("../son/skin1Attack2.wav");
+    SAMPLE *skin2Attack1Son= importeSon("../son/skin2Attack1.wav");
+    SAMPLE *skin2Attack2Son= importeSon("../son/skin2Attack2.wav");
     t_joueurFight *Joueur1= creerJoueurFight(1,buffer);
     rest(100);
     t_joueurFight *Joueur2 = creerJoueurFight(2,buffer);
@@ -977,8 +1005,8 @@ int FightPlay()
         {
             actualiserPosJoueur(Joueur2);
         }
-        drawPlayer(Joueur1,Joueur2,&frame1,buffer,skin1Attack1,skin1Attack2,skin1Charge,skin1Dead,skin1Fireball,skin1FlameJet,skin1Idle,skin1Jump,skin1Walk,skin2Attack1,skin2Attack2,skin2Charge1,skin2Charge2,skin2Dead,skin2Magic_arrow,skin2Magic_sphere,skin2Hurt,skin2Idle,skin2Jump,skin2Run,skin2Walk);
-        drawPlayer(Joueur2,Joueur1,&frame2,buffer,skin1Attack1,skin1Attack2,skin1Charge,skin1Dead,skin1Fireball,skin1FlameJet,skin1Idle,skin1Jump,skin1Walk,skin2Attack1,skin2Attack2,skin2Charge1,skin2Charge2,skin2Dead,skin2Magic_arrow,skin2Magic_sphere,skin2Hurt,skin2Idle,skin2Jump,skin2Run,skin2Walk);
+        drawPlayer(Joueur1,Joueur2,&frame1,skin1Attack1Son,skin1Attack2Son,skin2Attack1Son,skin2Attack2Son,skin1Charge1Son,skin1Charge2Son,skin2Charge1Son,skin2Charge2Son,buffer,skin1Attack1,skin1Attack2,skin1Charge,skin1Dead,skin1Fireball,skin1FlameJet,skin1Idle,skin1Jump,skin1Walk,skin2Attack1,skin2Attack2,skin2Charge1,skin2Charge2,skin2Dead,skin2Magic_arrow,skin2Magic_sphere,skin2Hurt,skin2Idle,skin2Jump,skin2Run,skin2Walk);
+        drawPlayer(Joueur2,Joueur1,&frame2,skin1Attack1Son,skin1Attack2Son,skin2Attack1Son,skin2Attack2Son,skin1Charge1Son,skin1Charge2Son,skin2Charge1Son,skin2Charge2Son,buffer,skin1Attack1,skin1Attack2,skin1Charge,skin1Dead,skin1Fireball,skin1FlameJet,skin1Idle,skin1Jump,skin1Walk,skin2Attack1,skin2Attack2,skin2Charge1,skin2Charge2,skin2Dead,skin2Magic_arrow,skin2Magic_sphere,skin2Hurt,skin2Idle,skin2Jump,skin2Run,skin2Walk);
         rectfill(sousBuffer,Joueur1->posX,Joueur1->posY,Joueur1->posX+Joueur1->tx,Joueur1->posY+Joueur1->ty, makecol(0,0,0));
         rectfill(sousBuffer,Joueur2->posX,Joueur2->posY,Joueur2->posX+Joueur1->tx,Joueur2->posY+Joueur2->ty, makecol(255,0,0));
         textout_ex(buffer,font,"Vie Joueur 1:",70,20, makecol(255,255,255),-1);
