@@ -1571,7 +1571,7 @@ int animationTourJoueur(BITMAP* buffer,BITMAP**EnsembleChiffre)
 void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay)
 {
     int Tour;
-    int Map=2;
+    int Map=-1;
     if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
     {
         allegro_message("problem gfx");
