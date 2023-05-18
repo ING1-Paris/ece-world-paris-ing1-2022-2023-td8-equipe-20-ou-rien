@@ -2,7 +2,6 @@
 
 int main()
 {
-
     srand(time(NULL));
 
     allegro_init();

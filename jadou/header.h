@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <winalleg.h>
 
+
 #define NELEM 10
 typedef struct jeu_ballon_s {
     int posx[NELEM],posy[NELEM];
