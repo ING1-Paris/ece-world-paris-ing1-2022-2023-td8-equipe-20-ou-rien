@@ -4,9 +4,9 @@
 #include <allegro.h>
 #include <time.h>
 #include <stdio.h>
+#include <winalleg.h>
 
 #define NELEM 10
-
 typedef struct jeu_ballon_s {
     int posx[NELEM],posy[NELEM];
     int depx[NELEM],depy[NELEM];
@@ -23,11 +23,29 @@ typedef struct jeu_ballon_s {
     SAMPLE *ballon_pop;
     BITMAP *fond;
     BITMAP *ballon2;
+    BITMAP *viseur;
 } jeu_ballon_t;
 
 jeu_ballon_t creer_partie(void);
 void ballon_deplace(jeu_ballon_t *jeu, int rayon);
 void ballon_toucher(jeu_ballon_t *jeu, int i);
 void gagne_ou_perdue(jeu_ballon_t jeu);
+int jeu_ballon();
 
 #endif //PROJET_HEADER_H
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

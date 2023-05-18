@@ -4,6 +4,7 @@ jeu_ballon_t creer_partie(void)
 {
     jeu_ballon_t jeu;
 
+    jeu.viseur = load_bitmap("../viseurBallon.bmp", NULL);
     jeu.ballon = load_bitmap("../ballon.bmp", NULL);
     jeu.ballon2 = load_bitmap("../ballon2.bmp", NULL);
     jeu.gagne_image = load_bitmap("../gagne.bmp", NULL);
@@ -21,7 +22,7 @@ jeu_ballon_t creer_partie(void)
     }
     jeu.score = 0;
     for (int i = 0; i < NELEM; i++){
-        jeu.posx[i]=rand()%(530 - 240) + 240;
+        jeu.posx[i]=rand()%(530 - 290) + 290;
         jeu.posy[i]=rand()%(500 - 100) + 100;
         jeu.temps_depop[i] = 0;
 
@@ -33,7 +34,6 @@ jeu_ballon_t creer_partie(void)
     }
     return jeu;
 }
-
 
 void ballon_deplace(jeu_ballon_t *jeu, int rayon)
 {
@@ -53,10 +53,9 @@ void ballon_deplace(jeu_ballon_t *jeu, int rayon)
     }
 }
 
-
 void ballon_toucher(jeu_ballon_t *jeu, int i)
 {
-    if (!jeu->balle_tire && mouse_b & 1 && (mouse_x >= jeu->posx[i] && mouse_x <= jeu->posx[i] + jeu->ballon->w / 3) && (mouse_y >= jeu->posy[i] && mouse_y <= jeu->posy[i] + jeu->ballon->h / 3)) {
+    if (!jeu->balle_tire && mouse_b & 1 && (mouse_x >= jeu->posx[i] && mouse_x <= jeu->posx[i] + jeu->ballon->w / 3) && (mouse_y >= jeu->posy[i] && mouse_y <= jeu->posy[i] + jeu->ballon->h / 3) && !jeu->temps_depop[i]) {
         jeu->temps_depop[i] = clock();
         jeu->score++;
         jeu->balle_tire = 1;
@@ -69,6 +68,8 @@ void ballon_toucher(jeu_ballon_t *jeu, int i)
 void gagne_ou_perdue(jeu_ballon_t jeu)
 {
     if (jeu.score == NELEM) {
+        rest(800);
+        PlaySound(NULL, NULL, SND_ASYNC | SND_LOOP);
         clear_to_color(screen, makecol(0, 0, 0));
         play_sample(jeu.gagnee, 200, 128, 1000, 0);
         draw_sprite(screen, jeu.gagne_image, 0, 0);
@@ -76,6 +77,7 @@ void gagne_ou_perdue(jeu_ballon_t jeu)
         allegro_exit();
         exit(0);
     } else if (jeu.score != NELEM && 15 - (jeu.temps_restant / 1000) == 0) {
+        PlaySound(NULL, NULL, SND_ASYNC | SND_LOOP);
         clear_to_color(screen, makecol(0, 0, 0));
         play_sample(jeu.perdue, 200, 128, 1000, 0);
         draw_sprite(screen, jeu.perdue_image, 0, 0);
@@ -83,4 +85,57 @@ void gagne_ou_perdue(jeu_ballon_t jeu)
         allegro_exit();
         exit(0);
     }
+}
+
+void free_jeu_ballon(jeu_ballon_t jeu)
+{
+    destroy_sample(jeu.ballon_pop);
+    destroy_sample(jeu.perdue);
+    destroy_sample(jeu.gagnee);
+    destroy_bitmap(jeu.ballon2);
+    destroy_bitmap(jeu.ballon);
+    destroy_bitmap(jeu.gagne_image);
+    destroy_bitmap(jeu.perdue_image);
+    destroy_bitmap(jeu.viseur);
+}
+
+int jeu_ballon()
+{
+    BITMAP *page = create_bitmap(SCREEN_W,SCREEN_H);
+    char scoreString[5];
+    jeu_ballon_t jeu = creer_partie();
+    int score;
+
+    PlaySound("../musicBallon.wav", NULL, SND_ASYNC | SND_LOOP);
+    while (!key[KEY_ESC])
+    {
+        clear_bitmap(page);
+        stretch_sprite(page, jeu.fond, 0, 0, SCREEN_W, SCREEN_H);
+        ballon_deplace(&jeu, jeu.ballon->w / 6);
+        for (int i = 0; i < NELEM; i++) {
+            ballon_toucher(&jeu, i);
+            if (jeu.temps_depop[i] == 0)
+                stretch_sprite(page, jeu.ballon, jeu.posx[i], jeu.posy[i], jeu.ballon->w / 3, jeu.ballon->h / 3);
+            else if (clock() - jeu.temps_depop[i] <= 150)
+                stretch_sprite(page, jeu.ballon2, jeu.posx[i], jeu.posy[i], jeu.ballon->w / 3, jeu.ballon->h / 3);
+            else
+                jeu.posx[i] = -100;
+        }
+        jeu.temps_restant = clock();
+
+        sprintf(scoreString, "%d", 15 - (jeu.temps_restant / 1000));
+        textout_ex(page, font, "temps restant:", SCREEN_W - 200, SCREEN_H - 30, makecol(255, 255, 255), -1);
+        textout_ex(page, font, scoreString, SCREEN_W - 30, SCREEN_H - 30, makecol(255, 255, 255), -1);
+
+        sprintf(scoreString, "%d", jeu.score);
+        textout_ex(page, font, "Score:", 30, SCREEN_H - 30, makecol(255, 255, 255), -1);
+        textout_ex(page, font, scoreString, 90, SCREEN_H - 30, makecol(255, 255, 255), -1);
+        stretch_sprite(page, jeu.viseur, mouse_x - jeu.viseur->w / 16, mouse_y - jeu.viseur->h / 16, jeu.viseur->w / 8, jeu.viseur->h / 8);
+        blit(page,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        gagne_ou_perdue(jeu);
+    }
+    score = jeu.score;
+    free_jeu_ballon(jeu);
+    destroy_bitmap(page);
+    return score;
 }
