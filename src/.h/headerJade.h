@@ -4,7 +4,6 @@
 #include <allegro.h>
 #include <time.h>
 #include <stdio.h>
-#include <winalleg.h>
 
 
 #define NELEM 10
@@ -30,7 +29,7 @@ typedef struct jeu_ballon_s {
 jeu_ballon_t creer_partie(void);
 void ballon_deplace(jeu_ballon_t *jeu, int rayon);
 void ballon_toucher(jeu_ballon_t *jeu, int i);
-void gagne_ou_perdue(jeu_ballon_t jeu);
+int gagne_ou_perdue(jeu_ballon_t jeu);
 int jeu_ballon();
 
 #endif //PROJET_HEADER_H

@@ -4,15 +4,15 @@ jeu_ballon_t creer_partie(void)
 {
     jeu_ballon_t jeu;
 
-    jeu.viseur = load_bitmap("../viseurBallon.bmp", NULL);
-    jeu.ballon = load_bitmap("../ballon.bmp", NULL);
-    jeu.ballon2 = load_bitmap("../ballon2.bmp", NULL);
-    jeu.gagne_image = load_bitmap("../gagne.bmp", NULL);
-    jeu.perdue_image = load_bitmap("../perdue.bmp", NULL);
-    jeu.gagnee = load_wav("../winJade.wav");
-    jeu.perdue = load_wav("../loseJade.wav");
-    jeu.ballon_pop = load_wav("../ballonPop.wav");
-    jeu.fond = load_bitmap("../fondJade.bmp", NULL);
+    jeu.viseur = load_bitmap("../jadou/viseurBallon.bmp", NULL);
+    jeu.ballon = load_bitmap("../jadou/ballon.bmp", NULL);
+    jeu.ballon2 = load_bitmap("../jadou/ballon2.bmp", NULL);
+    jeu.gagne_image = load_bitmap("../jadou/gagne.bmp", NULL);
+    jeu.perdue_image = load_bitmap("../jadou/perdue.bmp", NULL);
+    jeu.gagnee = load_wav("../jadou/winJade.wav");
+    jeu.perdue = load_wav("../jadou/loseJade.wav");
+    jeu.ballon_pop = load_wav("../jadou/ballonPop.wav");
+    jeu.fond = load_bitmap("../jadou/fondJade.bmp", NULL);
     jeu.clock_bouge_ballon = clock();
     jeu.temps_restant = clock();
     jeu.balle_tire = 0;
@@ -65,26 +65,27 @@ void ballon_toucher(jeu_ballon_t *jeu, int i)
         jeu->balle_tire = 0;
 }
 
-void gagne_ou_perdue(jeu_ballon_t jeu)
+int gagne_ou_perdue(jeu_ballon_t jeu)
 {
-    if (jeu.score == NELEM) {
+    if (jeu.score == NELEM)
+    {
         rest(800);
-        PlaySound(NULL, NULL, SND_ASYNC | SND_LOOP);
         clear_to_color(screen, makecol(0, 0, 0));
         play_sample(jeu.gagnee, 200, 128, 1000, 0);
         draw_sprite(screen, jeu.gagne_image, 0, 0);
         rest(2000);
-        allegro_exit();
-        exit(0);
-    } else if (jeu.score != NELEM && 15 - (jeu.temps_restant / 1000) == 0) {
-        PlaySound(NULL, NULL, SND_ASYNC | SND_LOOP);
+        printf("gagne\n");
+        return 1;
+    }
+    else if (jeu.score != NELEM && 30 - (jeu.temps_restant / 1000) == 0) {
         clear_to_color(screen, makecol(0, 0, 0));
         play_sample(jeu.perdue, 200, 128, 1000, 0);
         draw_sprite(screen, jeu.perdue_image, 0, 0);
         rest(3000);
-        allegro_exit();
-        exit(0);
+        printf("perdue\n");
+        return 1;
     }
+    return 0;
 }
 
 void free_jeu_ballon(jeu_ballon_t jeu)
@@ -106,8 +107,7 @@ int jeu_ballon()
     jeu_ballon_t jeu = creer_partie();
     int score;
 
-    PlaySound("../musicBallon.wav", NULL, SND_ASYNC | SND_LOOP);
-    while (!key[KEY_ESC])
+    while (1)
     {
         clear_bitmap(page);
         stretch_sprite(page, jeu.fond, 0, 0, SCREEN_W, SCREEN_H);
@@ -123,7 +123,7 @@ int jeu_ballon()
         }
         jeu.temps_restant = clock();
 
-        sprintf(scoreString, "%d", 15 - (jeu.temps_restant / 1000));
+        sprintf(scoreString, "%d", 30 - (jeu.temps_restant / 1000));
         textout_ex(page, font, "temps restant:", SCREEN_W - 200, SCREEN_H - 30, makecol(255, 255, 255), -1);
         textout_ex(page, font, scoreString, SCREEN_W - 30, SCREEN_H - 30, makecol(255, 255, 255), -1);
 
@@ -132,7 +132,11 @@ int jeu_ballon()
         textout_ex(page, font, scoreString, 90, SCREEN_H - 30, makecol(255, 255, 255), -1);
         stretch_sprite(page, jeu.viseur, mouse_x - jeu.viseur->w / 16, mouse_y - jeu.viseur->h / 16, jeu.viseur->w / 8, jeu.viseur->h / 8);
         blit(page,screen,0,0,0,0,SCREEN_W,SCREEN_H);
-        gagne_ou_perdue(jeu);
+        printf("%d\n",jeu.score);
+        if(gagne_ou_perdue(jeu))
+        {
+            break;
+        }
     }
     score = jeu.score;
     free_jeu_ballon(jeu);
