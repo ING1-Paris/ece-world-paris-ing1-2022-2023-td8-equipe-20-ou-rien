@@ -13,6 +13,7 @@
 ///bonjour
 
 int main(void) {
+    int choiceMenu;
     srand(time(NULL));
     initiation();
     int BoolMenu=TRUE,BoolSettings=FALSE,BoolPlay=FALSE;
@@ -22,14 +23,14 @@ int main(void) {
     {
         if(BoolMenu)
         {
-            menu(&BoolMenu,&BoolSettings,&BoolPlay);
+            choiceMenu = menu(&BoolMenu,&BoolSettings,&BoolPlay);
         }
         if(BoolPlay)
         {
             //jeu_ballon();
             //fonction_labyrinth();
             //FightPlay();
-            playMap(&BoolMenu,&BoolSettings,&BoolPlay);
+            playMap(&BoolMenu,&BoolSettings,&BoolPlay, choiceMenu);
             //Snake();
             //fonction_riviere();
 

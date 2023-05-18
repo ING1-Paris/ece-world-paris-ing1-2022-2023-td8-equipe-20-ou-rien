@@ -15,13 +15,14 @@ typedef struct joueur
 {
     int posX,posY;
     int depX,DepY;
-    char nom[500];
+    char nom[15];
     int skin;
     int indice;
     int direction;
     int BoolMvmt;
     int BoolTour;
     int nbTicket;
+    int loaded;
 }t_joueur;
 
 typedef struct train
@@ -31,8 +32,12 @@ typedef struct train
     int direction;
     int BoolMvmt;
 }t_train;
-void menu(int *BoolMenu,int *BoolSettings, int *BoolPlay);
+int menu(int *BoolMenu,int *BoolSettings, int *BoolPlay);
 void animationDebut();
-void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay);
+void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu);
+void saveGame(char entire_path[], t_joueur *joueur1, t_joueur *joueur2);
+void loadGame(char entire_path[], t_joueur *joueur1, t_joueur *joueur2);
+char detectKey(void);
+void clearString(char *string, int n);
 
 #endif //PROJET_FONCTION_SETTINGS_H
