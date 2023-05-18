@@ -817,7 +817,7 @@ int verifCollision(t_joueurFight *joueurFight,BITMAP *buffer)
     return 0;
 }
 
-int FightPlay()
+int FightPlay(float *statARendre)
 {
     char NomDeFichier[900];
     clock_t debut,fin;
@@ -1020,6 +1020,7 @@ int FightPlay()
             fin=clock();
             tempsRealise=(float )(fin-debut)/CLOCKS_PER_SEC;
             animationVictoire(buffer,Joueur2,tempsRealise);
+            *statARendre=tempsRealise;
             stop_sample(bruitDeFond);
             return 2;
         }
@@ -1028,6 +1029,7 @@ int FightPlay()
             fin=clock();
             tempsRealise=(float )(fin-debut)/CLOCKS_PER_SEC;
             animationVictoire(buffer,Joueur1,tempsRealise);
+            *statARendre=tempsRealise;
             stop_sample(bruitDeFond);
             return 1;
         }
