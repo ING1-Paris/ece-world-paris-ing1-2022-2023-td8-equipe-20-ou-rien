@@ -65,7 +65,7 @@ void ballon_toucher(jeu_ballon_t *jeu, int i)
         jeu->balle_tire = 0;
 }
 
-int gagne_ou_perdue(jeu_ballon_t jeu)
+int gagne_ou_perdue(jeu_ballon_t jeu, clock_t time_remove)
 {
     if (jeu.score == NELEM)
     {
@@ -74,15 +74,13 @@ int gagne_ou_perdue(jeu_ballon_t jeu)
         play_sample(jeu.gagnee, 200, 128, 1000, 0);
         draw_sprite(screen, jeu.gagne_image, 0, 0);
         rest(2000);
-        printf("gagne\n");
         return 1;
     }
-    else if (jeu.score != NELEM && 30 - (jeu.temps_restant / 1000) == 0) {
+    else if (jeu.score != NELEM && 30 - ((jeu.temps_restant - time_remove) / 1000) == 0) {
         clear_to_color(screen, makecol(0, 0, 0));
         play_sample(jeu.perdue, 200, 128, 1000, 0);
         draw_sprite(screen, jeu.perdue_image, 0, 0);
         rest(3000);
-        printf("perdue\n");
         return 1;
     }
     return 0;
@@ -106,6 +104,7 @@ int jeu_ballon()
     char scoreString[5];
     jeu_ballon_t jeu = creer_partie();
     int score;
+    clock_t time_remove = clock();
 
     while (1)
     {
@@ -123,7 +122,7 @@ int jeu_ballon()
         }
         jeu.temps_restant = clock();
 
-        sprintf(scoreString, "%d", 30 - (jeu.temps_restant / 1000));
+        sprintf(scoreString, "%d", 30 - ((jeu.temps_restant - time_remove) / 1000));
         textout_ex(page, font, "temps restant:", SCREEN_W - 200, SCREEN_H - 30, makecol(255, 255, 255), -1);
         textout_ex(page, font, scoreString, SCREEN_W - 30, SCREEN_H - 30, makecol(255, 255, 255), -1);
 
@@ -133,7 +132,7 @@ int jeu_ballon()
         stretch_sprite(page, jeu.viseur, mouse_x - jeu.viseur->w / 16, mouse_y - jeu.viseur->h / 16, jeu.viseur->w / 8, jeu.viseur->h / 8);
         blit(page,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         printf("%d\n",jeu.score);
-        if(gagne_ou_perdue(jeu))
+        if(gagne_ou_perdue(jeu, time_remove))
         {
             break;
         }
