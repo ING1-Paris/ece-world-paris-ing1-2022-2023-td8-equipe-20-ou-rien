@@ -81,7 +81,7 @@ void display3D(game3d_t *game)
     BITMAP *tmpSprite;
 
     quickSort(game->allDist, game->allPosTexture, game->allTypeWall, game->allPos, 0, game->indexSaveData - 1);
-   
+
     for (int i = 0; i < game->indexSaveData; i++) {
         if (game->allPosTexture[i] < 0 && game->allDist[i] < 800) { // display sprite
             tmpOpps = (game->allPosTexture[i] + 1) * -1;

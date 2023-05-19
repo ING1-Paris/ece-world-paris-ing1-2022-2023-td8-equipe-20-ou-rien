@@ -418,14 +418,8 @@ t_pomme *creerPomme()
 
 int Snake()
 {
-    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
-    {
-        allegro_message("problem gfx");
-        allegro_exit();
-        exit(EXIT_FAILURE);
-    }
-    set_color_depth(desktop_color_depth());
-    char nomDeFichier[5000];
+    char nomDeFichier[50];
+    char tmpString[20];
     int posXEnregistreTourne[256],posYEnregistreTourne[256];
     int nbIteration=0;
     int nbDeTourne=0;
@@ -477,7 +471,7 @@ int Snake()
     }
     lock_sample(musicfond);
     play_sample(musicfond,130,128,1000,TRUE);
-    while(!key[KEY_ESC])
+    while(1)
     {
         pano+=depPano;
         if(pano>255||pano<0)
@@ -493,7 +487,8 @@ int Snake()
         drawPomme(pomme1,pomme,buffer);
         mangePomme(snake,pomme1,&score);
         textout_ex(buffer,font,"score: ",100,50, makecol(255,255,255),-1);
-        textprintf_ex(buffer,font,150,50, makecol(255,255,255),-1,"%d",score);
+        sprintf(tmpString,"%d",score);
+        textout_ex(buffer,font,tmpString,150,50, makecol(255,255,255),-1);
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         if(detectionDefaite(snake))
         {
@@ -501,12 +496,6 @@ int Snake()
             break;
         }
         rest(30);
-    }
-    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
-    {
-        allegro_message("problem gfx");
-        allegro_exit();
-        exit(EXIT_FAILURE);
     }
     stop_sample(musicfond);
     return score;

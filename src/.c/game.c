@@ -2,38 +2,15 @@
 #include <winalleg.h>
 #include "../.h/header.h"
 
-
-void fonctionSortieDeSouris()
-{
-    if(mouse_x>SCREEN_W)
-    {
-        mouse_x=SCREEN_W-1;
-    }
-    if(mouse_x<0)
-    {
-        mouse_x=1;
-    }
-    if(mouse_y>SCREEN_H)
-    {
-        mouse_y=SCREEN_H-1;
-    }
-    if(mouse_y<0)
-    {
-        mouse_y=1;
-    }
-
-}
-
 int gameLoop(void)
 {
     int score;
     game3d_t *game = createGame();
 
     PlaySound("../assets/background.wav", NULL, SND_ASYNC | SND_LOOP);
-
     while (!key[KEY_ESC]) {
         clear_bitmap(game->buffer);
-        fonctionSortieDeSouris();
+
         playerHeal(game);
         displaySky(game);
         movePlayer(game);
@@ -54,14 +31,12 @@ int gameLoop(void)
 
         blit(game->buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     }
-    PlaySound(NULL, NULL, SND_ASYNC | SND_LOOP);
     score = game->player->score;
+    PlaySound(NULL, NULL, SND_ASYNC | SND_LOOP);
     freeGame(game);
 
     return score;
 }
-
-
 
 BITMAP **loadTexture(char *filepath)
 {
@@ -112,8 +87,9 @@ game3d_t *createGame(void)
 {
     game3d_t *game = malloc(sizeof(game3d_t));
 
+    clear_bitmap(screen);
     checkPtrNull(game, "Exit Failure: malloc failed\n");
-    game->nbNpc = 32;
+    game->nbNpc = 16;
     game->buffer = create_bitmap(SCREEN_W, SCREEN_H);
     game->skyX = 0;
     game->skyX2 = SCREEN_W + 10;
@@ -136,6 +112,6 @@ game3d_t *createGame(void)
     game->midScreenW = SCREEN_W / 2;
     game->midScreenH = SCREEN_H / 2;
     game->volume = 50;
-    
+
     return game;
 }
