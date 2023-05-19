@@ -9,7 +9,7 @@
 
 int chooseSkinFight(BITMAP *buffer,int indice)
 {
-    char NomDeFichier[50];
+    char NomDeFichier[100];
     BITMAP *chooseSkin1[8];
     int frame1=1,frame2=1;
     for(int i=1;i<8;i++)
@@ -75,6 +75,7 @@ t_joueurFight *creerJoueurFight(int indice,BITMAP *buffer){
     JoueurAretourner->indice=indice;
     JoueurAretourner->BoolMvmt=0;
     JoueurAretourner->skin= chooseSkinFight(buffer,indice);
+    printf("Lol");
     JoueurAretourner->posX=SCREEN_W/2;
     JoueurAretourner->posY=SCREEN_H-200;
     JoueurAretourner->direction=1;
@@ -819,7 +820,7 @@ int verifCollision(t_joueurFight *joueurFight,BITMAP *buffer)
 
 int FightPlay(float *statARendre)
 {
-    char NomDeFichier[900];
+    char NomDeFichier[100];
     clock_t debut,fin;
     //skin1
     BITMAP *skin1Attack1[6];

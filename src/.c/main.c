@@ -15,21 +15,23 @@ int main(void) {
     srand(time(NULL));
     initiation();
     int BoolMenu=TRUE,BoolSettings=FALSE,BoolPlay=FALSE;
+    int choiceMenu=0;
     //animationDebut();
     rest(30);
+    float statTest=0;
     while (!key[KEY_ESC])
     {
         if(BoolMenu)
         {
-            menu(&BoolMenu,&BoolSettings,&BoolPlay);
+            choiceMenu=menu(&BoolMenu,&BoolSettings,&BoolPlay);
         }
         if(BoolPlay)
         {
-            fonction_labyrinth();
-            //FightPlay();
-            //playMap(&BoolMenu,&BoolSettings,&BoolPlay);
+            //gameLoop();
+             playMap(&BoolMenu,&BoolSettings,&BoolPlay,choiceMenu);
             //Snake();
-             //fonction_riviere();
+            //fonction_riviere();
+            //FightPlay(&statTest);
 
         }
     }

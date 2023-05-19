@@ -47,6 +47,7 @@ void loadGame(char entire_path[], t_joueur *joueur1, t_joueur *joueur2)
 
     checkPtrNull(load, "Exit Failure: loading bitmap 'load' failed");
     clearString(save_name, 30);
+    show_mouse(screen);
     while (1) {
         clear_bitmap(buffer);
         draw_sprite(buffer, load, 280, 30);

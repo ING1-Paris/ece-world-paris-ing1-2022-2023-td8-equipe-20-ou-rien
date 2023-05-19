@@ -23,6 +23,7 @@ typedef struct joueur
     int BoolTour;
     int nbTicket;
     int loaded;
+    int Map;
 }t_joueur;
 
 typedef struct train
