@@ -418,14 +418,7 @@ t_pomme *creerPomme()
 
 int Snake()
 {
-    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
-    {
-        allegro_message("problem gfx");
-        allegro_exit();
-        exit(EXIT_FAILURE);
-    }
-    set_color_depth(desktop_color_depth());
-    char nomDeFichier[5000];
+    char nomDeFichier[50];
     char tmpString[20];
     int posXEnregistreTourne[256],posYEnregistreTourne[256];
     int nbIteration=0;
@@ -503,12 +496,6 @@ int Snake()
             break;
         }
         rest(30);
-    }
-    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
-    {
-        allegro_message("problem gfx");
-        allegro_exit();
-        exit(EXIT_FAILURE);
     }
     stop_sample(musicfond);
     return score;

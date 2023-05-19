@@ -151,11 +151,11 @@ int cliqueSurLoad(BITMAP *load)
 
 int menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
 {
-    char nomDeFichier[50];
+    char *nomDeFichier = malloc(sizeof(char) * 50);
     int frame=1;
     int x=0;
     int y=0;
-    BITMAP *fond[181];
+    BITMAP **fond = malloc(sizeof(BITMAP *) * 181);
     int clicked = 0;
     for(int i=1;i<180;i++)
     {
@@ -213,13 +213,14 @@ int menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
     destroy_sample(bruitPluie);
     destroy_sample(musiqueEasterEgg);
     destroy_bitmap(PLAY);
-    for(int i=1;i<180;i++)
-    {
+    destroy_bitmap(load);
+    for(int i=1;i<181;i++)
         destroy_bitmap(fond[i]);
-    }
+    free(fond);
     *BoolPlay=1;
     *BoolMenu=0;
     *BoolSettings=0;
+    free(nomDeFichier);
     return clicked;
 }
 
@@ -820,7 +821,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
     int verifGagnant[2];
     //image pour la map
     int iteration=0;
-    char path[50];
+    char *path = malloc(sizeof(char) * 50);
     BITMAP *map= importeImage("../image/image play map/snake/image map/map snake.bmp");
     BITMAP *sousMap= importeImage("../image/image play map/snake/image map/sous map snake.bmp");
     BITMAP *portail= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
@@ -1035,6 +1036,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
     destroy_bitmap(abreCarre);
     destroy_bitmap(sousbuffer);
     destroy_bitmap(sousMap);
+    free(path);
 }
 
 void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP **EnsembleChiffre,BITMAP *buffer,int frame,int *Map,int *snakeStat,float *fightStat,int *statBallon)
@@ -1619,17 +1621,11 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
 {
     int Tour;
     int Map=-1;
-    if(set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
-    {
-        allegro_message("problem gfx");
-        allegro_exit();
-        exit(EXIT_FAILURE);
-    }
     char *NomDeFichier= malloc(sizeof(char));
 
     //ecriture
-    BITMAP *EnsembleLettre[27];
-    BITMAP *EnsembleChiffre[11];
+    BITMAP **EnsembleLettre = malloc(sizeof(BITMAP*) * 27);
+    BITMAP **EnsembleChiffre = malloc(sizeof(BITMAP*) * 11);;
     for(int i=0;i<27;i++)
     {
         sprintf(NomDeFichier,"../image/image ecriture/alphabet/%d.bmp",i);
@@ -1642,10 +1638,10 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
     }
 
     //skin 1
-    BITMAP *Skin1Choose[5];
-    BITMAP *skin1MvmtDown[5];
-    BITMAP *skin1MvmtUp[5];
-    BITMAP *skin1MvmtCoter[5];
+    BITMAP **Skin1Choose = malloc(sizeof(BITMAP*) * 5);
+    BITMAP **skin1MvmtDown = malloc(sizeof(BITMAP*) * 5);
+    BITMAP **skin1MvmtUp = malloc(sizeof(BITMAP*) * 5);
+    BITMAP **skin1MvmtCoter = malloc(sizeof(BITMAP*) * 5);
     for(int i=1;i<5;i++)
     {
         sprintf(NomDeFichier,"../image/image personnage/skin 1/moove down/frame-%d.bmp",i);
@@ -1668,10 +1664,10 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
     }
 
     //skin 2
-    BITMAP *Skin2Choose[5];
-    BITMAP *skin2MvmtDown[5];
-    BITMAP *skin2MvmtUp[5];
-    BITMAP *skin2MvmtCoter[5];
+    BITMAP **Skin2Choose = malloc(sizeof(BITMAP*) * 5);
+    BITMAP **skin2MvmtDown = malloc(sizeof(BITMAP*) * 5);
+    BITMAP **skin2MvmtUp = malloc(sizeof(BITMAP*) * 5);
+    BITMAP **skin2MvmtCoter = malloc(sizeof(BITMAP*) * 5);
     for(int i=1;i<5;i++)
     {
         sprintf(NomDeFichier,"../image/image personnage/skin 2/moove down/frame-%d.bmp",i);
@@ -1694,10 +1690,10 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
     }
 
     //skin 3
-    BITMAP *Skin3Choose[5];
-    BITMAP *skin3MvmtDown[5];
-    BITMAP *skin3MvmtUp[5];
-    BITMAP *skin3MvmtCoter[5];
+    BITMAP **Skin3Choose = malloc(sizeof(BITMAP*) * 5);
+    BITMAP **skin3MvmtDown = malloc(sizeof(BITMAP*) * 5);
+    BITMAP **skin3MvmtUp = malloc(sizeof(BITMAP*) * 5);
+    BITMAP **skin3MvmtCoter = malloc(sizeof(BITMAP*) * 5);
     for(int i=1;i<5;i++)
     {
         sprintf(NomDeFichier,"../image/image personnage/skin 3/moove down/frame-%d.bmp",i);
@@ -1721,7 +1717,7 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
 
 
     //image fond choose name and skin
-    BITMAP *fondNameSkin[48];
+    BITMAP **fondNameSkin = malloc(sizeof(BITMAP*) * 48);
     for(int i=1;i<48;i++)
     {
         sprintf(NomDeFichier,"../image/image play map/image fond choose skin and name/frame-%d.bmp",i);
@@ -1746,6 +1742,12 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
         joueur1 = creerJoueur(EnsembleLettre,buffer,1,EnsembleChiffre,Skin1Choose,Skin2Choose,Skin3Choose,fondNameSkin);
         joueur2 = creerJoueur(EnsembleLettre,buffer,2,EnsembleChiffre,Skin1Choose,Skin2Choose,Skin3Choose,fondNameSkin);
     }
+    free(fondNameSkin);
+    free(Skin3Choose);
+    free(Skin2Choose);
+    free(Skin1Choose);
+    free(EnsembleLettre);
+    free(EnsembleChiffre);
     stop_sample(bruitfondChooseJoueur);
     int frame=1;
     int statSnake=0;

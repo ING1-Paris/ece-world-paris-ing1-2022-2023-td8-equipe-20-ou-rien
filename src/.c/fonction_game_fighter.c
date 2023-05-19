@@ -9,7 +9,7 @@
 
 int chooseSkinFight(BITMAP *buffer,int indice)
 {
-    char NomDeFichier[1000];
+    char NomDeFichier[50];
     BITMAP *chooseSkin1[8];
     int frame1=1,frame2=1;
     for(int i=1;i<8;i++)
