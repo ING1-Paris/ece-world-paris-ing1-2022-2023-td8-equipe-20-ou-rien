@@ -14,7 +14,7 @@
 int main(void) {
     srand(time(NULL));
     initiation();
-    int BoolMenu=TRUE,BoolSettings=FALSE,BoolPlay=FALSE;
+    int BoolMenu=TRUE,BoolQuit=FALSE,BoolPlay=FALSE;
     int choiceMenu=0;
     //animationDebut();
     rest(30);
@@ -23,16 +23,20 @@ int main(void) {
     {
         if(BoolMenu)
         {
-            choiceMenu=menu(&BoolMenu,&BoolSettings,&BoolPlay);
+            choiceMenu=menu(&BoolMenu,&BoolQuit,&BoolPlay);
         }
         if(BoolPlay)
         {
             //gameLoop();
-             playMap(&BoolMenu,&BoolSettings,&BoolPlay,choiceMenu);
+             playMap(&BoolMenu,&BoolQuit,&BoolPlay,choiceMenu);
             //Snake();
             //fonction_riviere();
             //FightPlay(&statTest);
 
+        }
+        if(BoolQuit)
+        {
+            break;
         }
     }
     allegro_exit();

@@ -1805,8 +1805,8 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
     }
     rest(500);
     *BoolPlay=0;
-    *BoolMenu=1;
-    *BoolSettings=0;
+    *BoolMenu=0;
+    *BoolSettings=1;
 }
 
 
