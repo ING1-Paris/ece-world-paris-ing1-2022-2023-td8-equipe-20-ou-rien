@@ -35,7 +35,7 @@ void handleAnimGun(player_t *player, int volume)
             player->guns[i]->offset = 0;
             play_sample(player->guns[i]->reloadSound, volume, 128, 1000, 0);
         } else {
-            player->guns[i]->currentShoot++; 
+            player->guns[i]->currentShoot++;
             player->guns[i]->reload = 0;
             player->guns[i]->shooting = 1;
             player->guns[i]->offset = 0;

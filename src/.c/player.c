@@ -77,8 +77,8 @@ player_t *createPlayer(void)
     player->sensitivity = 0.0175; // 0.0175 radius = 1°
     player->angle = 0.01;
     player->life = 100;
-    player->screenX = 200;
-    player->screenY = 135;
+    player->screenX = 352;
+    player->screenY = 96;
     player->isWalked = false;
     player->indexGun = 0;
     player->indexSpriteGun = 0;

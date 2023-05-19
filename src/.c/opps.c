@@ -16,7 +16,7 @@ void animOpps(npc_t *opps, BITMAP ****anim)
         //     opps->life = opps->maxLife;
         //     opps->IndexAnim = 0;
         //     opps->attacking = 0;
-        /*} else*/ 
+        /*} else*/
         if (opps->IndexAnim == 1) {
             if (anim[opps->typeSprite][opps->IndexAnim][opps->indexSprite + 1] == NULL) {
                 opps->IndexAnim = 0;
@@ -45,7 +45,7 @@ BITMAP ***loadOneOpps(FILE *fp, game3d_t *game, int typeOpps, BITMAP ***animOpps
     fscanf(fp, "%d", &nbWalk);
     fscanf(fp, "%d", &nbAttack);
     fscanf(fp, "%d", &nbDeath);
-    
+
     checkPtrNull(tmpBitmap, "Exit Failure: sprite file monster not found\n");
     animOpps = malloc(sizeof(BITMAP **) * 4);
     checkPtrNull(animOpps, "Exit Failure: malloc failed\n");
@@ -101,13 +101,13 @@ void loadOpps(game3d_t *game)
     int nbOpps;
     int x, y;
 
-    checkPtrNull(fp, "Exit Failure: ../conf/opps.conf opening failed\n");
+    checkPtrNull(fp, "Exit Failure: ./conf/opps.conf opening failed\n");
     fscanf(fp, "%d", &nbOpps);
     game->oppsAnim = malloc(sizeof(BITMAP ***) * (nbOpps + 1));
     game->oppsAnim[nbOpps] = NULL;
     for (int i = 0; i < nbOpps; i++)
         game->oppsAnim[i] = loadOneOpps(fp, game, i, game->oppsAnim[i], nbOpps);
-    
+
     fclose(fp);
 
     for (int i = 0; i < game->nbNpc; i++) {
@@ -121,7 +121,7 @@ void loadOpps(game3d_t *game)
         game->badPosY[i] = y * SIZE + 20;
         game->opps[i].x = x * SIZE + 20;
         game->opps[i].y = y * SIZE + 20;
-    }   
+    }
 }
 
 int playerIsSeen(game3d_t *game, double angle, int index)
@@ -298,7 +298,7 @@ void calcSprite(game3d_t *game, int index)
     int nbVec, dist;
     int projWidth, projHeight;
     BITMAP *sprite = game->oppsAnim[game->opps[index].typeSprite][game->opps[index].IndexAnim][game->opps[index].indexSprite];
-    
+
     game->opps[index].playerSeen = playerIsSeen(game, angleMonster, index);
     moveOpps(game, &game->opps[index], game->player, angleMonster, game->map, index);
 
@@ -306,14 +306,14 @@ void calcSprite(game3d_t *game, int index)
         angleMonster = PI + angleMonster;
     if (angleMonster < 0)
         angleMonster = PI * 2 + angleMonster;
-    
+
     if (angleRight < 0)
         angleRight = PI * 2 + angleRight;
     if (angleLeft > 2 * PI)
         angleLeft -= 2 * PI;
 
     if ((angleMonster <= angleLeft && angleMonster >= angleRight && angleRight < angleLeft) || (((angleMonster <= angleLeft && angleMonster >= 0) || angleMonster >= angleRight)) && angleRight > angleLeft) {
-        
+
         alpha = game->player->angle - angleMonster;
         if (alpha < -5.5)
             alpha += 2 * PI;
