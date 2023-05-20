@@ -6,6 +6,7 @@
 #include "time.h"
 #define DEP 5
 
+void destroyBitmapArray(BITMAP **bmp, int n, int start);
 
 int chooseSkinFight(BITMAP *buffer,int indice)
 {
@@ -51,6 +52,8 @@ int chooseSkinFight(BITMAP *buffer,int indice)
             rectfill(buffer,0,200,400,600, makecol(255,255,255));
             if(mouse_b==1)
             {
+                destroyBitmapArray(chooseSkin1, 8, 1);
+                destroyBitmapArray(chooseSkin2, 9, 1);
                 return 1;
             }
         }
@@ -59,6 +62,8 @@ int chooseSkinFight(BITMAP *buffer,int indice)
             rectfill(buffer,400,200,800,600, makecol(255,255,255));
             if(mouse_b==1)
             {
+                destroyBitmapArray(chooseSkin1, 8, 1);
+                destroyBitmapArray(chooseSkin2, 9, 1);
                 return 2;
             }
         }
@@ -75,7 +80,6 @@ t_joueurFight *creerJoueurFight(int indice,BITMAP *buffer){
     JoueurAretourner->indice=indice;
     JoueurAretourner->BoolMvmt=0;
     JoueurAretourner->skin= chooseSkinFight(buffer,indice);
-    printf("Lol");
     JoueurAretourner->posX=SCREEN_W/2;
     JoueurAretourner->posY=SCREEN_H-200;
     JoueurAretourner->direction=1;
@@ -820,7 +824,7 @@ int verifCollision(t_joueurFight *joueurFight,BITMAP *buffer)
 
 int FightPlay(float *statARendre)
 {
-    char NomDeFichier[100];
+    char NomDeFichier[40];
     clock_t debut,fin;
     //skin1
     BITMAP *skin1Attack1[6];
@@ -983,6 +987,7 @@ int FightPlay(float *statARendre)
     int frame1=1;
     int frame2=1;
     float tempsRealise;
+    int playerWin;
     debut=clock();
     while(1)
     {
@@ -1023,7 +1028,8 @@ int FightPlay(float *statARendre)
             animationVictoire(buffer,Joueur2,tempsRealise);
             *statARendre=tempsRealise;
             stop_sample(bruitDeFond);
-            return 2;
+            playerWin = 2;
+            break;
         }
         if(Joueur2->nbVie<0)
         {
@@ -1032,9 +1038,49 @@ int FightPlay(float *statARendre)
             animationVictoire(buffer,Joueur1,tempsRealise);
             *statARendre=tempsRealise;
             stop_sample(bruitDeFond);
-            return 1;
+            playerWin = 1;
+            break;
         }
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(100);
     }
+    destroy_sample(bruitDeFond);
+    destroy_sample(skin1Charge1Son);
+    destroy_sample(skin1Charge2Son);
+    destroy_sample(skin2Charge2Son);
+    destroy_sample(skin2Charge1Son);
+    destroy_sample(skin1Attack1Son);
+    destroy_sample(skin1Attack2Son);
+    destroy_sample(skin2Attack1Son);
+    destroy_sample(skin2Attack2Son);
+    destroy_bitmap(buffer);
+    destroy_bitmap(sousBuffer);
+    destroy_bitmap(fondMap);
+    destroy_bitmap(sousfondMap);
+    destroyBitmapArray(skin2Attack1, 8, 1);
+    destroyBitmapArray(skin2Attack2, 10, 1);
+    destroyBitmapArray(skin2Charge1, 13, 1);
+    destroyBitmapArray(skin2Charge2, 7, 1);
+    destroyBitmapArray(skin2Dead, 4, 1);
+    destroyBitmapArray(skin2Magic_arrow, 7, 1);
+    destroyBitmapArray(skin2Magic_sphere, 17, 1);
+    destroyBitmapArray(skin2Hurt, 4, 1);
+    destroyBitmapArray(skin2Idle, 9, 1);
+    destroyBitmapArray(skin2Jump, 9, 1);
+    destroyBitmapArray(skin2Run, 8, 1);
+    destroyBitmapArray(skin2Walk, 8, 1);
+    free(Joueur1);
+    free(Joueur2);
+    destroyBitmapArray(skin1Attack1, 5, 1);
+    destroyBitmapArray(skin1Attack2, 5, 1);
+    destroyBitmapArray(skin1Charge, 13, 1);
+    destroyBitmapArray(skin1Dead, 7, 1);
+    destroyBitmapArray(skin1Fireball, 8, 1);
+    destroyBitmapArray(skin1FlameJet, 15, 1);
+    destroyBitmapArray(skin1Hurt, 3, 1);
+    destroyBitmapArray(skin1Idle, 7, 1);
+    destroyBitmapArray(skin1Jump, 9, 1);
+    destroyBitmapArray(skin1Run, 8, 1);
+    destroyBitmapArray(skin1Walk, 6, 1);
+    return playerWin;
 }

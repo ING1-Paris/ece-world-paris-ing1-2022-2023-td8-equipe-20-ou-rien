@@ -7,6 +7,8 @@
 #include "stdio.h"
 #define DEP 5
 
+void destroyBitmapArray(BITMAP **bmp, int n, int start);
+
 int verifierPosGauche(t_maille *snake,t_maille *snakeAVerfier)
 {
     if(snake->posX==snakeAVerfier->posX+snake->tx)
@@ -498,5 +500,17 @@ int Snake()
         rest(30);
     }
     stop_sample(musicfond);
+    free(pomme1);
+    destroy_bitmap(fond);
+    destroy_bitmap(pomme);
+    destroy_bitmap(Defaite);
+    destroy_sample(musicfond);
+    free(snake->premier);
+    free(snake);
+    destroy_bitmap(buffer);
+    destroyBitmapArray(tete, 3, 1);
+    destroyBitmapArray(corps, 3, 1);
+    destroyBitmapArray(queue, 3, 1);
+    destroyBitmapArray(teteMort, 3, 1);
     return score;
 }

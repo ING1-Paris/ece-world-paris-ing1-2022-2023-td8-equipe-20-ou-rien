@@ -6,6 +6,12 @@
 #include "allegro.h"
 #include "stdio.h"
 
+void destroyBitmapArray(BITMAP **bmp, int n, int start)
+{
+    for (int i = start; i < n; i++)
+        destroy_bitmap(bmp[i]);
+}
+
 void ajouter_maillonEnModePile(t_liste *liste)
 {
     t_maille *maillon=liste->premier;

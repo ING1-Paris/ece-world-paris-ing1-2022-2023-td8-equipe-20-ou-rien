@@ -131,11 +131,8 @@ int jeu_ballon()
         textout_ex(page, font, scoreString, 90, SCREEN_H - 30, makecol(255, 255, 255), -1);
         stretch_sprite(page, jeu.viseur, mouse_x - jeu.viseur->w / 16, mouse_y - jeu.viseur->h / 16, jeu.viseur->w / 8, jeu.viseur->h / 8);
         blit(page,screen,0,0,0,0,SCREEN_W,SCREEN_H);
-        printf("%d\n",jeu.score);
         if(gagne_ou_perdue(jeu, time_remove))
-        {
             break;
-        }
     }
     score = jeu.score;
     free_jeu_ballon(jeu);
