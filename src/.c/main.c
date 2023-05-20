@@ -28,7 +28,7 @@ int main(void) {
         if(BoolPlay)
         {
             //gameLoop();
-             playMap(&BoolMenu,&BoolQuit,&BoolPlay,choiceMenu);
+            playMap(&BoolMenu,&BoolQuit,&BoolPlay,choiceMenu);
             //Snake();
             //fonction_riviere();
             //FightPlay(&statTest);

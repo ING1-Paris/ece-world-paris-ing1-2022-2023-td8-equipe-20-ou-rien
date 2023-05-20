@@ -157,10 +157,13 @@ int menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
     int y=0;
     BITMAP **fond = malloc(sizeof(BITMAP *) * 181);
     int clicked = 0;
+
+    checkPtrNull(fond, "Exit Failure: malloc failed");
     for(int i=1;i<180;i++)
     {
         sprintf(nomDeFichier,"../image/image fond menu/frame-%d.bmp",i);
-        fond[i]= importeImage(nomDeFichier);
+        fond[i]= load_bitmap(nomDeFichier, NULL);
+        checkPtrNull(fond[i], "Exit Failure: loading menu bitmap failed");
     }
     BITMAP *load = importeImage("../image/image ecriture/load.bmp");
     BITMAP *PLAY= importeImage("../image/image ecriture/PLAY.bmp");
@@ -206,6 +209,9 @@ int menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(28);
     }
+    for (int i = 1; i < 180; i++)
+        destroy_bitmap(fond[i]);
+    free(fond);
     stop_sample(bruitVille);
     stop_sample(bruitPluie);
     stop_sample(musiqueEasterEgg);
@@ -214,7 +220,6 @@ int menu(int *BoolMenu,int *BoolSettings, int *BoolPlay)
     destroy_sample(musiqueEasterEgg);
     destroy_bitmap(PLAY);
     destroy_bitmap(load);
-    free(fond);
     *BoolPlay=1;
     *BoolMenu=0;
     *BoolSettings=0;
@@ -1632,7 +1637,7 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
 
     //ecriture
     BITMAP **EnsembleLettre = malloc(sizeof(BITMAP*) * 27);
-    BITMAP **EnsembleChiffre = malloc(sizeof(BITMAP*) * 11);;
+    BITMAP **EnsembleChiffre = malloc(sizeof(BITMAP*) * 10);;
     for(int i=0;i<27;i++)
     {
         sprintf(NomDeFichier,"../image/image ecriture/alphabet/%d.bmp",i);
@@ -1764,11 +1769,22 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
             joueur1->BoolTour=0;
         }
     }
+    for (int i = 1; i < 48; i++)
+        destroy_bitmap(fondNameSkin[i]);
     free(fondNameSkin);
+    for (int i = 1; i < 5; i++) {
+        destroy_bitmap(Skin3Choose[i]);
+        destroy_bitmap(Skin2Choose[i]);
+        destroy_bitmap(Skin1Choose[i]);
+    }
     free(Skin3Choose);
     free(Skin2Choose);
     free(Skin1Choose);
+    for (int i = 0; i < 27; i++)
+        destroy_bitmap(EnsembleLettre[i]);
     free(EnsembleLettre);
+    for (int i = 0; i < 10; i++)
+        destroy_bitmap(EnsembleChiffre[i]);
     free(EnsembleChiffre);
     stop_sample(bruitfondChooseJoueur);
     int frame=1;
