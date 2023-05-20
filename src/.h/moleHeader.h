@@ -39,7 +39,7 @@ BITMAP **fillSprite(char *filepath, int nbSprite, int w, int h);
 
 void checkPtrNull(void *ptr, char *string);
 
-gameMole_t *createGame(int nbMole);
+gameMole_t *createGameMole(int nbMole);
 int startGame(void);
 
 void freeGameMole(gameMole_t *game);

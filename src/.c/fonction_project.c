@@ -4,11 +4,12 @@
 
 #include "../.h/fonction_project.h"
 #include "../.h/fonction_riviere.h"
-#include "../.h/headerJade.h"
 #include "allegro.h"
 #include "stdio.h"
 #include "string.h"
 #include "time.h"
+#include "../.h/headerJade.h"
+
 #define DEP 5
 
 //gestion of menu
@@ -1379,6 +1380,8 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                 textout_ex(buffer,font,"Entrer ?",225,125, makecol(255,0,0),-1);
                 if (key[KEY_ENTER]) {
                     startGameMole();
+                    joueur1->BoolTour=0;
+                    joueur2->BoolTour=1;
                 }
             }
             if(verfDebutAnimation(joueur1))
@@ -1408,7 +1411,11 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
             if((joueur2->posX==225&&joueur2->posY==135))
             {
                 textout_ex(buffer,font,"Entrer ?",225,125, makecol(255,0,0),-1);
-
+                if (key[KEY_ENTER]) {
+                    startGameMole();
+                    joueur1->BoolTour=1;
+                    joueur2->BoolTour=0;
+                }
             }
             if(verfDebutAnimation(joueur2))
             {
@@ -1809,7 +1816,7 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
     int statSnake=0;
     float statFight=0;
     int statBallon;
-    animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
+    //animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
     while (!key[KEY_ESC])
     {
         if(Map==0||Map==-1)
