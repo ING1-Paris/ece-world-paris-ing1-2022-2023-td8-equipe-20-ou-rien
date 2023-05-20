@@ -1745,9 +1745,24 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
         checkPtrNull(joueur1, "Exit Failure: malloc failed");
         checkPtrNull(joueur2, "Exit Failure: malloc failed");
         loadGame(path, joueur1, joueur2);
+        if (joueur1->BoolTour)
+            Map = joueur1->Map;
+        else
+            Map = joueur2->Map;
     } else {
         joueur1 = creerJoueur(EnsembleLettre,buffer,1,EnsembleChiffre,Skin1Choose,Skin2Choose,Skin3Choose,fondNameSkin);
         joueur2 = creerJoueur(EnsembleLettre,buffer,2,EnsembleChiffre,Skin1Choose,Skin2Choose,Skin3Choose,fondNameSkin);
+        Tour= animationTourJoueur(buffer,EnsembleChiffre);
+        if(Tour)
+        {
+            joueur1->BoolTour=1;
+            joueur2->BoolTour=0;
+        }
+        else
+        {
+            joueur2->BoolTour=1;
+            joueur1->BoolTour=0;
+        }
     }
     free(fondNameSkin);
     free(Skin3Choose);
@@ -1760,17 +1775,7 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
     int statSnake=0;
     float statFight=0;
     int statBallon;
-    Tour= animationTourJoueur(buffer,EnsembleChiffre);
-    if(Tour)
-    {
-        joueur1->BoolTour=1;
-        joueur2->BoolTour=0;
-    }
-    else
-    {
-        joueur2->BoolTour=1;
-        joueur1->BoolTour=0;
-    }
+
     //animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
     while (!key[KEY_ESC])
     {
