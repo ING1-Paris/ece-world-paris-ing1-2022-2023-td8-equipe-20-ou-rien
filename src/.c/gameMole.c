@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <winalleg.h>
 #include <stdio.h>
-#include "../src/.h/moleHeader.h"
+#include "../.h/moleHeader.h"
 
 void checkPtrNull(void *ptr, char *string);
 
@@ -86,7 +86,7 @@ void drawSky(gameMole_t *game)
     draw_sprite(game->buffer, game->sky1, game->skyX3, 0);
 }
 
-gameMole_t *createGame(int nbMole)
+gameMole_t *createGameMole(int nbMole)
 {
     gameMole_t *game = malloc(sizeof(gameMole_t));
 
@@ -101,7 +101,7 @@ gameMole_t *createGame(int nbMole)
         checkPtrNull(game->mole[i], "Exit Failure: malloc failed");
         game->mole[i]->isDisplay = rand() % 2;
         // game->mole[i]->isDisplay = 1;
-        game->mole[i]->sprite = fillSprite("./assets/mole/mole.bmp", 4, 130, 104);
+        game->mole[i]->sprite = fillSprite("../assets/mole/mole.bmp", 4, 130, 104);
         game->mole[i]->clockAnim = clock();
         game->mole[i]->timeBeforeDepop = 0;
         game->mole[i]->timeBeforeSpawn = clock();
@@ -110,14 +110,14 @@ gameMole_t *createGame(int nbMole)
     }
     game->mole[nbMole] = NULL;
 
-    game->weapon = fillSprite("./assets/mole/weapon.bmp", 8, 113, 97);
-    game->background = load_bitmap("./assets/mole/background.bmp", NULL);
+    game->weapon = fillSprite("../assets/mole/weapon.bmp", 8, 113, 97);
+    game->background = load_bitmap("../assets/mole/background.bmp", NULL);
     checkPtrNull(game->background, "Exit Failure: loading background bitmap failed");
-    game->sky1 = load_bitmap("./assets/mole/sky.bmp", NULL);
+    game->sky1 = load_bitmap("../assets/mole/sky.bmp", NULL);
     checkPtrNull(game->sky1, "Exit Failure: loading sky bitmap failed");
-    game->sky2 = load_bitmap("./assets/mole/sky2.bmp", NULL);
+    game->sky2 = load_bitmap("../assets/mole/sky2.bmp", NULL);
     checkPtrNull(game->sky2, "Exit Failure: loading sky bitmap failed");
-    game->whackSound = load_wav("./assets/mole/sound/whack.wav");
+    game->whackSound = load_wav("../assets/mole/sound/whack.wav");
     checkPtrNull(game->whackSound, "Exit Failure: loading whack sound failed");
 
     game->skyX1 = 0;
@@ -141,7 +141,7 @@ void displayTimer(gameMole_t *game)
     textout_ex(game->buffer, font, string, 80, 30, makecol(0, 0, 0), -1);
 }
 
-void displayScore(gameMole_t *game)
+void displayScoreMole(gameMole_t *game)
 {
     char string[5];
 
@@ -206,10 +206,10 @@ void hitMole(gameMole_t *game)
 int startGameMole(void)
 {
     BITMAP *buffer;
-    gameMole_t *game = createGame(4);
+    gameMole_t *game = createGameMole(4);
     int score;
 
-    PlaySound("./assets/mole/sound/musicMole.wav", NULL, SND_ASYNC | SND_LOOP);
+    PlaySound("../assets/mole/sound/musicMole.wav", NULL, SND_ASYNC | SND_LOOP);
     while (!key[KEY_ESC]) {
         clear_to_color(game->buffer, makecol(141, 199, 236));
 
@@ -218,7 +218,7 @@ int startGameMole(void)
         displayMole(game);
         hitMole(game);
         displayTimer(game);
-        displayScore(game);
+        displayScoreMole(game);
         animWeapon(game);
         displayWeapon(game);
 

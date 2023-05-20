@@ -1377,6 +1377,9 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
             if((joueur1->posX==225&&joueur1->posY==135))
             {
                 textout_ex(buffer,font,"Entrer ?",225,125, makecol(255,0,0),-1);
+                if (key[KEY_ENTER]) {
+                    startGameMole();
+                }
             }
             if(verfDebutAnimation(joueur1))
             {
@@ -1405,6 +1408,7 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
             if((joueur2->posX==225&&joueur2->posY==135))
             {
                 textout_ex(buffer,font,"Entrer ?",225,125, makecol(255,0,0),-1);
+
             }
             if(verfDebutAnimation(joueur2))
             {
@@ -1445,6 +1449,11 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
         iteration %= 7;
         rest(10);
     }
+    destroy_bitmap(map);
+    destroy_bitmap(sousMap);
+    destroy_bitmap(arbre);
+    destroy_bitmap(portail);
+    destroy_bitmap(sousbuffer);
 }
 
 void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP *buffer,int frame,int *Map,int *snakeStat,float *fightStat,int *statBallon)
