@@ -1809,8 +1809,7 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
     int statSnake=0;
     float statFight=0;
     int statBallon;
-
-    //animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
+    animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
     while (!key[KEY_ESC])
     {
         if(Map==0||Map==-1)
