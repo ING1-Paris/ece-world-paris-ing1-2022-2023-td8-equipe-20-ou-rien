@@ -41,5 +41,6 @@ void loadGame(char entire_path[], t_joueur *joueur1, t_joueur *joueur2);
 char detectKey(void);
 void clearString(char *string, int n);
 void destroyBitmapArray(BITMAP **bmp, int n, int start);
+int startGameMole(void);
 
 #endif //PROJET_FONCTION_SETTINGS_H

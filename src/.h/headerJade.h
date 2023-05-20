@@ -33,19 +33,3 @@ int gagne_ou_perdue(jeu_ballon_t jeu, clock_t time_remove);
 int jeu_ballon();
 
 #endif //PROJET_HEADER_H
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
