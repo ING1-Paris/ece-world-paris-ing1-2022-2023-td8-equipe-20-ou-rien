@@ -884,8 +884,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
     {
         if(verifTicket(joueur1,joueur2,buffer))
         {
-            *Map=4;
-            break;
+            exit(EXIT_SUCCESS);
         }
         if(key[KEY_H])
         {
@@ -1159,8 +1158,7 @@ void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITM
     {
         if(verifTicket(joueur1,joueur2,buffer))
         {
-            *Map=4;
-            break;
+            exit(EXIT_SUCCESS);
         }
         if(key[KEY_H])
         {
@@ -1392,8 +1390,7 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
     {
         if(verifTicket(joueur1,joueur2,buffer))
         {
-            *Map=4;
-            break;
+            exit(EXIT_SUCCESS);
         }
         if(key[KEY_H])
         {
@@ -1684,8 +1681,7 @@ void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BIT
     {
         if(verifTicket(joueur1,joueur2,buffer))
         {
-            *Map=4;
-            break;
+            exit(EXIT_SUCCESS);
         }
         if(key[KEY_H])
         {
@@ -1759,8 +1755,7 @@ void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BIT
                 textout_ex(buffer,font,"Quitter ?",455,10, makecol(255,0,0),-1);
                 if(key[KEY_ENTER])
                 {
-                    *Map=4;
-                    break;
+                    exit(EXIT_SUCCESS);
                 }
             }
             if(verfDebutAnimation(joueur1))
