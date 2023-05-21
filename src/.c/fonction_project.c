@@ -891,7 +891,11 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
             menuStat(*statSnake,*statFight,*statBallon,buffer, *fpsStat, *taupeStat, *riviereStat);
         } else if (key[KEY_S])
             saveGame(path, joueur1, joueur2,*statSnake,*statFight,*statBallon,*fpsStat,*taupeStat, *riviereStat);
-
+        else if(key[KEY_Q])
+            {
+                allegro_exit();
+                exit(EXIT_SUCCESS);
+            }
         clear_bitmap(buffer);
         clear_bitmap(sousbuffer);
         blit(map, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
@@ -1166,6 +1170,11 @@ void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITM
             menuStat(*snakeStat,*fightStat,*statBallon,buffer, *fpsStat, *taupeStat, *riviereStat);
         } else if (key[KEY_S])
             saveGame(path, joueur1, joueur2,*snakeStat,*fightStat,*statBallon,*fpsStat,*taupeStat, *riviereStat);
+        else if(key[KEY_Q])
+        {
+            allegro_exit();
+            exit(EXIT_SUCCESS);
+        }
         clear_bitmap(buffer);
         clear_bitmap(sousbuffer);
         blit(map, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
@@ -1399,6 +1408,11 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
             menuStat(*snakeStat,*fightStat,*statBallon,buffer, *fpsStat, *taupeStat, *riviereStat);
         } else if (key[KEY_S])
             saveGame(path, joueur1, joueur2,*snakeStat,*fightStat,*statBallon,*fpsStat,*taupeStat, *riviereStat);
+        else if(key[KEY_Q])
+        {
+            allegro_exit();
+            exit(EXIT_SUCCESS);
+        }
         clear_bitmap(buffer);
         clear_bitmap(sousbuffer);
         blit(map, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
@@ -1691,6 +1705,11 @@ void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BIT
             menuStat(*snakeStat,*fightStat,*statBallon,buffer, *fpsStat, *taupeStat, *riviereStat);
         } else if (key[KEY_S])
             saveGame(path, joueur1, joueur2,*snakeStat,*fightStat,*statBallon,*fpsStat,*taupeStat, *riviereStat);
+        else if(key[KEY_Q])
+        {
+            allegro_exit();
+            exit(EXIT_SUCCESS);
+        }
         clear_bitmap(buffer);
         clear_bitmap(sousbuffer);
         blit(map, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
