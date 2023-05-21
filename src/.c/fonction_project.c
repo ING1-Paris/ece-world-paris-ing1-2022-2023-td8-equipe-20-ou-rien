@@ -285,6 +285,7 @@ void enregistrerNomJoueur(BITMAP**EnsembleLettre,BITMAP *buffer,char *NomJoueurA
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         rest(70);
     }
+    free(tabNom);
     strcpy(NomJoueurARendre,tabNom);
 }
 
@@ -361,9 +362,7 @@ t_joueur *creerJoueur(BITMAP **EnsembleLettre,BITMAP * buffer,int indice,BITMAP 
     {
         enregistrerNomJoueur(EnsembleLettre,buffer,joueurArendre->nom,indice,EnsembleChiffre,fondNameSkin);
     }
-    printf("%s\n",joueurArendre->nom);
     joueurArendre->skin=chooseSkin(buffer,skinChoose1,skinChoose2,skinChoose3,EnsembleChiffre,fondNameSkin);
-    printf("%d\n",joueurArendre->skin);
     return joueurArendre;
 }
 
@@ -939,6 +938,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                         joueur2->BoolTour=0;
                         joueur1->BoolTour=1;
                         play_sample(bruitDeFond,200,128,1000,TRUE);
+                        printf("mms\n");
                     }
                 }
             }
@@ -956,7 +956,6 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                 textout_ex(buffer,font,"Entrer ?",625,295, makecol(255,0,0),-1);
                 if(key[KEY_ENTER])
                 {
-                    free(path);
                     stop_sample(bruitDeFond);
                     animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur2);
                     verifGagnant[0]=Snake();
@@ -983,7 +982,6 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                     joueur2->BoolTour=0;
                     joueur1->BoolTour=1;
                     play_sample(bruitDeFond,200,128,1000,TRUE);
-                    path= malloc(sizeof (char)*50);
                 }
             }
             if((joueur2->posX==150&&joueur2->posY==175))
@@ -991,7 +989,6 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                 textout_ex(buffer,font,"Entrer ?",150,165, makecol(255,0,0),-1);
                 if(key[KEY_ENTER])
                 {
-                    free(path);
                     stop_sample(bruitDeFond);
                     verifGagnant[0]=FightPlay(statFight);
                     if(verifGagnant[0]==2)
@@ -1007,7 +1004,6 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                     joueur2->BoolTour=0;
                     joueur1->BoolTour=1;
                     play_sample(bruitDeFond,200,128,1000,TRUE);
-                    path= malloc(sizeof (char)*50);
                 }
             }
             if(verifFinAnimationFin(joueur2))
@@ -1418,7 +1414,28 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
             {
                 textout_ex(buffer,font,"Entrer ?",225,125, makecol(255,0,0),-1);
                 if (key[KEY_ENTER]) {
-                    startGameMole();
+                    animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur1);
+                    verifGagnant[0]=startGameMole();
+                    animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur2);
+                    verifGagnant[1]=startGameMole();
+                    if(verifGagnant[0]>verifGagnant[1])
+                    {
+                        joueur1->nbTicket++;
+                        joueur2->nbTicket--;
+                        if(verifGagnant[0]>*taupeStat)
+                        {
+                            *taupeStat=verifGagnant[0];
+                        }
+                    }
+                    else
+                    {
+                        joueur1->nbTicket--;
+                        joueur2->nbTicket++;
+                        if(verifGagnant[1]>*taupeStat)
+                        {
+                            *taupeStat=verifGagnant[1];
+                        }
+                    }
                     joueur1->BoolTour=0;
                     joueur2->BoolTour=1;
                 }
@@ -1447,7 +1464,29 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                     destroy_bitmap(arbre);
                     destroy_bitmap(portail);
                     destroy_bitmap(sousbuffer);
-                    gameLoop();
+                    animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur1);
+                    verifGagnant[0]=gameLoop();
+                    animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur2);
+                    verifGagnant[1]=gameLoop();
+                    if(verifGagnant[0]>verifGagnant[1])
+                    {
+                        joueur1->nbTicket++;
+                        joueur2->nbTicket--;
+                        if(verifGagnant[0]>*fpsStat)
+                        {
+                            *fpsStat=verifGagnant[0];
+                        }
+                    }
+                    else
+                    {
+                        joueur1->nbTicket--;
+                        joueur2->nbTicket++;
+                        if(verifGagnant[1]>*fpsStat)
+                        {
+                            *fpsStat=verifGagnant[1];
+                        }
+                    }
+                    
                     joueur1->BoolTour=1;
                     joueur2->BoolTour=0;
                     map= importeImage("../image/image play map/image ninja/image map/map.bmp");
@@ -1461,7 +1500,28 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
             {
                 textout_ex(buffer,font,"Entrer ?",225,125, makecol(255,0,0),-1);
                 if (key[KEY_ENTER]) {
-                    startGameMole();
+                    animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur1);
+                    verifGagnant[0]=startGameMole();
+                    animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur2);
+                    verifGagnant[1]=startGameMole();
+                    if(verifGagnant[0]>verifGagnant[1])
+                    {
+                        joueur1->nbTicket++;
+                        joueur2->nbTicket--;
+                        if(verifGagnant[0]>*taupeStat)
+                        {
+                            *taupeStat=verifGagnant[0];
+                        }
+                    }
+                    else
+                    {
+                        joueur1->nbTicket--;
+                        joueur2->nbTicket++;
+                        if(verifGagnant[1]>*taupeStat)
+                        {
+                            *taupeStat=verifGagnant[1];
+                        }
+                    }
                     joueur1->BoolTour=1;
                     joueur2->BoolTour=0;
                 }
@@ -1702,6 +1762,7 @@ int animationTourJoueur(BITMAP* buffer,BITMAP**EnsembleChiffre)
         rest(100);
     }
     stop_sample(bruitDeFond);
+    destroy_sample(bruitDeFond);
     return TourJoueur;
 }
 
@@ -1864,7 +1925,39 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
         destroy_bitmap(EnsembleLettre[i]);
     free(EnsembleLettre);
     stop_sample(bruitfondChooseJoueur);
+    destroy_sample(bruitfondChooseJoueur);
     int frame=1;
+    free(NomDeFichier);
+    if (joueur1->skin != 1 && joueur2->skin != 1) {
+        for (int i = 1; i < 5; i++) {
+            destroy_bitmap(skin1MvmtDown[i]);
+            destroy_bitmap(skin1MvmtUp[i]);
+            destroy_bitmap(skin1MvmtCoter[i]);
+        }
+        free(skin1MvmtDown);
+        free(skin1MvmtUp);
+        free(skin1MvmtCoter);
+    }
+    if (joueur1->skin != 2 && joueur2->skin != 2) {
+        for (int i = 1; i < 5; i++) {
+            destroy_bitmap(skin2MvmtDown[i]);
+            destroy_bitmap(skin2MvmtUp[i]);
+            destroy_bitmap(skin2MvmtCoter[i]);
+        }
+        free(skin2MvmtDown);
+        free(skin2MvmtUp);
+        free(skin2MvmtCoter);
+    }
+    if (joueur1->skin != 3 && joueur2->skin != 3) {
+        for (int i = 1; i < 5; i++) {
+            destroy_bitmap(skin3MvmtDown[i]);
+            destroy_bitmap(skin3MvmtUp[i]);
+            destroy_bitmap(skin3MvmtCoter[i]);
+        }
+        free(skin3MvmtDown);
+        free(skin3MvmtUp);
+        free(skin3MvmtCoter);
+    }
     //animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
     while (!key[KEY_ESC])
     {

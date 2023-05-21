@@ -5,8 +5,8 @@
 
 void animOpps(npc_t *opps, BITMAP ****anim)
 {
-    if (clock() - opps->tempoAnim >= 200 && anim[opps->typeSprite][opps->IndexAnim][opps->indexSprite + 1] != NULL) {
-        opps->tempoAnim = clock();
+    if (opps->tempoAnim >= 15 && anim[opps->typeSprite][opps->IndexAnim][opps->indexSprite + 1] != NULL) {
+        opps->tempoAnim = 0;
         opps->indexSprite++;
         if (opps->IndexAnim == 1 && !opps->attacking)
             opps->attacking = 1;
@@ -24,9 +24,10 @@ void animOpps(npc_t *opps, BITMAP ****anim)
                 opps->tempoAttack = time(NULL);
             }
         }
-        opps->tempoAnim = clock();
+        opps->tempoAnim = 0;
         opps->indexSprite = 0;
-    }
+    } else
+        opps->tempoAnim++;
 }
 
 BITMAP ***loadOneOpps(FILE *fp, game3d_t *game, int typeOpps, BITMAP ***animOpps, int nbOpps)
