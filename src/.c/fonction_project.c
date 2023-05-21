@@ -1110,7 +1110,11 @@ void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITM
     BITMAP *sousMap= importeImage("../image/image play map/image ballon/Map/sousMapJade.bmp");
     BITMAP *portail= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
     BITMAP *sousbuffer= create_bitmap(SCREEN_W,SCREEN_H);
+    SAMPLE *bgMusic = load_wav("../son/circusMusic.wav");
     char path[50];
+
+    checkPtrNull(bgMusic, "Exit Failure: loading circus music failed");
+    play_sample(bgMusic,100,128,1000,TRUE);
     while(1)
     {
         if(key[KEY_H])
@@ -1151,13 +1155,12 @@ void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITM
                 textout_ex(buffer,font,"Entrer ?",210,320, makecol(255,0,0),-1);
                 if(key[KEY_ENTER])
                 {
-                    printf("1\n");
+                    stop_sample(bgMusic);
                     animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur1);
-                    printf("2\n");
                     verifGagnat[0]=jeu_ballon();
-                    printf("3\n");
                     animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur2);
                     verifGagnat[1]=jeu_ballon();
+                    play_sample(bgMusic,100,128,1000,TRUE);
                     if(verifGagnat[0]>verifGagnat[1])
                     {
                         joueur1->nbTicket++;
@@ -1201,10 +1204,12 @@ void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITM
                 textout_ex(buffer,font,"Entrer ?",210,320, makecol(255,0,0),-1);
                 if(key[KEY_ENTER])
                 {
+                    stop_sample(bgMusic);
                     animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur2);
                     verifGagnat[0]=jeu_ballon();
                     animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur1);
                     verifGagnat[1]=jeu_ballon();
+                    play_sample(bgMusic,100,128,1000,TRUE);
                     if(verifGagnat[0]>verifGagnat[1])
                     {
                         joueur1->nbTicket--;
@@ -1273,6 +1278,7 @@ void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITM
     destroy_bitmap(map);
     destroy_bitmap(sousbuffer);
     destroy_bitmap(sousMap);
+    destroy_sample(bgMusic);
 }
 
 
@@ -1331,8 +1337,12 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
     BITMAP *arbre= importeImage("../image/image play map/image ninja/batiment/abre1.bmp");
     BITMAP *portail= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
     BITMAP *sousbuffer= create_bitmap(SCREEN_W,SCREEN_H);
+    SAMPLE *bgMusic = load_wav("../son/ninjaMusic.wav");
     char path[50];
     int verifGagnant[2];
+    
+    checkPtrNull(bgMusic, "Exit Failure: loading japan music failed");
+    play_sample(bgMusic,200,128,1000,TRUE);
     while(1)
     {
         if(key[KEY_H])
@@ -1373,6 +1383,7 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                 textout_ex(buffer,font,"Entrer ?",295,430, makecol(255,0,0),-1);
                 if(key[KEY_ENTER])
                 {
+                    stop_sample(bgMusic);
                     destroy_bitmap(map);
                     destroy_bitmap(sousMap);
                     destroy_bitmap(arbre);
@@ -1408,12 +1419,14 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                     arbre= importeImage("../image/image play map/image ninja/batiment/abre1.bmp");
                     portail= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
                     sousbuffer= create_bitmap(SCREEN_W,SCREEN_H);
+                    play_sample(bgMusic,200,128,1000,TRUE);
                 }
             }
             if((joueur1->posX==225&&joueur1->posY==135))
             {
                 textout_ex(buffer,font,"Entrer ?",225,125, makecol(255,0,0),-1);
                 if (key[KEY_ENTER]) {
+                    stop_sample(bgMusic);
                     animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur1);
                     verifGagnant[0]=startGameMole();
                     animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur2);
@@ -1438,6 +1451,7 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                     }
                     joueur1->BoolTour=0;
                     joueur2->BoolTour=1;
+                    play_sample(bgMusic,200,128,1000,TRUE);
                 }
             }
             if(verfDebutAnimation(joueur1))
@@ -1459,6 +1473,7 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                 textout_ex(buffer,font,"Entrer ?",295,430, makecol(255,0,0),-1);
                 if(key[KEY_ENTER])
                 {
+                    stop_sample(bgMusic);
                     destroy_bitmap(map);
                     destroy_bitmap(sousMap);
                     destroy_bitmap(arbre);
@@ -1494,12 +1509,14 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                     arbre= importeImage("../image/image play map/image ninja/batiment/abre1.bmp");
                     portail= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
                     sousbuffer= create_bitmap(SCREEN_W,SCREEN_H);
+                    play_sample(bgMusic,200,128,1000,TRUE);
                 }
             }
             if((joueur2->posX==225&&joueur2->posY==135))
             {
                 textout_ex(buffer,font,"Entrer ?",225,125, makecol(255,0,0),-1);
                 if (key[KEY_ENTER]) {
+                    stop_sample(bgMusic);
                     animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur1);
                     verifGagnant[0]=startGameMole();
                     animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur2);
@@ -1524,6 +1541,7 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                     }
                     joueur1->BoolTour=1;
                     joueur2->BoolTour=0;
+                    play_sample(bgMusic,200,128,1000,TRUE);
                 }
             }
             if(verfDebutAnimation(joueur2))
@@ -1570,6 +1588,7 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
     destroy_bitmap(arbre);
     destroy_bitmap(portail);
     destroy_bitmap(sousbuffer);
+    destroy_sample(bgMusic);
 }
 
 void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP *buffer,int frame,int *Map,int *snakeStat,float *fightStat,int *statBallon, int *fpsStat, int *taupeStat)
@@ -1998,20 +2017,3 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
         destroy_bitmap(EnsembleChiffre[i]);
     free(EnsembleChiffre);
 }
-
-
-/*
- *   if(key[KEY_UP]){
-            y--;
-        }
-        if(key[KEY_DOWN]){
-            y++;
-        }
-        if(key[KEY_LEFT]){
-            x--;
-        }
-        if(key[KEY_RIGHT]){
-            x++;
-        }
-        printf("%d %d\n",x,y);
- */
