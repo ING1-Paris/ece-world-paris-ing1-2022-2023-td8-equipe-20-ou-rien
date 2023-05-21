@@ -1370,9 +1370,19 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                 textout_ex(buffer,font,"Entrer ?",295,430, makecol(255,0,0),-1);
                 if(key[KEY_ENTER])
                 {
+                    destroy_bitmap(map);
+                    destroy_bitmap(sousMap);
+                    destroy_bitmap(arbre);
+                    destroy_bitmap(portail);
+                    destroy_bitmap(sousbuffer);
                     gameLoop();
                     joueur1->BoolTour=0;
                     joueur2->BoolTour=1;
+                    map= importeImage("../image/image play map/image ninja/image map/map.bmp");
+                    sousMap= importeImage("../image/image play map/image ninja/image map/sousMap.bmp");
+                    arbre= importeImage("../image/image play map/image ninja/batiment/abre1.bmp");
+                    portail= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
+                    sousbuffer= create_bitmap(SCREEN_W,SCREEN_H);
                 }
             }
             if((joueur1->posX==225&&joueur1->posY==135))
@@ -1403,9 +1413,19 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                 textout_ex(buffer,font,"Entrer ?",295,430, makecol(255,0,0),-1);
                 if(key[KEY_ENTER])
                 {
+                    destroy_bitmap(map);
+                    destroy_bitmap(sousMap);
+                    destroy_bitmap(arbre);
+                    destroy_bitmap(portail);
+                    destroy_bitmap(sousbuffer);
                     gameLoop();
                     joueur1->BoolTour=1;
                     joueur2->BoolTour=0;
+                    map= importeImage("../image/image play map/image ninja/image map/map.bmp");
+                    sousMap= importeImage("../image/image play map/image ninja/image map/sousMap.bmp");
+                    arbre= importeImage("../image/image play map/image ninja/batiment/abre1.bmp");
+                    portail= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
+                    sousbuffer= create_bitmap(SCREEN_W,SCREEN_H);
                 }
             }
             if((joueur2->posX==225&&joueur2->posY==135))
