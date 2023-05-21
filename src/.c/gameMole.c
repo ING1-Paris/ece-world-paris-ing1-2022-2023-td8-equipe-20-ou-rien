@@ -207,7 +207,6 @@ int startGameMole(BITMAP*buffer)
 {
     gameMole_t *game = createGameMole(4);
     int score;
-
     PlaySound("../assets/mole/sound/musicMole.wav", NULL, SND_ASYNC | SND_LOOP);
     while (!key[KEY_ESC]) {
         clear_to_color(game->buffer, makecol(141, 199, 236));
