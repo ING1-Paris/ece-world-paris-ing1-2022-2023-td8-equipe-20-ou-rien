@@ -883,6 +883,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
     {
         if(verifTicket(joueur1,joueur2,buffer))
         {
+            allegro_exit();
             exit(EXIT_SUCCESS);
         }
         if(key[KEY_H])
@@ -1157,6 +1158,7 @@ void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITM
     {
         if(verifTicket(joueur1,joueur2,buffer))
         {
+            allegro_exit();
             exit(EXIT_SUCCESS);
         }
         if(key[KEY_H])
@@ -1389,6 +1391,7 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
     {
         if(verifTicket(joueur1,joueur2,buffer))
         {
+            allegro_exit();
             exit(EXIT_SUCCESS);
         }
         if(key[KEY_H])
@@ -1680,6 +1683,7 @@ void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BIT
     {
         if(verifTicket(joueur1,joueur2,buffer))
         {
+            allegro_exit();
             exit(EXIT_SUCCESS);
         }
         if(key[KEY_H])
@@ -1754,6 +1758,7 @@ void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BIT
                 textout_ex(buffer,font,"Quitter ?",455,10, makecol(255,0,0),-1);
                 if(key[KEY_ENTER])
                 {
+                    allegro_exit();
                     exit(EXIT_SUCCESS);
                 }
             }
@@ -1808,6 +1813,11 @@ void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BIT
             if(verifFinAnimationFin(joueur2))
             {
                 textout_ex(buffer,font,"Quitter ?",455,10, makecol(255,0,0),-1);
+                if(key[KEY_ENTER])
+                {
+                    allegro_exit();
+                    exit(EXIT_SUCCESS);
+                }
             }
         }
         if(joueur1->BoolTour)
@@ -2009,6 +2019,7 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
     float statFight = 0.000;
     int fpsStat = 0, taupeStat = 0;
     int riviereStat = 0;
+    int frame=1;
     t_joueur *joueur1;
     t_joueur *joueur2;
     char path[50];
@@ -2036,6 +2047,7 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
             joueur2->BoolTour=1;
             joueur1->BoolTour=0;
         }
+        animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
     }
     for (int i = 1; i < 48; i++)
         destroy_bitmap(fondNameSkin[i]);
@@ -2053,7 +2065,6 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
     free(EnsembleLettre);
     stop_sample(bruitfondChooseJoueur);
     destroy_sample(bruitfondChooseJoueur);
-    int frame=1;
     free(NomDeFichier);
     if (joueur1->skin != 1 && joueur2->skin != 1) {
         for (int i = 1; i < 5; i++) {
@@ -2085,7 +2096,6 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
         free(skin3MvmtUp);
         free(skin3MvmtCoter);
     }
-    animationDebutMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame);
     while (!key[KEY_ESC])
     {
         if(Map==0||Map==-1)

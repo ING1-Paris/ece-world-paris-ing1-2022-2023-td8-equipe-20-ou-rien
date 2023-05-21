@@ -16,7 +16,7 @@ int main(void) {
     initiation();
     int BoolMenu=TRUE,BoolQuit=FALSE,BoolPlay=FALSE;
     int choiceMenu=0;
-    //animationDebut();
+    animationDebut();
     rest(30);
     float statTest=0;
     while (!key[KEY_ESC])
@@ -27,7 +27,7 @@ int main(void) {
         }
         if(BoolPlay)
         {
-            // gameLoop();
+            //gameLoop();
             playMap(&BoolMenu,&BoolQuit,&BoolPlay,choiceMenu);
             //Snake();
             //fonction_riviere();
