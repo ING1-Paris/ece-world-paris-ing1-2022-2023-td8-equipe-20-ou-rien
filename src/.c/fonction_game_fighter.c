@@ -824,7 +824,7 @@ int verifCollision(t_joueurFight *joueurFight,BITMAP *buffer)
 
 int FightPlay(float *statARendre)
 {
-    char NomDeFichier[40];
+    char NomDeFichier[100];
     clock_t debut,fin;
     //skin1
     BITMAP *skin1Attack1[6];
