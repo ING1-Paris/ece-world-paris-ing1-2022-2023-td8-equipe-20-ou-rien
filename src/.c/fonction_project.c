@@ -295,7 +295,6 @@ int chooseSkin(BITMAP *buffer,BITMAP **skinChoose1,BITMAP **skinChoose2,BITMAP *
     int frame=1;
     int framefond=1;
     char *NomDeFichier=NULL;
-    show_mouse(screen);
     while(1)
     {
         clear_bitmap(buffer);

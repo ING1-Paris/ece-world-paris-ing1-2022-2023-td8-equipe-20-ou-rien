@@ -49,7 +49,7 @@ BITMAP **fillSprite(char *filepath, int nbSprite, int w, int h)
 }
 
 void animWeapon(gameMole_t *game)
-{    
+{
     if (mouse_b & 1 && !game->attacking) {
         game->attacking = 1;
         play_sample(game->whackSound, 200, 128, 1000, 0);
@@ -166,8 +166,8 @@ void displayMole(gameMole_t *game)
                     game->mole[i]->depop = rand() % (1000 - 200) + 200;
                 }
             }
-            if (game->mole[i]->timeBeforeDepop != 0 && currentClock - game->mole[i]->timeBeforeDepop >= game->mole[i]->depop) {               
-                if (game->mole[i]->indexAnim - 1 < 0 && currentClock - game->mole[i]->clockAnim >= 110) {                    
+            if (game->mole[i]->timeBeforeDepop != 0 && currentClock - game->mole[i]->timeBeforeDepop >= game->mole[i]->depop) {
+                if (game->mole[i]->indexAnim - 1 < 0 && currentClock - game->mole[i]->clockAnim >= 110) {
                     game->mole[i]->isDisplay = 0;
                     game->mole[i]->timeBeforeDepop = 0;
                     game->mole[i]->indexAnim = 0;
