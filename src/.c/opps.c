@@ -5,7 +5,7 @@
 
 void animOpps(npc_t *opps, BITMAP ****anim)
 {
-    if (opps->tempoAnim >= 15 && anim[opps->typeSprite][opps->IndexAnim][opps->indexSprite + 1] != NULL) {
+    if (opps->tempoAnim >= 100 && anim[opps->typeSprite][opps->IndexAnim][opps->indexSprite + 1] != NULL) {
         opps->tempoAnim = 0;
         opps->indexSprite++;
         if (opps->IndexAnim == 1 && !opps->attacking)
