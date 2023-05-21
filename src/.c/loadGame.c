@@ -34,7 +34,7 @@ void clearString(char *string, int n)
         string[i] = '\0';
 }
 
-void loadGame(char entire_path[], t_joueur *joueur1, t_joueur *joueur2)
+void loadGame(char entire_path[], t_joueur *joueur1, t_joueur *joueur2, int *statSnake,float *statFight,int *statBallon, int *fpsStat, int *taupeStat)
 {
     BITMAP *load = load_bitmap("../image/image ecriture/load.bmp", NULL);
     struct stat st = {0};
@@ -87,6 +87,11 @@ void loadGame(char entire_path[], t_joueur *joueur1, t_joueur *joueur2)
                 checkPtrNull(fp, "Exit Failure: opening save file failed");
                 fread(joueur1, sizeof(t_joueur), 1, fp);
                 fread(joueur2, sizeof(t_joueur), 1, fp);
+                fscanf(fp, "%d", statSnake);
+                fscanf(fp, "%f", statFight);
+                fscanf(fp, "%d", statBallon);
+                fscanf(fp, "%d", fpsStat);
+                fscanf(fp, "%d", taupeStat);
                 joueur1->loaded = 1;
                 joueur2->loaded = 1;
                 fclose(fp);
