@@ -76,7 +76,7 @@ int gagne_ou_perdue(jeu_ballon_t jeu, clock_t time_remove)
         rest(2000);
         return 1;
     }
-    else if (jeu.score != NELEM && 30 - ((jeu.temps_restant - time_remove) / 1000) == 0) {
+    else if (jeu.score != NELEM && 10 - ((jeu.temps_restant - time_remove) / 1000) == 0) {
         clear_to_color(screen, makecol(0, 0, 0));
         play_sample(jeu.perdue, 200, 128, 1000, 0);
         draw_sprite(screen, jeu.perdue_image, 0, 0);
@@ -122,7 +122,7 @@ int jeu_ballon()
         }
         jeu.temps_restant = clock();
 
-        sprintf(scoreString, "%d", 30 - ((jeu.temps_restant - time_remove) / 1000));
+        sprintf(scoreString, "%d", 10 - ((jeu.temps_restant - time_remove) / 1000));
         textout_ex(page, font, "temps restant:", SCREEN_W - 200, SCREEN_H - 30, makecol(255, 255, 255), -1);
         textout_ex(page, font, scoreString, SCREEN_W - 30, SCREEN_H - 30, makecol(255, 255, 255), -1);
 

@@ -203,16 +203,14 @@ void hitMole(gameMole_t *game)
     }
 }
 
-int startGameMole(void)
+int startGameMole(BITMAP*buffer)
 {
-    BITMAP *buffer;
     gameMole_t *game = createGameMole(4);
     int score;
 
     PlaySound("../assets/mole/sound/musicMole.wav", NULL, SND_ASYNC | SND_LOOP);
     while (!key[KEY_ESC]) {
         clear_to_color(game->buffer, makecol(141, 199, 236));
-
         drawSky(game);
         stretch_sprite(game->buffer, game->background, 0, 0, SCREEN_W, SCREEN_H);
         displayMole(game);
