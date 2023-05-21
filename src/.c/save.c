@@ -17,7 +17,7 @@ char detectKey(void)
     return 0;
 }
 
-void writeSave(char path[], t_joueur *joueur1, t_joueur *joueur2, int statSnake,float statFight,int statBallon, int fpsStat, int taupeStat)
+void writeSave(char path[], t_joueur *joueur1, t_joueur *joueur2, int statSnake,float statFight,int statBallon, int fpsStat, int taupeStat, int riviereStat)
 {
     FILE *fp = fopen(path, "w");
 
@@ -30,10 +30,11 @@ void writeSave(char path[], t_joueur *joueur1, t_joueur *joueur2, int statSnake,
     fprintf(fp, "%d\n", statBallon);
     fprintf(fp, "%d\n", fpsStat);
     fprintf(fp, "%d\n", taupeStat);
+    fprintf(fp, "%d\n", riviereStat);
     fclose(fp);
 }
 
-void saveGame(char entire_path[], t_joueur *joueur1, t_joueur *joueur2, int statSnake,float statFight,int statBallon, int fpsStat, int taupeStat) // créer le dossier de la sauvegarde voulu
+void saveGame(char entire_path[], t_joueur *joueur1, t_joueur *joueur2, int statSnake,float statFight,int statBallon, int fpsStat, int taupeStat, int riviereStat) // créer le dossier de la sauvegarde voulu
 {
     struct stat st = {0};
     char *save_name = malloc(sizeof(char) * 30);
@@ -80,7 +81,7 @@ void saveGame(char entire_path[], t_joueur *joueur1, t_joueur *joueur2, int stat
 
         if (indexPath != 0 && stat(entire_path, &st) == -1) { // vérifie si la sauvegarde n'existe pas déjà
             if (key[KEY_ENTER]) {
-                writeSave(entire_path, joueur1, joueur2, statSnake,statFight,statBallon, fpsStat, taupeStat);
+                writeSave(entire_path, joueur1, joueur2, statSnake,statFight,statBallon, fpsStat, taupeStat, riviereStat);
                 return;
             }
             alreadyExist = 0;

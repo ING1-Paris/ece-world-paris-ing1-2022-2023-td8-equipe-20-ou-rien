@@ -9,8 +9,6 @@
 #include "time.h"
 #include "stdlib.h"
 
-///bonjour
-
 int main(void) {
     srand(time(NULL));
     initiation();
@@ -22,26 +20,15 @@ int main(void) {
     while (!key[KEY_ESC])
     {
         if(BoolMenu)
-        {
             choiceMenu=menu(&BoolMenu,&BoolQuit,&BoolPlay);
-        }
-        if(BoolPlay)
-        {
-            // gameLoop();
-            playMap(&BoolMenu,&BoolQuit,&BoolPlay,choiceMenu);
-            //Snake();
-            //fonction_riviere();
-            //FightPlay(&statTest);
-            //startGameMole();
 
-        }
+        if(BoolPlay)
+            playMap(&BoolMenu,&BoolQuit,&BoolPlay,choiceMenu);
+
         if(BoolQuit)
-        {
             break;
-        }
     }
     allegro_exit();
     return 0;
-    //commentaire
 }
 END_OF_MAIN()

@@ -36,8 +36,8 @@ typedef struct train
 int menu(int *BoolMenu,int *BoolSettings, int *BoolPlay);
 void animationDebut();
 void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu);
-void saveGame(char entire_path[], t_joueur *joueur1, t_joueur *joueur2, int statSnake,float statFight,int statBallon, int fpsStat, int taupeStat);
-void loadGame(char entire_path[], t_joueur *joueur1, t_joueur *joueur2, int *statSnake,float *statFight,int *statBallon, int *fpsStat, int *taupeStat);
+void saveGame(char entire_path[], t_joueur *joueur1, t_joueur *joueur2, int statSnake,float statFight,int statBallon, int fpsStat, int taupeStat, int riviereStat);
+void loadGame(char entire_path[], t_joueur *joueur1, t_joueur *joueur2, int *statSnake,float *statFight,int *statBallon, int *fpsStat, int *taupeStat, int *riviereStat);
 char detectKey(void);
 void clearString(char *string, int n);
 void destroyBitmapArray(BITMAP **bmp, int n, int start);

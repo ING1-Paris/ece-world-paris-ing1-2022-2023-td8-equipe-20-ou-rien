@@ -34,7 +34,7 @@ void clearString(char *string, int n)
         string[i] = '\0';
 }
 
-void loadGame(char entire_path[], t_joueur *joueur1, t_joueur *joueur2, int *statSnake,float *statFight,int *statBallon, int *fpsStat, int *taupeStat)
+void loadGame(char entire_path[], t_joueur *joueur1, t_joueur *joueur2, int *statSnake,float *statFight,int *statBallon, int *fpsStat, int *taupeStat, int *riviereStat)
 {
     BITMAP *load = load_bitmap("../image/image ecriture/load.bmp", NULL);
     struct stat st = {0};
@@ -92,6 +92,7 @@ void loadGame(char entire_path[], t_joueur *joueur1, t_joueur *joueur2, int *sta
                 fscanf(fp, "%d", statBallon);
                 fscanf(fp, "%d", fpsStat);
                 fscanf(fp, "%d", taupeStat);
+                fscanf(fp, "%d", riviereStat);
                 joueur1->loaded = 1;
                 joueur2->loaded = 1;
                 fclose(fp);

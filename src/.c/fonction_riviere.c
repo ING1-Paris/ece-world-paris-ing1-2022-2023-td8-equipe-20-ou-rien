@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "../.h/fonction_riviere.h"
 
-
 void defilement_map_verticale(BITMAP *decor, BITMAP *buffer,int vitesse_verticale) {
 
     blit(decor, buffer, 0, decor->h - vitesse_verticale- SCREEN_H, (SCREEN_W - decor->w) /2, 0, decor->w, SCREEN_H);
@@ -390,8 +389,6 @@ int fonction_riviere() {
         anim_pingouin(ping, &tempo_marche, vitesse_verticale);
         affiche_pingouin(ping, buffer);
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-//printf("%d\n",ping->y-vitesse_verticale);
     }
-    //return temps
     return 0;
 }
