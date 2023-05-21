@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "../.h/fonction_riviere.h"
 
-
 void defilement_map_verticale(BITMAP *decor, BITMAP *buffer,int vitesse_verticale) {
 
     blit(decor, buffer, 0, decor->h - vitesse_verticale- SCREEN_H, (SCREEN_W - decor->w) /2, 0, decor->w, SCREEN_H);
@@ -68,7 +67,7 @@ void decoration(BITMAP *buffer, BITMAP *spritemorse, BITMAP *spritetronc, BITMAP
     if(ping->y - vitesse_verticale <= -835)
         draw_sprite(buffer, phoque1, 10, -880 + vitesse_verticale);
 
-        //draw_sprite(buffer, phoque1, 10, -880 + vitesse_verticale);
+    //draw_sprite(buffer, phoque1, 10, -880 + vitesse_verticale);
 
 }
 
@@ -114,9 +113,9 @@ void anim_pingouin(pingouin *ping, int *tempo_marche, int vitesse_verticale)
 {
 
     if (key[KEY_UP]) {
-        if(*tempo_marche == 6 && ping->y-vitesse_verticale <= -157 && ping->y-vitesse_verticale >= -470 && (ping->x <= 340 || ping->x >= 390)) {
+        if(*tempo_marche == 3 && ping->y-vitesse_verticale <= -157 && ping->y-vitesse_verticale >= -470 && (ping->x <= 340 || ping->x >= 390)) {
             ping->y = ping->y;
-        }else if (*tempo_marche == 6) {
+        }else if (*tempo_marche == 3) {
             *tempo_marche = 0;
             ping->y--;
             if(ping->y-vitesse_verticale==-157)
@@ -126,9 +125,9 @@ void anim_pingouin(pingouin *ping, int *tempo_marche, int vitesse_verticale)
         ping->index_anim = 0;
         ping->flip = 0;
     } else if (key[KEY_DOWN]) {
-        if (*tempo_marche == 6 && ping->y-vitesse_verticale <= -157 && ping->y-vitesse_verticale >= -470 && (ping->x <= 340 || ping->x >= 390)) {
+        if (*tempo_marche == 3 && ping->y-vitesse_verticale <= -157 && ping->y-vitesse_verticale >= -470 && (ping->x <= 340 || ping->x >= 390)) {
             ping->y = ping->y;
-        }else if (*tempo_marche == 6 ) {
+        }else if (*tempo_marche == 3 ) {
             *tempo_marche = 0;
             ping->y++;
         } else
@@ -136,9 +135,9 @@ void anim_pingouin(pingouin *ping, int *tempo_marche, int vitesse_verticale)
         ping->flip = 0;
         ping->index_anim = 0;
     } else if (key[KEY_LEFT]) {
-        if (*tempo_marche == 6 && ping->y-vitesse_verticale <= -157 && ping->y-vitesse_verticale >= -470 && ping->x == 341 ) {
+        if (*tempo_marche == 3 && ping->y-vitesse_verticale <= -157 && ping->y-vitesse_verticale >= -470 && ping->x == 341 ) {
             ping->x=ping->x;
-        } else if (*tempo_marche == 6 ) {
+        } else if (*tempo_marche == 3 ) {
             *tempo_marche = 0;
             ping->x--;
         } else
@@ -146,9 +145,9 @@ void anim_pingouin(pingouin *ping, int *tempo_marche, int vitesse_verticale)
         ping->flip = 1;
         ping->index_anim = 1;
     } else if (key[KEY_RIGHT]) {
-        if (*tempo_marche == 6 && ping->y-vitesse_verticale <= -157 && ping->y-vitesse_verticale >= -470 && ping->x == 389 ) {
+        if (*tempo_marche == 3 && ping->y-vitesse_verticale <= -157 && ping->y-vitesse_verticale >= -470 && ping->x == 389 ) {
             ping->x=ping->x;
-        } else if (*tempo_marche == 6 ) {
+        } else if (*tempo_marche == 3 ) {
             *tempo_marche = 0;
             ping->x++;
         } else
@@ -252,17 +251,13 @@ int tomber_dans_eau(BITMAP *buffer, pingouin *ping){
 
 }
 
-void temps(){
-
-long temps = 0;
-temps = clock();
-printf("%ld\n",temps);
-}
-
 int fonction_riviere() {
 
+    clock_t debut,fin;
+    float temp_final;
     BITMAP *decor;
     BITMAP *buffer = create_bitmap(SCREEN_W, SCREEN_H);
+    char string[5];
 
     BITMAP *spritebanquise;
     BITMAP *spriteourspolaire;
@@ -273,6 +268,11 @@ int fonction_riviere() {
     BITMAP *spritemap;
     BITMAP *phoque;
     BITMAP *phoque1;
+
+    BITMAP *pingouinvictoire1;
+    BITMAP *pingouinvictoire2;
+    BITMAP *ecranvictoire;
+    BITMAP *ecrandefaite;
 
     decor=load_bitmap("../robin/mapprojetneige.bmp",NULL);
     if (!decor)
@@ -330,68 +330,119 @@ int fonction_riviere() {
         exit(EXIT_FAILURE);
     }
 
+    pingouinvictoire1=load_bitmap("../robin/sprritepinguoinvictoire1.bmp",NULL);
+    if (!pingouinvictoire1)
+    {
+        allegro_message("pas pu trouver ingouinvictoire1.bmp");
+        exit(EXIT_FAILURE);
+    }
+
+    pingouinvictoire2=load_bitmap("../robin/sprritepinguoinvictoire2.bmp",NULL);
+    if (!pingouinvictoire2)
+    {
+        allegro_message("pas pu trouver pingouinvictoire2.bmp");
+        exit(EXIT_FAILURE);
+    }
+
+    ecranvictoire=load_bitmap("../robin/ecranvictoire.bmp",NULL);
+    if (!ecranvictoire)
+    {
+        allegro_message("pas pu trouver ecranvictoire.bmp");
+        exit(EXIT_FAILURE);
+    }
+
+    ecrandefaite=load_bitmap("../robin/défaite.bmp",NULL);
+    if (!ecrandefaite)
+    {
+        allegro_message("pas pu trouver ecrandefaite.bmp");
+        exit(EXIT_FAILURE);
+    }
+
     int vitesse_verticale=0;
     int vitesse_horizontale=0;
     int tempo_riviere = 0;
     int tempo_marche = 0;
     int vitesse = 1;
-
     pingouin *ping = creer_pingouin();
 
-    //temps();
+    int Fin =0;
+    debut=clock();
 
     while (!key[KEY_ESC]) {
 
-        clear_bitmap(buffer);
+        if (ping->y - vitesse_verticale > -850) {
 
-        defilement_map_verticale(decor, buffer, vitesse_verticale);
+            clear_bitmap(buffer);
 
-        decoration( buffer, spritemorse, spritetronc, spritemap, phoque, phoque1, ping, vitesse_verticale);
+            defilement_map_verticale(decor, buffer, vitesse_verticale);
 
-        premiere_riviere( spritebanquise, buffer, spriteourspolaire, vitesse_verticale, vitesse_horizontale);
+            decoration(buffer, spritemorse, spritetronc, spritemap, phoque, phoque1, ping, vitesse_verticale);
 
-        deuxieme_riviere(spritebanquise, buffer, spriteourspolaire, vitesse_verticale, vitesse_horizontale);
+            premiere_riviere(spritebanquise, buffer, spriteourspolaire, vitesse_verticale, vitesse_horizontale);
 
-        if(tomber_dans_eau(buffer, ping)){
-            allegro_exit();
-            return 0;
-        }
+            deuxieme_riviere(spritebanquise, buffer, spriteourspolaire, vitesse_verticale, vitesse_horizontale);
 
-        if (defaite(ping)) {
-            allegro_exit();
-            return 0;
-        }
-
-        if (tempo_riviere == 20) {
-
-            if (vitesse_verticale < 900) {
-                vitesse_verticale += vitesse;
-                ping->y += 1;
+            if (tomber_dans_eau(buffer, ping)) {
+                clear_to_color(ping->anim[ping->index_anim][ping->index_sprite],makecol(255, 0, 255));
+                blit(ecrandefaite, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+                rest(1500);
+                break;
             }
 
-            if(ping->y<=200+vitesse_verticale && ping->y>=140+vitesse_verticale )
-                ping->x--;
-            if(ping->y<=60+vitesse_verticale && ping->y>=0+vitesse_verticale )
-                ping->x++;
-            if(ping->y<=-75+vitesse_verticale && ping->y>=-135+vitesse_verticale )
-                ping->x--;
+            if (defaite(ping)) {
+                clear_to_color(ping->anim[ping->index_anim][ping->index_sprite],makecol(255, 0, 255));
+                blit(ecrandefaite, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+                rest(1500);
+                break;
+            }
 
-            if(ping->y<=-545+vitesse_verticale && ping->y>=-605+vitesse_verticale )
-                ping->x--;
-            if(ping->y<=-690+vitesse_verticale && ping->y>=-750+vitesse_verticale )
-                ping->x++;
-            if(ping->y<=-760+vitesse_verticale && ping->y>=-820+vitesse_verticale )
-                ping->x--;
+            if (tempo_riviere == 10) {
 
-            vitesse_horizontale += vitesse;
-            tempo_riviere = 0;
-        } else
-            tempo_riviere++;
-        anim_pingouin(ping, &tempo_marche, vitesse_verticale);
-        affiche_pingouin(ping, buffer);
-        blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-//printf("%d\n",ping->y-vitesse_verticale);
+                if (vitesse_verticale < 900) {
+                    vitesse_verticale += vitesse;
+                    ping->y += 1;
+                }
+
+                if (ping->y <= 200 + vitesse_verticale && ping->y >= 140 + vitesse_verticale)
+                    ping->x--;
+                if (ping->y <= 60 + vitesse_verticale && ping->y >= 0 + vitesse_verticale)
+                    ping->x++;
+                if (ping->y <= -75 + vitesse_verticale && ping->y >= -135 + vitesse_verticale)
+                    ping->x--;
+
+                if (ping->y <= -545 + vitesse_verticale && ping->y >= -605 + vitesse_verticale)
+                    ping->x--;
+                if (ping->y <= -690 + vitesse_verticale && ping->y >= -750 + vitesse_verticale)
+                    ping->x++;
+                if (ping->y <= -760 + vitesse_verticale && ping->y >= -820 + vitesse_verticale)
+                    ping->x--;
+
+                vitesse_horizontale += vitesse;
+                tempo_riviere = 0;
+            } else
+                tempo_riviere++;
+            anim_pingouin(ping, &tempo_marche, vitesse_verticale);
+            affiche_pingouin(ping, buffer);
+            blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+        }
+        else {
+
+            blit(ecranvictoire, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+
+            draw_sprite(buffer, pingouinvictoire1, SCREEN_W / 2 - pingouinvictoire1->w / 2, 50);
+
+            if(Fin == 0){
+                fin = clock();
+                Fin=1;
+            }
+
+            temp_final = (float) (fin - debut)/CLOCKS_PER_SEC;
+            sprintf(string, "%.3f secondes", temp_final);
+            textout_ex(buffer, font, string, 410, 440, makecol(0, 0, 0), -1);
+            blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+            rest(1500);
+            break;
+        }
     }
-    //return temps
-    return 0;
+    return temp_final;
 }

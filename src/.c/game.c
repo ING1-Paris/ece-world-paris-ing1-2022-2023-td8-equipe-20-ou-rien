@@ -1,6 +1,37 @@
 #include <allegro.h>
 #include <winalleg.h>
+#include <stdio.h>
 #include "../.h/header.h"
+
+int isWinOrLoose(game3d_t *game)
+{
+    char tmpString[5];
+
+    if (game->player->life <= 0) { // loose
+        clear_bitmap(screen);
+        sprintf(tmpString, "%d", game->player->score);
+        textout_ex(screen, font, "Score :", 380, 500, makecol(255, 255, 255), -1);
+        textout_ex(screen, font, tmpString, 430, 500, makecol(255, 255, 255), -1);
+        textout_ex(screen, font, "Vous êtes mort !", 350, 250, makecol(255, 255, 255), -1);
+        rest(2000);
+        return 1;
+    }
+    for (int i = 0; i < game->nbNpc; i++) {
+        if (game->opps[i].life > 0) {
+            break;
+        } else if (i + 1 == game->nbNpc) { // win
+            clear_bitmap(screen);
+            sprintf(tmpString, "%d", game->player->score);
+            textout_ex(screen, font, "Score :", 380, 500, makecol(255, 255, 255), -1);
+            textout_ex(screen, font, tmpString, 430, 500, makecol(255, 255, 255), -1);
+            textout_ex(screen, font, "Vous avez survécue !", 350, 250, makecol(255, 255, 255), -1);
+            rest(2000);
+            return 1;
+        }
+    }
+
+    return 0;
+}
 
 int gameLoop(void)
 {
@@ -8,7 +39,7 @@ int gameLoop(void)
     game3d_t *game = createGame();
 
     PlaySound("../assets/background.wav", NULL, SND_ASYNC | SND_LOOP);
-    while (!key[KEY_ESC]) {
+    while (!key[KEY_ESC] && !isWinOrLoose(game)) {
         clear_bitmap(game->buffer);
 
         playerHeal(game);

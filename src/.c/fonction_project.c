@@ -444,7 +444,7 @@ int verfDebutAnimation(t_joueur *joueur)
 }
 
 
-void menuStat(int statSnake,float statFight,int statBallon,BITMAP *buffer, int fpsStat, int taupeStat)
+void menuStat(int statSnake,float statFight,int statBallon,BITMAP *buffer, int fpsStat, int taupeStat, int riviereStat)
 {
     char tmpString[30];
         while(!key[KEY_ESC])
@@ -467,6 +467,9 @@ void menuStat(int statSnake,float statFight,int statBallon,BITMAP *buffer, int f
             textout_ex(buffer,font,"Taupe la :",0,250, makecol(255,0,0),-1);
             sprintf(tmpString,"%d",taupeStat);
             textout_ex(buffer,font,tmpString,100,250, makecol(255,0,0),-1);
+            textout_ex(buffer,font,"Rivière :",0,300, makecol(255,0,0),-1);
+            sprintf(tmpString,"%d", riviereStat);
+            textout_ex(buffer,font,tmpString,100,300, makecol(255,0,0),-1);
             blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
         }
 }
@@ -815,7 +818,7 @@ int verifJoueurCollision(t_joueur *joueur,BITMAP *sousBuffer)
     }
 }
 
-void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP *buffer,BITMAP **EnsembleChiffre,int frame,int *Map,int *statSnake,float *statFight,int *statBallon, int *fpsStat, int *taupeStat)
+void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP *buffer,BITMAP **EnsembleChiffre,int frame,int *Map,int *statSnake,float *statFight,int *statBallon, int *fpsStat, int *taupeStat, int *riviereStat)
 {
     if(*Map==-1 && !joueur1->loaded)
     {
@@ -886,9 +889,9 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
         }
         if(key[KEY_H])
         {
-            menuStat(*statSnake,*statFight,*statBallon,buffer, *fpsStat, *taupeStat);
+            menuStat(*statSnake,*statFight,*statBallon,buffer, *fpsStat, *taupeStat, *riviereStat);
         } else if (key[KEY_S])
-            saveGame(path, joueur1, joueur2,*statSnake,*statFight,*statBallon,*fpsStat,*taupeStat);
+            saveGame(path, joueur1, joueur2,*statSnake,*statFight,*statBallon,*fpsStat,*taupeStat, *riviereStat);
 
         clear_bitmap(buffer);
         clear_bitmap(sousbuffer);
@@ -1092,7 +1095,7 @@ void snakeMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
     free(path);
 }
 
-void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP **EnsembleChiffre,BITMAP *buffer,int frame,int *Map,int *snakeStat,float *fightStat,int *statBallon, int *fpsStat, int *taupeStat)
+void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP **EnsembleChiffre,BITMAP *buffer,int frame,int *Map,int *snakeStat,float *fightStat,int *statBallon, int *fpsStat, int *taupeStat, int *riviereStat)
 {
     if(!joueur1->loaded && *Map==2)
     {
@@ -1161,9 +1164,9 @@ void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITM
         }
         if(key[KEY_H])
         {
-            menuStat(*snakeStat,*fightStat,*statBallon,buffer, *fpsStat, *taupeStat);
+            menuStat(*snakeStat,*fightStat,*statBallon,buffer, *fpsStat, *taupeStat, *riviereStat);
         } else if (key[KEY_S])
-            saveGame(path, joueur1, joueur2,*snakeStat,*fightStat,*statBallon,*fpsStat,*taupeStat);
+            saveGame(path, joueur1, joueur2,*snakeStat,*fightStat,*statBallon,*fpsStat,*taupeStat, *riviereStat);
         clear_bitmap(buffer);
         clear_bitmap(sousbuffer);
         blit(map, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
@@ -1324,7 +1327,7 @@ void BallonMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITM
 }
 
 
-void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP *buffer,int frame,int *Map,int *snakeStat,float *fightStat,int *statBallon, int *fpsStat, int *taupeStat, BITMAP **EnsembleChiffre)
+void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP *buffer,int frame,int *Map,int *snakeStat,float *fightStat,int *statBallon, int *fpsStat, int *taupeStat, BITMAP **EnsembleChiffre, int *riviereStat)
 {
     if(!joueur1->loaded && *Map==1)
     {
@@ -1394,9 +1397,9 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
         }
         if(key[KEY_H])
         {
-            menuStat(*snakeStat,*fightStat,*statBallon,buffer, *fpsStat, *taupeStat);
+            menuStat(*snakeStat,*fightStat,*statBallon,buffer, *fpsStat, *taupeStat, *riviereStat);
         } else if (key[KEY_S])
-            saveGame(path, joueur1, joueur2,*snakeStat,*fightStat,*statBallon,*fpsStat,*taupeStat);
+            saveGame(path, joueur1, joueur2,*snakeStat,*fightStat,*statBallon,*fpsStat,*taupeStat, *riviereStat);
         clear_bitmap(buffer);
         clear_bitmap(sousbuffer);
         blit(map, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
@@ -1526,14 +1529,14 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                     destroy_bitmap(arbre);
                     destroy_bitmap(portail);
                     destroy_bitmap(sousbuffer);
-                    animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur1);
-                    verifGagnant[0]=gameLoop();
                     animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur2);
+                    verifGagnant[0]=gameLoop();
+                    animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur1);
                     verifGagnant[1]=gameLoop();
                     if(verifGagnant[0]>verifGagnant[1])
                     {
-                        joueur1->nbTicket++;
-                        joueur2->nbTicket--;
+                        joueur2->nbTicket++;
+                        joueur1->nbTicket--;
                         if(verifGagnant[0]>*fpsStat)
                         {
                             *fpsStat=verifGagnant[0];
@@ -1541,8 +1544,8 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                     }
                     else
                     {
-                        joueur1->nbTicket--;
-                        joueur2->nbTicket++;
+                        joueur2->nbTicket--;
+                        joueur1->nbTicket++;
                         if(verifGagnant[1]>*fpsStat)
                         {
                             *fpsStat=verifGagnant[1];
@@ -1564,9 +1567,9 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
                 textout_ex(buffer,font,"Entrer ?",225,125, makecol(255,0,0),-1);
                 if (key[KEY_ENTER]) {
                     stop_sample(bgMusic);
-                    animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur1);
-                    verifGagnant[0]=startGameMole();
                     animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur2);
+                    verifGagnant[0]=startGameMole();
+                    animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur1);
                     verifGagnant[1]=startGameMole();
                     if(verifGagnant[0]>verifGagnant[1])
                     {
@@ -1638,7 +1641,7 @@ void ninjaMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMA
     destroy_sample(bgMusic);
 }
 
-void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP *buffer,int frame,int *Map,int *snakeStat,float *fightStat,int *statBallon, int *fpsStat, int *taupeStat)
+void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BITMAP *skin1MvmtUp[5],BITMAP *skin1MvmtCoter[5], BITMAP *skin2MvmtDown[5],BITMAP *skin2MvmtUp[5],BITMAP *skin2MvmtCoter[5],BITMAP *skin3MvmtDown[5],BITMAP *skin3MvmtUp[5],BITMAP *skin3MvmtCoter[5],BITMAP *buffer,int frame,int *Map,int *snakeStat,float *fightStat,int *statBallon, int *fpsStat, int *taupeStat, int *riviereStat, BITMAP **EnsembleChiffre)
 {
     if(!joueur1->loaded && *Map==3)
     {
@@ -1671,7 +1674,12 @@ void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BIT
     BITMAP *sousMap= importeImage("../image/image play map/image riviere/SousMap.bmp");
     BITMAP *portail= importeImage("../image/image play map/snake/batiment/portailBas.bmp");
     BITMAP *sousbuffer= create_bitmap(SCREEN_W,SCREEN_H);
+    SAMPLE *bgMusic = load_wav("../son/iceBgSound.wav");
+
+    int verifGagnant[2];
     char path[50];
+    checkPtrNull(bgMusic, "Exit Failure: loading ice background music failed");
+    play_sample(bgMusic,200,128,1000,TRUE);
     while(1)
     {
         if(verifTicket(joueur1,joueur2,buffer))
@@ -1681,9 +1689,9 @@ void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BIT
         }
         if(key[KEY_H])
         {
-            menuStat(*snakeStat,*fightStat,*statBallon,buffer, *fpsStat, *taupeStat);
+            menuStat(*snakeStat,*fightStat,*statBallon,buffer, *fpsStat, *taupeStat, *riviereStat);
         } else if (key[KEY_S])
-            saveGame(path, joueur1, joueur2,*snakeStat,*fightStat,*statBallon,*fpsStat,*taupeStat);
+            saveGame(path, joueur1, joueur2,*snakeStat,*fightStat,*statBallon,*fpsStat,*taupeStat, *riviereStat);
         clear_bitmap(buffer);
         clear_bitmap(sousbuffer);
         blit(map, buffer, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
@@ -1717,7 +1725,33 @@ void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BIT
                 textout_ex(buffer,font,"Entrer ?",130,315, makecol(255,0,0),-1);
                 if(key[KEY_ENTER])
                 {
-                    fonction_riviere();
+                    stop_sample(bgMusic);
+                    animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur1);
+                    verifGagnant[0]=fonction_riviere();
+                    animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur2);
+                    verifGagnant[1]=fonction_riviere();
+                    play_sample(bgMusic,200,128,1000,TRUE);
+                    if(verifGagnant[0]>verifGagnant[1])
+                    {
+                        joueur1->nbTicket++;
+                        joueur2->nbTicket--;
+                        if(verifGagnant[0]>*riviereStat)
+                        {
+                            *riviereStat=verifGagnant[0];
+                        }
+                    }
+                    else
+                    {
+                        joueur1->nbTicket--;
+                        joueur2->nbTicket++;
+                        if(verifGagnant[1]>*riviereStat)
+                        {
+                            *riviereStat=verifGagnant[1];
+                        }
+                    }
+                    
+                    joueur1->BoolTour=0;
+                    joueur2->BoolTour=1;
                 }
             }
             if(verifFinAnimationFin(joueur1))
@@ -1743,7 +1777,33 @@ void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BIT
                 textout_ex(buffer,font,"Entrer ?",130,315, makecol(255,0,0),-1);
                 if(key[KEY_ENTER])
                 {
-                    fonction_riviere();
+                    stop_sample(bgMusic);
+                    animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur1);
+                    verifGagnant[0]=fonction_riviere();
+                    animationTourJoueurPourJeux(buffer,EnsembleChiffre,joueur2);
+                    verifGagnant[1]=fonction_riviere();
+                    play_sample(bgMusic,200,128,1000,TRUE);
+                    if(verifGagnant[0]>verifGagnant[1])
+                    {
+                        joueur1->nbTicket++;
+                        joueur2->nbTicket--;
+                        if(verifGagnant[0]>*riviereStat)
+                        {
+                            *riviereStat=verifGagnant[0];
+                        }
+                    }
+                    else
+                    {
+                        joueur1->nbTicket--;
+                        joueur2->nbTicket++;
+                        if(verifGagnant[1]>*riviereStat)
+                        {
+                            *riviereStat=verifGagnant[1];
+                        }
+                    }
+                    
+                    joueur1->BoolTour=0;
+                    joueur2->BoolTour=1;
                 }
             }
             if(verfDebutAnimation(joueur2))
@@ -1789,6 +1849,7 @@ void RiviereMap(t_joueur *joueur1,t_joueur *joueur2,BITMAP *skin1MvmtDown[5],BIT
     destroy_bitmap(map);
     destroy_bitmap(sousbuffer);
     destroy_bitmap(sousMap);
+    destroy_sample(bgMusic);
 }
 
 int animationTourJoueur(BITMAP* buffer,BITMAP**EnsembleChiffre)
@@ -1953,6 +2014,7 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
     int statSnake = 0, statBallon = 0;
     float statFight = 0.000;
     int fpsStat = 0, taupeStat = 0;
+    int riviereStat = 0;
     t_joueur *joueur1;
     t_joueur *joueur2;
     char path[50];
@@ -1961,7 +2023,7 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
         joueur2 = malloc(sizeof(t_joueur));
         checkPtrNull(joueur1, "Exit Failure: malloc failed");
         checkPtrNull(joueur2, "Exit Failure: malloc failed");
-        loadGame(path, joueur1, joueur2,&statSnake,&statFight,&statBallon,&fpsStat,&taupeStat);
+        loadGame(path, joueur1, joueur2,&statSnake,&statFight,&statBallon,&fpsStat,&taupeStat, &riviereStat);
         if (joueur1->BoolTour)
             Map = joueur1->Map;
         else
@@ -2036,25 +2098,25 @@ void playMap(int *BoolMenu, int *BoolSettings, int *BoolPlay, int choiceMenu)
         {
             joueur1->Map=0;
             joueur2->Map=0;
-            snakeMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,EnsembleChiffre,frame,&Map,&statSnake,&statFight,&statBallon, &fpsStat, &taupeStat);
+            snakeMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,EnsembleChiffre,frame,&Map,&statSnake,&statFight,&statBallon, &fpsStat, &taupeStat, &riviereStat);
         }
         else if(Map==1||Map==-2)
         {
             joueur1->Map=1;
             joueur2->Map=1;
-            ninjaMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame,&Map,&statSnake,&statFight,&statBallon, &fpsStat, &taupeStat, EnsembleChiffre);
+            ninjaMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame,&Map,&statSnake,&statFight,&statBallon, &fpsStat, &taupeStat, EnsembleChiffre, &riviereStat);
         }
         else if(Map==2||Map==-3)
         {
             joueur1->Map=2;
             joueur2->Map=2;
-            BallonMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,EnsembleChiffre,buffer,frame,&Map,&statSnake,&statFight,&statBallon, &fpsStat, &taupeStat);
+            BallonMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,EnsembleChiffre,buffer,frame,&Map,&statSnake,&statFight,&statBallon, &fpsStat, &taupeStat, &riviereStat);
         }
         else if(Map==3)
         {
             joueur1->Map=3;
             joueur2->Map=3;
-            RiviereMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame,&Map,&statSnake,&statFight,&statBallon, &fpsStat, &taupeStat);
+            RiviereMap(joueur1,joueur2,skin1MvmtDown,skin1MvmtUp,skin1MvmtCoter,skin2MvmtDown,skin2MvmtUp,skin2MvmtCoter,skin3MvmtDown,skin3MvmtUp,skin3MvmtCoter,buffer,frame,&Map,&statSnake,&statFight,&statBallon, &fpsStat, &taupeStat, &riviereStat, EnsembleChiffre);
         }
         else if(Map==4)
         {
